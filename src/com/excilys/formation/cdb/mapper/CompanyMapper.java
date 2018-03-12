@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CompanyMapper {
 
-    public static Company mapElement(ResultSet rs) {
+    public static Company map(ResultSet rs) {
         Company c = new Company();
         try {
             while (rs.next()) {
@@ -23,7 +23,7 @@ public class CompanyMapper {
         return c;
     }
 
-    public static List<Company> mapListOfElements(ResultSet rs) {
+    public static List<Company> mapList(ResultSet rs) {
         List<Company> companies = new ArrayList<>();
         try {
             while (rs.next()) {

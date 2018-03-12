@@ -6,10 +6,14 @@ import java.util.List;
 
 public interface ComputerDAO {
 
-    public abstract int getNumberOfComputers();
+    public abstract Integer getNumberOfComputers();
 
     public abstract Computer getComputer(int id);
     public abstract List<Computer> getComputer(String name, int index, int offset);
     public abstract List<Computer> getComputers(int index, int stop);
+
+    public abstract Integer persistComputer(Computer c);
+    public abstract Integer updateComputer(Computer c);
+    public abstract Computer deleteComputer(Computer c);
 
 }

@@ -35,7 +35,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             prep_stmt = conn.prepareStatement(COMPANY_BY_ID);
             prep_stmt.setInt(1, id);
             rs = prep_stmt.executeQuery();
-            c = CompanyMapper.mapElement(rs);
+            c = CompanyMapper.map(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -58,7 +58,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             prep_stmt.setInt(2, index);
             prep_stmt.setInt(3, offset);
             rs = prep_stmt.executeQuery();
-            companies = CompanyMapper.mapListOfElements(rs);
+            companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -80,7 +80,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             prep_stmt.setInt(1, index);
             prep_stmt.setInt(2, offset);
             rs = prep_stmt.executeQuery();
-            companies = CompanyMapper.mapListOfElements(rs);
+            companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

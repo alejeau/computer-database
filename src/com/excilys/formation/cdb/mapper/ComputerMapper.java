@@ -11,7 +11,7 @@ import com.excilys.formation.cdb.model.Computer;
 
 public class ComputerMapper {
 
-	public static Computer mapElement(ResultSet rs) {
+	public static Computer map(ResultSet rs) {
 		Computer c = new Computer();
 		try {
 			while (rs.next()) {
@@ -34,7 +34,7 @@ public class ComputerMapper {
 		return c;
 	}
 
-	public static List<Computer> mapListOfElements(ResultSet rs) {
+	public static List<Computer> mapList(ResultSet rs) {
 		List<Computer> computers = new ArrayList<>();
 		try {
 			while (rs.next()) {
