@@ -20,14 +20,12 @@ public enum ConnectionManager {
 		try {
 			in = new FileInputStream("config/db/db.properties");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			props.load(in);
 			in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -50,7 +48,6 @@ public enum ConnectionManager {
 		try {
 			conn = DriverManager.getConnection(url, username, password);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return conn;
@@ -61,7 +58,6 @@ public enum ConnectionManager {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -69,7 +65,6 @@ public enum ConnectionManager {
 			try {
 				stmt.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -77,7 +72,6 @@ public enum ConnectionManager {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

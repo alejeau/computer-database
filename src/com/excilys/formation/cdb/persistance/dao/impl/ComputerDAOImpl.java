@@ -18,6 +18,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String SELECT_COMPUTER_BY_NAME = "SELECT * FROM computer WHERE name LIKE ? ORDER BY name LIMIT ?, ?;";
     private static final String SELECT_ALL_COMPUTERS = "SELECT * FROM computer ORDER BY name LIMIT ?, ?;";
     private static final String INSERT_COMPUTER = "INSERT INTO computer (id, name, introduced, discontinued, company_id) values (?, ?, ?, ?);";
+    private static final String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
     
     public Integer getNumberOfComputers() {
         SimpleDAOImpl simpleDao = new SimpleDAOImpl();
