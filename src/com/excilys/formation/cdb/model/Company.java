@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.model;
 
 public class Company {
-	private int id;
+	private Integer id;
 	private String name;
 	
 	public Company() {

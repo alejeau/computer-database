@@ -4,11 +4,11 @@ import java.time.LocalDate;
 
 public class Computer {
 	
-	private int id;
+	private Integer id;
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private int companyId;
+	private Integer companyId;
 	
 	public Computer() {
 		

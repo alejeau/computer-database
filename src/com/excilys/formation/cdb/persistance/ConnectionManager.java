@@ -20,7 +20,7 @@ public enum ConnectionManager {
 	
 	{
 		try {
-			in = new FileInputStream("/config/db/db.properties");
+			in = new FileInputStream("config/db/db.properties");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
