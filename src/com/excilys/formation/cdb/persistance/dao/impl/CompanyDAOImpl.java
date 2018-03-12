@@ -13,7 +13,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 	
-	private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(id) FROM computer";
+	private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(id) FROM company";
     private static final String COMPANY_BY_ID = "SELECT * FROM company WHERE id=?";
     private static final String COMPANY_BY_NAME = "SELECT * FROM company WHERE name LIKE ? ORDER BY name LIMIT ?, ?";
     private static final String ALL_COMPANIES = "SELECT * FROM company ORDER BY name LIMIT ?, ?";

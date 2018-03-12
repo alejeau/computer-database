@@ -8,7 +8,7 @@ public class Computer {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private Integer companyId;
+	private int companyId;
 	
 	public Computer() {
 		
