@@ -32,7 +32,9 @@ public class Company {
 	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder("Company: ");
-		
+		s.append(this.name);
+		s.append(", id: ");
+		s.append(this.id);
 		return s.toString();
 	}
 	

@@ -1,0 +1,61 @@
+package com.excilys.formation.cdb.persistance;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+public enum ConnectionManager {
+	INSTANCE;
+	
+	private Properties props = new Properties();
+	private FileInputStream in;
+
+    private String url;
+    private String username;
+    private String password;
+	
+	{
+		try {
+			in = new FileInputStream("/config/db/db.properties");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			props.load(in);
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+	private ConnectionManager() {
+		String driver = props.getProperty("jdbc.driver");
+	    try {
+	      Class.forName(driver);       
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
+	    
+		url = props.getProperty("jdbc.url");
+		username = props.getProperty("jdbc.username");
+		password = props.getProperty("jdbc.password");
+	}
+	
+	public Connection getConnection() {
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(url, username, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return conn;
+	}
+}
