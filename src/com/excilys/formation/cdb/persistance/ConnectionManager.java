@@ -3,9 +3,7 @@ package com.excilys.formation.cdb.persistance;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public enum ConnectionManager {
@@ -34,7 +32,6 @@ public enum ConnectionManager {
 		}
 	}
 
-	
 	private ConnectionManager() {
 		String driver = props.getProperty("jdbc.driver");
 	    try {
@@ -57,5 +54,32 @@ public enum ConnectionManager {
 			e.printStackTrace();
 		}
 		return conn;
+	}
+
+	public static void closeElements(Connection conn, Statement stmt, ResultSet rs) {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (stmt != null) {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

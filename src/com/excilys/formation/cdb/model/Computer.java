@@ -1,6 +1,7 @@
 package com.excilys.formation.cdb.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Computer {
 	
@@ -15,7 +16,6 @@ public class Computer {
 	}
 	
 	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
@@ -63,6 +63,15 @@ public class Computer {
 		this.companyId = companyId;
 	}
 	
-	
+	public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        StringBuilder sb = new StringBuilder("Computer: ");
+        sb.append(this.name).append(", id: ").append(id).append(", company ID: ").append(companyId).append("\n");
+        if (introduced != null)
+            sb.append("introduced in: ").append(introduced.format(formatter));
+        if (discontinued != null)
+            sb.append(", discontinued in: ").append(discontinued.format(formatter));
+        return sb.toString();
+	}
 
 }

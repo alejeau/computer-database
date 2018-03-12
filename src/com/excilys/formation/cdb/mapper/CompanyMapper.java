@@ -18,7 +18,6 @@ public class CompanyMapper {
             }
         }
         catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return c;
@@ -35,7 +34,6 @@ public class CompanyMapper {
             }
         }
         catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return companies;

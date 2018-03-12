@@ -20,27 +20,8 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 	@Override
 	public int getNumberOfCompanies() {
-		Connection conn = connectionManager.getConnection();
-		Statement stmt = null;
-		ResultSet rs = null;
-		int numberOfCompanies = -1;
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(NUMBER_OF_COMPANIES);
-			if (rs.next()) {
-                while (rs.next()) {
-                    numberOfCompanies = rs.getInt(1);
-                }
-            }
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally {
-		    closeElements(conn, stmt, rs);
-		}
-		
-		return numberOfCompanies;
+        SimpleDAOImpl simpleDao = new SimpleDAOImpl();
+        return simpleDao.select(NUMBER_OF_COMPANIES);
 	}
 
 	@Override
@@ -58,7 +39,7 @@ public class CompanyDAOImpl implements CompanyDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prep_stmt, rs);
         }
 
         return c;
@@ -81,7 +62,7 @@ public class CompanyDAOImpl implements CompanyDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prep_stmt, rs);
         }
 
         return companies;
@@ -103,44 +84,9 @@ public class CompanyDAOImpl implements CompanyDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prep_stmt, rs);
         }
 
         return companies;
 	}
-
-	private static void closeElements(Connection conn, Statement stmt, ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        if (stmt != null) {
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-	
-	public static void main(String[] args) {
-		CompanyDAOImpl cdi = new CompanyDAOImpl();
-		int n = cdi.getNumberOfCompanies();
-		System.out.println("Number of comapnies: " + n);
-	}
-	
-
 }
