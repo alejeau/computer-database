@@ -100,8 +100,14 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             prep_stmt = conn.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             prep_stmt.setString(1, c.getName());
-            prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
-            prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+            if (c.getIntroduced() != null)
+                prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
+            else
+                prep_stmt.setNull(2, Types.DATE);
+            if (c.getDiscontinued() !=  null)
+                prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+            else
+                prep_stmt.setNull(3, Types.DATE);
             prep_stmt.setLong(4, c.getCompanyId());
             prep_stmt.executeUpdate();
 
@@ -125,8 +131,14 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             prep_stmt = conn.prepareStatement(UPDATE_COMPUTER);
             prep_stmt.setString(1, c.getName());
-            prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
-            prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+            if (c.getIntroduced() != null)
+                prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
+            else
+                prep_stmt.setNull(2, Types.DATE);
+            if (c.getDiscontinued() !=  null)
+                prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+            else
+                prep_stmt.setNull(3, Types.DATE);
             prep_stmt.setLong(4, c.getCompanyId());
             prep_stmt.setLong(5, c.getId());
             prep_stmt.executeUpdate();

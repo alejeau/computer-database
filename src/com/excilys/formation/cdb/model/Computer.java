@@ -124,13 +124,22 @@ public class Computer {
     }
 	
 	public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        StringBuilder sb = new StringBuilder("Computer: ");
-        sb.append(this.name).append(", id: ").append(id).append(", company ID: ").append(companyId).append("\n");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        StringBuilder sb = new StringBuilder("ID: ").append(this.id).append("\n");
+        sb.append("Name: ").append(this.name).append("\n");
+        sb.append("Company ID: ").append(this.companyId).append("\n");
+        sb.append("Introduced in: ");
         if (introduced != null)
-            sb.append("introduced in: ").append(introduced.format(formatter));
+            sb.append(introduced.format(formatter));
+        else
+            sb.append("N/A");
+        sb.append("\n");
+        sb.append("Discontinued in: ");
         if (discontinued != null)
-            sb.append(", discontinued in: ").append(discontinued.format(formatter));
+            sb.append(discontinued.format(formatter));
+        else
+            sb.append("N/A");
+        sb.append("\n");
         return sb.toString();
 	}
 

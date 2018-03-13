@@ -32,7 +32,7 @@ public class CLI {
         System.out.println("c2Id: " + c2Id);
 
         Computer c2Bis = crdi.getComputer(c2Id);
-        System.out.println("c2Bis: " + c2Bis);
+        System.out.println("c2Bis:\n" + c2Bis);
 
         crdi.deleteComputer(c2Id);
         Computer c2Ter = crdi.getComputer(c2Id);
