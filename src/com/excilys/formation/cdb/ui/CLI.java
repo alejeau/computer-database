@@ -120,11 +120,39 @@ public class CLI {
     }
 
     private void addComputer() {
+        String name = null;
+        System.out.println("Please enter the computer's name:");
+        name = sc.next();
+        sc.nextLine();
+
+        //TODO: Finish the method
 
     }
 
-    private void updateComputer() {
+    private LocalDate getDate() {
+        int day = -1, month = -1, year = -1;
+        while (day < 1 || day > 31) {
+            System.out.println("Please enter the day (1-31):");
+            day = sc.nextInt();
+            sc.nextLine();
+        }
 
+        while (month < 1 || month > 12) {
+            System.out.println("Please enter the month (1-12):");
+            month = sc.nextInt();
+            sc.nextLine();
+        }
+
+        while (year < -9999 || year > 9999) {
+            System.out.println("Please enter the year (XXXX):");
+            year = sc.nextInt();
+            sc.nextLine();
+        }
+        return LocalDate.of(year, month, day);
+    }
+
+    private void updateComputer() {
+        //TODO: Finish the method
     }
 
     private void deleteComputer() {
