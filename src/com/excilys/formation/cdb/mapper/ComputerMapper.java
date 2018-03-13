@@ -12,8 +12,10 @@ import com.excilys.formation.cdb.model.Computer;
 public class ComputerMapper {
 
 	public static Computer map(ResultSet rs) {
-		Computer c = new Computer();
+		Computer c = null;
 		try {
+		    if (rs.isBeforeFirst())
+		        c = new Computer();
 			while (rs.next()) {
 				c.setId(rs.getLong("id"));
 				c.setName(rs.getString("name"));
@@ -35,8 +37,10 @@ public class ComputerMapper {
 	}
 
 	public static List<Computer> mapList(ResultSet rs) {
-		List<Computer> computers = new ArrayList<>();
+		List<Computer> computers = null;
 		try {
+		    if (rs.isBeforeFirst())
+                computers = new ArrayList<>();
 			while (rs.next()) {
                 Computer c = new Computer();
                 c.setId(rs.getLong("id"));

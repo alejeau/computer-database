@@ -100,7 +100,7 @@ public class CLI {
         if (c != null)
             System.out.println(c);
         else
-            System.out.println("No computer registered under ID " + id);
+            System.out.println("No computer registered with the ID " + id);
     }
 
     private void checkComputerByName() {
@@ -128,7 +128,17 @@ public class CLI {
     }
 
     private void deleteComputer() {
-        
+        Long id = null;
+
+        System.out.println("Please enter the computer's ID you wish to delete: ");
+        id = sc.nextLong();
+        sc.nextLine();
+
+        Computer c = ComputerDAOImpl.INSTANCE.getComputer(id);
+        if (c != null)
+            ComputerDAOImpl.INSTANCE.deleteComputer(id);
+        else
+            System.out.println("There is no computer with the ID: " + id);
     }
 
 	public static void main(String[] args) {
