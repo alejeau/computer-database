@@ -9,18 +9,23 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistance.ConnectionManager;
 import com.excilys.formation.cdb.persistance.dao.CompanyDAO;
 
-public class CompanyDAOImpl implements CompanyDAO {
+public enum CompanyDAOImpl implements CompanyDAO {
+    INSTANCE;
 
-	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+	private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 	
 	private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(id) FROM company";
     private static final String COMPANY_BY_ID = "SELECT * FROM company WHERE id=?";
     private static final String COMPANY_BY_NAME = "SELECT * FROM company WHERE name LIKE ? ORDER BY name LIMIT ?, ?";
     private static final String ALL_COMPANIES = "SELECT * FROM company ORDER BY name LIMIT ?, ?";
 
+    private CompanyDAOImpl() {
+
+    }
+
 	@Override
 	public Long getNumberOfCompanies() {
-        SimpleDAOImpl simpleDao = new SimpleDAOImpl();
+        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.select(NUMBER_OF_COMPANIES);
 	}
 

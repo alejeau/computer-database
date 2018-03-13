@@ -2,15 +2,23 @@ package com.excilys.formation.cdb.ui;
 
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.model.Model;
 import com.excilys.formation.cdb.persistance.dao.impl.CompanyDAOImpl;
 import com.excilys.formation.cdb.persistance.dao.impl.ComputerDAOImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLI {
 
+    private static final int CODE_COMPUTER = 0;
+    private static final int CODE_COMPANY = 1;
+    private static final int PAGE_OFFSET = 10;
+
     private Scanner sc = new Scanner(System.in);
+    private ComputerDAOImpl computerDAO = ComputerDAOImpl.INSTANCE;
+    private CompanyDAOImpl companyDAO = CompanyDAOImpl.INSTANCE;
 
     private int mainMenu() {
         System.out.println("What would you like to do?");
@@ -33,6 +41,7 @@ public class CLI {
         int code = -1;
         do {
             code = mainMenu();
+            executeChoice(code);
         }
         while (code != 8);
     }
@@ -40,10 +49,10 @@ public class CLI {
     private void executeChoice(int choice) {
         switch (choice) {
             case 1:
-                viewList(0, 1);
+                viewList(CODE_COMPUTER, 1);
                 break;
             case 2:
-                viewList(1, 1);
+                viewList(CODE_COMPANY, 1);
                 break;
             case 3:
                 checkComputerById();
@@ -65,12 +74,22 @@ public class CLI {
         }
     }
 
-    private void viewList(int code, int page) {
+    private void viewList(int code, int pageNumber) {
+        List<? extends Model> page = null;
+        if (code == CODE_COMPUTER) {
+            page = computerDAO.getComputers(pageNumber, PAGE_OFFSET);
+        }
+        else if (code == CODE_COMPANY) {
+            page = companyDAO.getCompanies(pageNumber, PAGE_OFFSET);
+        }
 
+        if (page != null)
+            page.forEach(e -> System.out.println(e.shortToString()));
+        System.out.println();
     }
 
     private void checkComputerById() {
-
+        
     }
 
     private void checkComputerByName() {

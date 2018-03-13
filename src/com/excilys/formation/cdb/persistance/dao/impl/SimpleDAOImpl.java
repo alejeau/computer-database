@@ -8,9 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SimpleDAOImpl implements SimpleDAO {
+public enum SimpleDAOImpl implements SimpleDAO {
+    INSTANCE;
 
-    private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+
+    private SimpleDAOImpl() {
+
+    }
 
     public Long select(String query) {
         Connection conn = connectionManager.getConnection();

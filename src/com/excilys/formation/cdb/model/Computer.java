@@ -3,7 +3,7 @@ package com.excilys.formation.cdb.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Computer {
+public class Computer implements Model {
 	
 	private Long id;
 	private String name;
@@ -122,7 +122,15 @@ public class Computer {
             return new Computer(nestedId, nestedName, nestedIntroduced, nestedDiscontinued, nestedCompanyId);
         }
     }
-	
+
+    @Override
+    public String shortToString() {
+        return new StringBuilder("ID: ").append(this.id)
+                .append(", name: ").append(this.name)
+                .toString();
+    }
+
+    @Override
 	public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         StringBuilder sb = new StringBuilder("ID: ").append(this.id).append("\n");

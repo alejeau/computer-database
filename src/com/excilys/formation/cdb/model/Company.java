@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.model;
 
-public class Company {
+public class Company implements Model {
 	private Long id;
 	private String name;
 	
@@ -50,14 +50,16 @@ public class Company {
 			return new Company(nestedId, nestedName);
 		}
 	}
+
+	@Override
+    public String shortToString() {
+	    return this.toString();
+    }
 	
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder("Company: ");
-		s.append(this.name);
-		s.append(", id: ");
-		s.append(this.id);
-		return s.toString();
+		return new StringBuilder("ID: ").append(this.id)
+                .append(", name: ").append(this.name).toString();
 	}
 	
 	

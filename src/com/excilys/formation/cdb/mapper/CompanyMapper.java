@@ -7,7 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyMapper {
+public enum CompanyMapper {
+    INSTANCE;
+
+    private CompanyMapper() {
+
+    }
 
     public static Company map(ResultSet rs) {
         Company c = new Company();

@@ -6,13 +6,13 @@ import com.excilys.formation.cdb.persistance.ConnectionManager;
 import com.excilys.formation.cdb.persistance.dao.ComputerDAO;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComputerDAOImpl implements ComputerDAO {
+public enum ComputerDAOImpl implements ComputerDAO {
+    INSTANCE;
 
-    private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
     private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(id) FROM computer;";
     private static final String SELECT_COMPUTER_BY_ID = "SELECT * FROM computer WHERE id=?;";
@@ -22,8 +22,12 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
     private static final String DELETE_COMPUTER = "DELETE from computer WHERE id = ?;";
 
+    private ComputerDAOImpl() {
+
+    }
+
     public Long getNumberOfComputers() {
-        SimpleDAOImpl simpleDao = new SimpleDAOImpl();
+        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.select(NUMBER_OF_COMPUTERS);
     }
 
@@ -89,7 +93,6 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         return computers;
     }
-
 
     public Long persistComputer(Computer c) {
         Connection conn = connectionManager.getConnection();
