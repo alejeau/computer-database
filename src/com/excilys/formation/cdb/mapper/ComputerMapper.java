@@ -15,9 +15,9 @@ public class ComputerMapper {
 		Computer c = new Computer();
 		try {
 			while (rs.next()) {
-				c.setId(rs.getInt("id"));
+				c.setId(rs.getLong("id"));
 				c.setName(rs.getString("name"));
-				c.setCompanyId(rs.getInt("company_id"));
+				c.setCompanyId(rs.getLong("company_id"));
 
                 Date date1 = rs.getDate("introduced");
                 LocalDate localDate1 = date1 != null ? date1.toLocalDate() : null;
@@ -39,9 +39,9 @@ public class ComputerMapper {
 		try {
 			while (rs.next()) {
                 Computer c = new Computer();
-                c.setId(rs.getInt("id"));
+                c.setId(rs.getLong("id"));
                 c.setName(rs.getString("name"));
-                c.setCompanyId(rs.getInt("company_id"));
+                c.setCompanyId(rs.getLong("company_id"));
 
                 Date date1 = rs.getDate("introduced");
                 LocalDate localDate1 = date1 != null ? date1.toLocalDate() : null;

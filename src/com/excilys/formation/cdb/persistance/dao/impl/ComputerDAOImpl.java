@@ -6,6 +6,7 @@ import com.excilys.formation.cdb.persistance.ConnectionManager;
 import com.excilys.formation.cdb.persistance.dao.ComputerDAO;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +18,16 @@ public class ComputerDAOImpl implements ComputerDAO {
     private static final String SELECT_COMPUTER_BY_ID = "SELECT * FROM computer WHERE id=?;";
     private static final String SELECT_COMPUTER_BY_NAME = "SELECT * FROM computer WHERE name LIKE ? ORDER BY name LIMIT ?, ?;";
     private static final String SELECT_ALL_COMPUTERS = "SELECT * FROM computer ORDER BY name LIMIT ?, ?;";
-    private static final String INSERT_COMPUTER = "INSERT INTO computer (id, name, introduced, discontinued, company_id) values (?, ?, ?, ?);";
+    private static final String INSERT_COMPUTER = "INSERT INTO computer (name, introduced, discontinued, company_id) values (?, ?, ?, ?);";
     private static final String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
-    
-    public Integer getNumberOfComputers() {
+    private static final String DELETE_COMPUTER = "DELETE from computer WHERE id = ?;";
+
+    public Long getNumberOfComputers() {
         SimpleDAOImpl simpleDao = new SimpleDAOImpl();
         return simpleDao.select(NUMBER_OF_COMPUTERS);
     }
 
-    public Computer getComputer(int id) {
+    public Computer getComputer(Long id) {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prep_stmt = null;
         ResultSet rs = null;
@@ -33,7 +35,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         try {
             prep_stmt = conn.prepareStatement(SELECT_COMPUTER_BY_ID);
-            prep_stmt.setInt(1, id);
+            prep_stmt.setLong(1, id);
             rs = prep_stmt.executeQuery();
             c = ComputerMapper.map(rs);
         } catch (SQLException e) {
@@ -54,8 +56,8 @@ public class ComputerDAOImpl implements ComputerDAO {
         try {
             prep_stmt = conn.prepareStatement(SELECT_COMPUTER_BY_NAME);
             prep_stmt.setString(1, "%" + name + "%");
-            prep_stmt.setInt(2, index);
-            prep_stmt.setInt(3, offset);
+            prep_stmt.setLong(2, index);
+            prep_stmt.setLong(3, offset);
             rs = prep_stmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
@@ -75,8 +77,8 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         try {
             prep_stmt = conn.prepareStatement(SELECT_ALL_COMPUTERS);
-            prep_stmt.setInt(1, index);
-            prep_stmt.setInt(2, offset);
+            prep_stmt.setLong(1, index);
+            prep_stmt.setLong(2, offset);
             rs = prep_stmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
@@ -89,23 +91,23 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
 
-    public Integer persistComputer(Computer c) {
+    public Long persistComputer(Computer c) {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prep_stmt = null;
         ResultSet rs = null;
-        Integer createdId = null;
+        Long createdId = null;
 
         try {
             prep_stmt = conn.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             prep_stmt.setString(1, c.getName());
             prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
             prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
-            prep_stmt.setInt(4, c.getCompanyId());
+            prep_stmt.setLong(4, c.getCompanyId());
             prep_stmt.executeUpdate();
 
             rs = prep_stmt.getGeneratedKeys();
             if(rs.next()) {
-                createdId = rs.getInt(1);
+                createdId = rs.getLong(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,17 +118,37 @@ public class ComputerDAOImpl implements ComputerDAO {
         return createdId;
     }
 
-    public Integer updateComputer(Computer c) {
-        return null;
+    public void updateComputer(Computer c) {
+        Connection conn = connectionManager.getConnection();
+        PreparedStatement prep_stmt = null;
+
+        try {
+            prep_stmt = conn.prepareStatement(UPDATE_COMPUTER);
+            prep_stmt.setString(1, c.getName());
+            prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
+            prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+            prep_stmt.setLong(4, c.getCompanyId());
+            prep_stmt.setLong(5, c.getId());
+            prep_stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionManager.closeElements(conn, prep_stmt, null);
+        }
     }
 
-    public Computer deleteComputer(Computer c) {
-        return null;
-    }
+    public void deleteComputer(Long id) {
+        Connection conn = connectionManager.getConnection();
+        PreparedStatement prep_stmt = null;
 
-    public static void main(String[] args) {
-        ComputerDAOImpl cdi = new ComputerDAOImpl();
-        Computer c = cdi.getComputer(1);
-        System.out.println(c);
+        try {
+            prep_stmt = conn.prepareStatement(DELETE_COMPUTER);
+            prep_stmt.setLong(1, id);
+            prep_stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionManager.closeElements(conn, prep_stmt, null);
+        }
     }
 }

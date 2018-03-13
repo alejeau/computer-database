@@ -12,17 +12,17 @@ public class SimpleDAOImpl implements SimpleDAO {
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
-    public Integer select(String query) {
+    public Long select(String query) {
         Connection conn = connectionManager.getConnection();
         Statement stmt = null;
         ResultSet rs = null;
-        Integer i = null;
+        Long l = null;
         try {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
             if (rs.next()) {
                 while (rs.next()) {
-                    i = rs.getInt(1);
+                    l = rs.getLong(1);
                 }
             }
         } catch (SQLException e) {
@@ -32,6 +32,6 @@ public class SimpleDAOImpl implements SimpleDAO {
             ConnectionManager.closeElements(conn, stmt, rs);
         }
 
-        return i;
+        return l;
     }
 }

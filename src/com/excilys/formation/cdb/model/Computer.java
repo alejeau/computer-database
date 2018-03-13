@@ -5,17 +5,17 @@ import java.time.format.DateTimeFormatter;
 
 public class Computer {
 	
-	private Integer id;
+	private Long id;
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private int companyId;
+	private Long companyId;
 	
 	public Computer() {
 		
 	}
 	
-	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
+	public Computer(Long id, String name, LocalDate introduced, LocalDate discontinued, Long companyId) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
@@ -23,11 +23,11 @@ public class Computer {
 		this.companyId = companyId;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -55,13 +55,73 @@ public class Computer {
 		this.discontinued = discontinued;
 	}
 
-	public int getCompanyId() {
+	public Long getCompanyId() {
 		return companyId;
 	}
 
-	public void setCompanyId(int companyId) {
+	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
+
+    public static class Builder {
+        private Long nestedId = null;
+        private String nestedName = null;
+        private LocalDate nestedIntroduced = null;
+        private LocalDate nestedDiscontinued = null;
+        private Long nestedCompanyId = null;
+
+        public Builder() {
+        }
+
+        public Builder id(final Long id) {
+            this.nestedId = id;
+            return this;
+        }
+
+        public Builder name(final String name) {
+            this.nestedName = name;
+            return this;
+        }
+
+        public Builder introduced(final LocalDate intro) {
+            this.nestedIntroduced = intro;
+            return this;
+        }
+
+        public Builder introduced(final String intro) {
+            if ((intro == null) || (intro.equals(""))) {
+                this.nestedIntroduced = null;
+            } else {
+                String tmp = intro.split(" ")[0];
+                this.nestedIntroduced = LocalDate.parse(tmp);
+            }
+            return this;
+        }
+
+        public Builder discontinued(final LocalDate discontinued) {
+            this.nestedDiscontinued = discontinued;
+            return this;
+        }
+
+        public Builder discontinued(final String discontinued) {
+            if ((discontinued == null) || (discontinued.equals(""))) {
+                this.nestedDiscontinued = null;
+            } else {
+                String tmp = discontinued.split(" ")[0];
+                this.nestedDiscontinued = LocalDate.parse(tmp);
+            }
+            return this;
+        }
+
+        public Builder companyId(final Long companyId) {
+            this.nestedCompanyId = companyId;
+            return this;
+        }
+
+        public Computer build() {
+            return new Computer(nestedId, nestedName, nestedIntroduced, nestedDiscontinued, nestedCompanyId);
+        }
+    }
 	
 	public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

@@ -1,23 +1,23 @@
 package com.excilys.formation.cdb.model;
 
 public class Company {
-	private Integer id;
+	private Long id;
 	private String name;
 	
 	public Company() {
 		
 	}
 
-	public Company(int id, String name) {
+	public Company(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

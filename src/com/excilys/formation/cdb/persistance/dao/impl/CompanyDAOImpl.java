@@ -19,13 +19,13 @@ public class CompanyDAOImpl implements CompanyDAO {
     private static final String ALL_COMPANIES = "SELECT * FROM company ORDER BY name LIMIT ?, ?";
 
 	@Override
-	public int getNumberOfCompanies() {
+	public Long getNumberOfCompanies() {
         SimpleDAOImpl simpleDao = new SimpleDAOImpl();
         return simpleDao.select(NUMBER_OF_COMPANIES);
 	}
 
 	@Override
-	public Company getCompany(int id) {
+	public Company getCompany(Long id) {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prep_stmt = null;
         ResultSet rs = null;
@@ -33,7 +33,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
         try {
             prep_stmt = conn.prepareStatement(COMPANY_BY_ID);
-            prep_stmt.setInt(1, id);
+            prep_stmt.setLong(1, id);
             rs = prep_stmt.executeQuery();
             c = CompanyMapper.map(rs);
         } catch (SQLException e) {
