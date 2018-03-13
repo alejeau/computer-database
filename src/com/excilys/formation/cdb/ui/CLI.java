@@ -16,11 +16,10 @@ public class CLI {
     private static final int CODE_COMPANY = 1;
     private static final int PAGE_OFFSET = 10;
 
-    private Scanner sc = new Scanner(System.in);
-    private ComputerDAOImpl computerDAO = ComputerDAOImpl.INSTANCE;
-    private CompanyDAOImpl companyDAO = CompanyDAOImpl.INSTANCE;
+    private static Scanner sc = new Scanner(System.in);
 
     private int mainMenu() {
+
         System.out.println("What would you like to do?");
         System.out.println("1) View the list of computers");
         System.out.println("2) View the list of companies");
@@ -77,10 +76,10 @@ public class CLI {
     private void viewList(int code, int pageNumber) {
         List<? extends Model> page = null;
         if (code == CODE_COMPUTER) {
-            page = computerDAO.getComputers(pageNumber, PAGE_OFFSET);
+            page = ComputerDAOImpl.INSTANCE.getComputers(pageNumber, PAGE_OFFSET);
         }
         else if (code == CODE_COMPANY) {
-            page = companyDAO.getCompanies(pageNumber, PAGE_OFFSET);
+            page = CompanyDAOImpl.INSTANCE.getCompanies(pageNumber, PAGE_OFFSET);
         }
 
         if (page != null)
@@ -89,11 +88,35 @@ public class CLI {
     }
 
     private void checkComputerById() {
-        
+        Long id = null;
+        Computer c = null;
+
+        System.out.println("Please enter the computer's ID: ");
+        id = sc.nextLong();
+        sc.nextLine();
+
+        c = ComputerDAOImpl.INSTANCE.getComputer(id);
+
+        if (c != null)
+            System.out.println(c);
+        else
+            System.out.println("No computer registered under ID " + id);
     }
 
     private void checkComputerByName() {
+        String name = null;
+        List<Computer> l = null;
 
+        System.out.println("Please enter the computer's name: ");
+        name = sc.next();
+        sc.nextLine();
+
+        l = ComputerDAOImpl.INSTANCE.getComputer(name, 0, PAGE_OFFSET);
+
+        if (l == null || l.size() == 0)
+            System.out.println("No computer registered under the name: " + name);
+        else
+            l.forEach(e -> System.out.println(e.shortToString()));
     }
 
     private void addComputer() {
@@ -105,7 +128,7 @@ public class CLI {
     }
 
     private void deleteComputer() {
-
+        
     }
 
 	public static void main(String[] args) {
