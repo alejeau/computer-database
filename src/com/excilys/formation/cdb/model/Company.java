@@ -28,6 +28,28 @@ public class Company {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public static class Builder {
+		private Long nestedId = null;
+		private String nestedName = null;
+
+		public Builder() {
+		}
+
+		public Company.Builder id(final Long id) {
+			this.nestedId = id;
+			return this;
+		}
+
+		public Company.Builder name(final String name) {
+			this.nestedName = name;
+			return this;
+		}
+
+		public Company build() {
+			return new Company(nestedId, nestedName);
+		}
+	}
 	
 	@Override
 	public String toString() {
