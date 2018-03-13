@@ -35,13 +35,18 @@ public enum ComputerService {
         return ComputerDAOImpl.INSTANCE.getComputers(index, offset);
     }
 
-    public void updateComputer(Computer c) throws ValidationException {
+    public Long persistComputer(Computer c) throws ValidationException {
         ComputerValidator.INSTANCE.validate(c);
-        ComputerDAOImpl.INSTANCE.persistComputer(c);
+        return ComputerDAOImpl.INSTANCE.persistComputer(c);
     }
 
-//    public Long persistComputer(Computer c);
-//
-//    public void deleteComputer(Long id);
+    public void updateComputer(Computer c) throws ValidationException {
+        ComputerValidator.INSTANCE.validate(c);
+        ComputerDAOImpl.INSTANCE.updateComputer(c);
+    }
+
+    public void deleteComputer(Long id) {
+        ComputerDAOImpl.INSTANCE.deleteComputer(id);
+    }
 
 }

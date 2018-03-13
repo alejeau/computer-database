@@ -12,7 +12,7 @@ public enum ComputerValidator {
 
     }
 
-    public static void validate(Computer c) throws ValidationException {
+    public void validate(Computer c) throws ValidationException {
         if (c.getIntroduced().isAfter(c.getDiscontinued()))
             throw new DateException("The date of introduction cannot be after the discontinuation date.");
         if (c.getCompanyId() == null)
