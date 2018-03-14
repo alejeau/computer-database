@@ -184,7 +184,7 @@ public class CLI {
 //				.name("Testouille1")
 //				.introduced(introduced)
 //				.discontinued(discontinued)
-//				.companyId(apple.getId())
+//				.company(apple.getId())
 //                .build();
 //        System.out.println("c2: " + c2);
 //

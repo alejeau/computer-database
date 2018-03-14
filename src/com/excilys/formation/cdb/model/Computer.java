@@ -9,18 +9,18 @@ public class Computer implements Model {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private Long companyId;
+	private Company company;
 	
 	public Computer() {
 		
 	}
 	
-	public Computer(Long id, String name, LocalDate introduced, LocalDate discontinued, Long companyId) {
+	public Computer(Long id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = companyId;
+		this.company = company;
 	}
 
 	public Long getId() {
@@ -55,12 +55,12 @@ public class Computer implements Model {
 		this.discontinued = discontinued;
 	}
 
-	public Long getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
     public static class Builder {
@@ -68,7 +68,7 @@ public class Computer implements Model {
         private String nestedName = null;
         private LocalDate nestedIntroduced = null;
         private LocalDate nestedDiscontinued = null;
-        private Long nestedCompanyId = null;
+        private Company nestedCompany = null;
 
         public Builder() {
         }
@@ -113,13 +113,13 @@ public class Computer implements Model {
             return this;
         }
 
-        public Builder companyId(final Long companyId) {
-            this.nestedCompanyId = companyId;
+        public Builder company(final Company company) {
+            this.nestedCompany = company;
             return this;
         }
 
         public Computer build() {
-            return new Computer(nestedId, nestedName, nestedIntroduced, nestedDiscontinued, nestedCompanyId);
+            return new Computer(nestedId, nestedName, nestedIntroduced, nestedDiscontinued, nestedCompany);
         }
     }
 
@@ -135,7 +135,7 @@ public class Computer implements Model {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         StringBuilder sb = new StringBuilder("ID: ").append(this.id).append("\n");
         sb.append("Name: ").append(this.name).append("\n");
-        sb.append("Company ID: ").append(this.companyId).append("\n");
+        sb.append("Company ID: ").append(this.company).append("\n");
         sb.append("Introduced in: ");
         if (introduced != null)
             sb.append(introduced.format(formatter));

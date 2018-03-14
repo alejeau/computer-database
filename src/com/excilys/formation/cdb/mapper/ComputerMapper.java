@@ -17,15 +17,14 @@ public class ComputerMapper {
 		    if (rs.isBeforeFirst())
 		        c = new Computer();
 			while (rs.next()) {
-				c.setId(rs.getLong("id"));
-				c.setName(rs.getString("name"));
-				c.setCompanyId(rs.getLong("company_id"));
+				c.setId(rs.getLong("computer_id"));
+				c.setName(rs.getString("computer_name"));
 
-                Date date1 = rs.getDate("introduced");
+                Date date1 = rs.getDate("computer_introduced");
                 LocalDate localDate1 = date1 != null ? date1.toLocalDate() : null;
 				c.setIntroduced(localDate1);
 
-                date1 = rs.getDate("discontinued");
+                date1 = rs.getDate("computer_discontinued");
                 localDate1 = date1 != null ? date1.toLocalDate() : null;
                 c.setDiscontinued(localDate1);
 			}
@@ -43,17 +42,20 @@ public class ComputerMapper {
                 computers = new ArrayList<>();
 			while (rs.next()) {
                 Computer c = new Computer();
-                c.setId(rs.getLong("id"));
-                c.setName(rs.getString("name"));
-                c.setCompanyId(rs.getLong("company_id"));
+                c.setId(rs.getLong("computer_id"));
+                c.setName(rs.getString("computer_name"));
 
-                Date date1 = rs.getDate("introduced");
+                Date date1 = rs.getDate("computer_introduced");
                 LocalDate localDate1 = date1 != null ? date1.toLocalDate() : null;
                 c.setIntroduced(localDate1);
 
-                date1 = rs.getDate("discontinued");
+                date1 = rs.getDate("computer_discontinued");
                 localDate1 = date1 != null ? date1.toLocalDate() : null;
                 c.setDiscontinued(localDate1);
+
+                // Mapping company before will nullify the ResultSet
+                c.setCompany(CompanyMapper.map(rs));
+
 				computers.add(c);
 			}
 		}

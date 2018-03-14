@@ -18,8 +18,8 @@ public enum CompanyMapper {
         Company c = new Company();
         try {
             while (rs.next()) {
-                c.setId(rs.getLong("id"));
-                c.setName(rs.getString("name"));
+                c.setId(rs.getLong("company_id"));
+                c.setName(rs.getString("company_name"));
             }
         }
         catch (SQLException e) {
@@ -33,8 +33,8 @@ public enum CompanyMapper {
         try {
             while (rs.next()) {
                 Company c = new Company();
-                c.setId(rs.getLong("id"));
-                c.setName(rs.getString("name"));
+                c.setId(rs.getLong("company_id"));
+                c.setName(rs.getString("company_name"));
                 companies.add(c);
             }
         }

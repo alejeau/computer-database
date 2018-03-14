@@ -14,13 +14,15 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
+//    private static final String ALIAS_COMPANY_NAME =
+
     private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(id) FROM computer;";
-    private static final String SELECT_COMPUTER_BY_ID = "SELECT * FROM computer WHERE id=?;";
+    private static final String SELECT_COMPUTER_BY_ID = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_id=?;";
     private static final String SELECT_COMPUTER_BY_NAME = "SELECT * FROM computer WHERE name LIKE ? ORDER BY name LIMIT ?, ?;";
     private static final String SELECT_ALL_COMPUTERS = "SELECT * FROM computer ORDER BY name LIMIT ?, ?;";
-    private static final String INSERT_COMPUTER = "INSERT INTO computer (name, introduced, discontinued, company_id) values (?, ?, ?, ?);";
-    private static final String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
-    private static final String DELETE_COMPUTER = "DELETE from computer WHERE id = ?;";
+    private static final String INSERT_COMPUTER = "INSERT INTO computer (computer_name, computer_introduced, computer_discontinued, computer_company_id) values (?, ?, ?, ?);";
+    private static final String UPDATE_COMPUTER = "UPDATE computer SET computer_name = ?, computer_introduced = ?, computer_discontinued = ?, computer_company_id = ? WHERE id = ?;";
+    private static final String DELETE_COMPUTER = "DELETE from computer WHERE computer_id = ?;";
 
     private ComputerDAOImpl() {
 
@@ -41,6 +43,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prep_stmt = conn.prepareStatement(SELECT_COMPUTER_BY_ID);
             prep_stmt.setLong(1, id);
             rs = prep_stmt.executeQuery();
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            int count = resultSetMetaData.getColumnCount();
+            for (int i = 1; i <= count; i++)
+                System.out.println(resultSetMetaData.getColumnName(i) + ": " + resultSetMetaData.getColumnLabel(i));
             c = ComputerMapper.map(rs);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,7 +117,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
                 prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
             else
                 prep_stmt.setNull(3, Types.DATE);
-            prep_stmt.setLong(4, c.getCompanyId());
+            prep_stmt.setLong(4, c.getCompany().getId());
             prep_stmt.executeUpdate();
 
             rs = prep_stmt.getGeneratedKeys();
@@ -142,7 +148,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
                 prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
             else
                 prep_stmt.setNull(3, Types.DATE);
-            prep_stmt.setLong(4, c.getCompanyId());
+            prep_stmt.setLong(4, c.getCompany().getId());
             prep_stmt.setLong(5, c.getId());
             prep_stmt.executeUpdate();
         } catch (SQLException e) {
