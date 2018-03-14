@@ -8,7 +8,7 @@ import java.util.List;
 public class CompanyService {
 
     public Long getNumberOfCompanies() {
-        return CompanyDAOImpl.INSTANCE.getNumberOfCompanies()
+        return CompanyDAOImpl.INSTANCE.getNumberOfCompanies();
     }
 
     public Company getCompany(Long id) {
