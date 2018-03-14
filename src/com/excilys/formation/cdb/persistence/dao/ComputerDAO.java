@@ -7,6 +7,7 @@ import java.util.List;
 public interface ComputerDAO {
 
     public abstract Long getNumberOfComputers();
+    public abstract Long getNumberOfComputersWithName(String name);
 
     public abstract Computer getComputer(Long id);
     public abstract List<Computer> getComputer(String name, int index, int offset);

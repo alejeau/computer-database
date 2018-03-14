@@ -20,8 +20,8 @@ public abstract class Page<T extends Model> {
         this.offset = OFFSET_VALUE.TEN;
     }
 
-    protected Page(Integer pageNumber, OFFSET_VALUE offset) {
-        this.checkPageNumber(pageNumber);
+    protected Page(OFFSET_VALUE offset) {
+        this.pageNumber = FIRST_PAGE;
         this.offset = offset;
     }
 
@@ -32,23 +32,23 @@ public abstract class Page<T extends Model> {
     protected abstract List<T> last();
     protected abstract Long currentLastPageNumber();
 
-    protected List<T> getPage() {
+    public List<T> getPage() {
         return page;
     }
 
-    protected Integer getPageNumber() {
+    public Integer getPageNumber() {
         return pageNumber;
     }
 
-    protected void setPageNumber(Integer pageNumber) {
+    public void setPageNumber(Integer pageNumber) {
         this.checkPageNumber(pageNumber);
     }
 
-    protected OFFSET_VALUE getOffset() {
+    public OFFSET_VALUE getOffset() {
         return offset;
     }
 
-    protected void setOffset(OFFSET_VALUE offset) {
+    public void setOffset(OFFSET_VALUE offset) {
         this.offset = offset;
     }
 
@@ -64,7 +64,6 @@ public abstract class Page<T extends Model> {
             this.pageNumber = requestedPage.intValue();
         else
             this.pageNumber = requestedPage < FIRST_PAGE ? FIRST_PAGE : currentLastPageNumber.intValue();
-
     }
 
     protected void checkPreviousPageNumber() {

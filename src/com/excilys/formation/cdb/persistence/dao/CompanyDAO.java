@@ -7,6 +7,7 @@ import com.excilys.formation.cdb.model.Company;
 public interface CompanyDAO {
 	
 	public abstract Long getNumberOfCompanies();
+	public abstract Long getNumberOfCompaniesWithName(String name);
 	
 	public abstract Company getCompany(Long id);
 	public abstract List<Company> getCompany(String name, int index, int offset);

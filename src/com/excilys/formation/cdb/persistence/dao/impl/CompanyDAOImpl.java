@@ -14,10 +14,11 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
 	private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 	
-	private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(computer_id) FROM company";
-    private static final String COMPANY_BY_ID = "SELECT * FROM company WHERE company_id=?";
-    private static final String COMPANY_BY_NAME = "SELECT * FROM company WHERE company_name LIKE ? ORDER BY company_name LIMIT ?, ?";
-    private static final String ALL_COMPANIES = "SELECT * FROM company ORDER BY company_name LIMIT ?, ?";
+	private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(company_id) FROM company;";
+    private static final String NUMBER_OF_COMPANIES_WITH_NAME = "SELECT COUNT(company_id) FROM company WHERE company_name LIKE ?;";
+    private static final String COMPANY_BY_ID = "SELECT * FROM company WHERE company_id=?;";
+    private static final String COMPANY_BY_NAME = "SELECT * FROM company WHERE company_name LIKE ? ORDER BY company_name LIMIT ?, ?;";
+    private static final String ALL_COMPANIES = "SELECT * FROM company ORDER BY company_name LIMIT ?, ?;";
 
     private CompanyDAOImpl() {
 
@@ -26,8 +27,14 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	@Override
 	public Long getNumberOfCompanies() {
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
-        return simpleDao.select(NUMBER_OF_COMPANIES);
+        return simpleDao.count(NUMBER_OF_COMPANIES);
 	}
+
+	@Override
+    public Long getNumberOfCompaniesWithName(String name) {
+        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
+        return simpleDao.countElementsWithName(NUMBER_OF_COMPANIES_WITH_NAME, name);
+    }
 
 	@Override
 	public Company getCompany(Long id) {

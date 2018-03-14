@@ -28,6 +28,13 @@ public enum CompanyMapper {
         return c;
     }
 
+    public static Company mapFromComputer(ResultSet rs) throws SQLException {
+        Company c = new Company();
+        c.setId(rs.getLong("company_id"));
+        c.setName(rs.getString("company_name"));
+        return c;
+    }
+
     public static List<Company> mapList(ResultSet rs) {
         List<Company> companies = new ArrayList<>();
         try {

@@ -1,6 +1,7 @@
 package com.excilys.formation.cdb.mapper;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class ComputerMapper {
                 date1 = rs.getDate("computer_discontinued");
                 localDate1 = date1 != null ? date1.toLocalDate() : null;
                 c.setDiscontinued(localDate1);
+
+                c.setCompany(CompanyMapper.mapFromComputer(rs));
 			}
 		}
 		catch (SQLException e) {
@@ -53,8 +56,7 @@ public class ComputerMapper {
                 localDate1 = date1 != null ? date1.toLocalDate() : null;
                 c.setDiscontinued(localDate1);
 
-                // Mapping company before will nullify the ResultSet
-                c.setCompany(CompanyMapper.map(rs));
+                c.setCompany(CompanyMapper.mapFromComputer(rs));
 
 				computers.add(c);
 			}

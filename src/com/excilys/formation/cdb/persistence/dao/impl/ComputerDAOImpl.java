@@ -14,12 +14,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
-    private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(id) FROM computer;";
+    private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(computer_id) FROM computer;";
+    private static final String NUMBER_OF_COMPUTERS_WITH_NAME = "SELECT COUNT(computer_id) FROM computer WHERE computer_name LIKE ?;";
     private static final String SELECT_COMPUTER_BY_ID = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_id=?;";
-    private static final String SELECT_COMPUTER_BY_NAME = "SELECT * FROM computer WHERE name LIKE ? ORDER BY name LIMIT ?, ?;";
-    private static final String SELECT_ALL_COMPUTERS = "SELECT * FROM computer ORDER BY name LIMIT ?, ?;";
+    private static final String SELECT_COMPUTER_BY_NAME = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_name LIKE ? ORDER BY computer_name LIMIT ?, ?;";
+    private static final String SELECT_ALL_COMPUTERS = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id ORDER BY computer_name LIMIT ?, ?;";
     private static final String INSERT_COMPUTER = "INSERT INTO computer (computer_name, computer_introduced, computer_discontinued, computer_company_id) values (?, ?, ?, ?);";
-    private static final String UPDATE_COMPUTER = "UPDATE computer SET computer_name = ?, computer_introduced = ?, computer_discontinued = ?, computer_company_id = ? WHERE id = ?;";
+    private static final String UPDATE_COMPUTER = "UPDATE computer SET computer_name = ?, computer_introduced = ?, computer_discontinued = ?, computer_company_id = ? WHERE computer_id = ?;";
     private static final String DELETE_COMPUTER = "DELETE from computer WHERE computer_id = ?;";
 
     private ComputerDAOImpl() {
@@ -27,8 +28,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     public Long getNumberOfComputers() {
+//        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
+        return SimpleDAOImpl.INSTANCE.count(NUMBER_OF_COMPUTERS);
+    }
+
+    public Long getNumberOfComputersWithName(String name) {
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
-        return simpleDao.select(NUMBER_OF_COMPUTERS);
+        return simpleDao.countElementsWithName(NUMBER_OF_COMPUTERS_WITH_NAME, name);
     }
 
     public Computer getComputer(Long id) {
@@ -42,9 +48,6 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prep_stmt.setLong(1, id);
             rs = prep_stmt.executeQuery();
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
-            int count = resultSetMetaData.getColumnCount();
-            for (int i = 1; i <= count; i++)
-                System.out.println(resultSetMetaData.getColumnName(i) + ": " + resultSetMetaData.getColumnLabel(i));
             c = ComputerMapper.map(rs);
         } catch (SQLException e) {
             e.printStackTrace();

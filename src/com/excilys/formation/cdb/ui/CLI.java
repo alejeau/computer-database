@@ -3,23 +3,31 @@ package com.excilys.formation.cdb.ui;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.model.Model;
+import com.excilys.formation.cdb.paginator.CompanyPage;
+import com.excilys.formation.cdb.paginator.ComputerPage;
+import com.excilys.formation.cdb.paginator.ComputerSearchPage;
+import com.excilys.formation.cdb.paginator.core.OFFSET_VALUE;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
-public enum CLI {
-    INSTANCE;
+public class CLI {
 
-    private static final int CODE_COMPUTER = 0;
-    private static final int CODE_COMPANY = 1;
-    private static final int PAGE_OFFSET = 10;
+    private static final OFFSET_VALUE NUMBER_OF_ELEMENTS_PER_PAGE = OFFSET_VALUE.TEN;
 
-    private static Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
+
+    private ComputerPage computerPage = ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
+    private CompanyPage companyPage = CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+    private ComputerSearchPage computerSearchPage = null;
+
+    public CLI() {
+
+    }
 
     private int mainMenu() {
 
@@ -35,6 +43,7 @@ public enum CLI {
 
         System.out.println("Enter your choice: ");
         int entry = sc.nextInt();
+        sc.nextLine();
 
         return entry;
     }
@@ -51,10 +60,10 @@ public enum CLI {
     private void executeChoice(int choice) {
         switch (choice) {
             case 1:
-                viewList(CODE_COMPUTER, 1);
+                viewComputerPage();
                 break;
             case 2:
-                viewList(CODE_COMPANY, 1);
+                viewCompanyPage();
                 break;
             case 3:
                 checkComputerById();
@@ -76,18 +85,52 @@ public enum CLI {
         }
     }
 
-    private void viewList(int code, int pageNumber) {
-        List<? extends Model> page = null;
-        if (code == CODE_COMPUTER) {
-            page = ComputerService.INSTANCE.getComputers(pageNumber, PAGE_OFFSET);
+    private void viewComputerPage() {
+        boolean exit = false;
+        String choice = null;
+        Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
+        while (!exit) {
+            System.out.println("Which page would you like to view?");
+            System.out.println("[0-9], n for next, p for previous, f for first, l for last and q to quit");
+            choice = sc.next();
+            if (!sc.hasNextLine() || choice.equals("f"))
+                this.computerPage.first().forEach(displayShortToString);
+            else if (choice.equals("q"))
+                exit = true;
+            else if (choice.equals("p"))
+                this.computerPage.previous().forEach(displayShortToString);
+            else if (choice.equals("n"))
+                this.computerPage.next().forEach(displayShortToString);
+            else if (choice.equals("l"))
+                this.computerPage.last().forEach(displayShortToString);
+            else if (choice.matches("[0-9]+"))
+                this.computerPage.goToPage(Long.decode(choice)).forEach(displayShortToString);
+            sc.nextLine();
         }
-        else if (code == CODE_COMPANY) {
-            page = CompanyService.INSTANCE.getCompanies(pageNumber, PAGE_OFFSET);
-        }
+    }
 
-        if (page != null)
-            page.forEach(e -> System.out.println(e.shortToString()));
-        System.out.println();
+    private void viewCompanyPage() {
+        boolean exit = false;
+        String choice = null;
+        while (!exit) {
+            System.out.println("Which page would you like to view?");
+            System.out.println("[0-9], n for next, p for previous, f for first, l for last and q to quit");
+            choice = sc.next();
+
+            if (!sc.hasNextLine() || choice.equals("f"))
+                this.companyPage.first().forEach(System.out::println);
+            else if (choice.equals("q"))
+                exit = true;
+            else if (choice.equals("p"))
+                this.companyPage.previous().forEach(System.out::println);
+            else if (choice.equals("n"))
+                this.companyPage.next().forEach(System.out::println);
+            else if (choice.equals("l"))
+                this.companyPage.last().forEach(System.out::println);
+            else if (choice.matches("[0-9]+"))
+                this.companyPage.goToPage(Long.decode(choice)).forEach(System.out::println);
+            sc.nextLine();
+        }
     }
 
     private void checkComputerById() {
@@ -108,18 +151,37 @@ public enum CLI {
 
     private void checkComputerByName() {
         String name = null;
-        List<Computer> l = null;
 
         System.out.println("Please enter the computer's name: ");
         name = sc.next();
         sc.nextLine();
 
-        l = ComputerService.INSTANCE.getComputer(name, 0, PAGE_OFFSET);
+        computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
 
-        if (l == null || l.size() == 0)
-            System.out.println("No computer registered under the name: " + name);
-        else
-            l.forEach(e -> System.out.println(e.shortToString()));
+        boolean exit = false;
+        String choice = null;
+        Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
+        while (!exit) {
+            System.out.println("Which page would you like to view?");
+            System.out.println("n for next, p for previous, f for first, la for last and q to quit");
+            choice = sc.next();
+
+            if (!sc.hasNextLine() || choice.equals("f"))
+                this.computerSearchPage.first().forEach(displayShortToString);
+            else if (choice.equals("q"))
+                exit = true;
+            else if (choice.equals("p"))
+                this.computerSearchPage.previous().forEach(displayShortToString);
+            else if (choice.equals("n"))
+                this.computerSearchPage.next().forEach(displayShortToString);
+            else if (choice.equals("l"))
+                this.computerSearchPage.last().forEach(displayShortToString);
+            else if (choice.matches("[0-9]+"))
+                this.computerSearchPage.goToPage(Long.decode(choice));
+            sc.nextLine();
+        }
+
+        computerSearchPage = null;
     }
 
     private void editComputer(Computer c) {
@@ -142,8 +204,10 @@ public enum CLI {
         c.setCompany(company);
 
         try {
-            if (c.getId() == null)
-                ComputerService.INSTANCE.persistComputer(c);
+            if (c.getId() == null) {
+                Long id = ComputerService.INSTANCE.persistComputer(c);
+                System.out.println("The computer has the ID: " + id);
+            }
             else
                 ComputerService.INSTANCE.updateComputer(c);
         } catch (ValidationException e) {
@@ -166,10 +230,9 @@ public enum CLI {
 
         while (!ok) {
             System.out.println("Please enter the computer's " + event + " date (yyyy-MM-dd or 'Enter'):");
-            String d1 = sc.next();
-            sc.nextLine();
-            if (d1.matches("\\d{4}-\\d{2}-\\d{2}") || d1.equals("")) {
-                if (!d1.equals(""))
+            String d1 = sc.nextLine();
+            if (d1.isEmpty() || d1.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                if (!d1.isEmpty())
                     date = LocalDate.parse(d1, formatter);
                 ok = true;
             }
@@ -206,6 +269,7 @@ public enum CLI {
     }
 
 	public static void main(String[] args) {
-        CLI.INSTANCE.mainLoop();
-	}
+        CLI cli = new CLI();
+        cli.mainLoop();
+    }
 }
