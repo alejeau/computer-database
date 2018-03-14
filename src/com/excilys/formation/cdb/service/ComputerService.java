@@ -1,9 +1,7 @@
 package com.excilys.formation.cdb.service;
 
-import com.excilys.formation.cdb.exceptions.DateException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistance.dao.CompanyDAO;
 import com.excilys.formation.cdb.persistance.dao.impl.ComputerDAOImpl;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 

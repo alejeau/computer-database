@@ -14,8 +14,6 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
-//    private static final String ALIAS_COMPANY_NAME =
-
     private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(id) FROM computer;";
     private static final String SELECT_COMPUTER_BY_ID = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_id=?;";
     private static final String SELECT_COMPUTER_BY_NAME = "SELECT * FROM computer WHERE name LIKE ? ORDER BY name LIMIT ?, ?;";
