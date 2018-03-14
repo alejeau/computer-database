@@ -1,7 +1,7 @@
-package com.excilys.formation.cdb.persistance.dao.impl;
+package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.persistance.ConnectionManager;
-import com.excilys.formation.cdb.persistance.dao.SimpleDAO;
+import com.excilys.formation.cdb.persistence.ConnectionManager;
+import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

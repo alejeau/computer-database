@@ -1,9 +1,9 @@
-package com.excilys.formation.cdb.persistance.dao.impl;
+package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistance.ConnectionManager;
-import com.excilys.formation.cdb.persistance.dao.ComputerDAO;
+import com.excilys.formation.cdb.persistence.ConnectionManager;
+import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 
 import java.sql.*;
 import java.util.ArrayList;

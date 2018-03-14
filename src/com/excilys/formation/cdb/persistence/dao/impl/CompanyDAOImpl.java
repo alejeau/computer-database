@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.persistance.dao.impl;
+package com.excilys.formation.cdb.persistence.dao.impl;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistance.ConnectionManager;
-import com.excilys.formation.cdb.persistance.dao.CompanyDAO;
+import com.excilys.formation.cdb.persistence.ConnectionManager;
+import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 
 public enum CompanyDAOImpl implements CompanyDAO {
     INSTANCE;

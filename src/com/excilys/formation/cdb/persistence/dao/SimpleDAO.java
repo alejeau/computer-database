@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.persistance.dao;
+package com.excilys.formation.cdb.persistence.dao;
 
 public interface SimpleDAO {
 

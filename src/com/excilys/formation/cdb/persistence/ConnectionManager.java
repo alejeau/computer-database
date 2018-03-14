@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.persistance;
+package com.excilys.formation.cdb.persistence;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
