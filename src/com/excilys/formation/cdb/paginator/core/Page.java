@@ -13,10 +13,10 @@ public abstract class Page<T extends Model> {
     protected List<T> page = null;
     protected Integer pageNumber;
     protected OFFSET_VALUE offset;
-    protected static final Integer PAGE_START = 0;
+    protected static final Integer FIRST_PAGE = 0;
 
     protected Page() {
-        this.pageNumber = PAGE_START;
+        this.pageNumber = FIRST_PAGE;
         this.offset = OFFSET_VALUE.TEN;
     }
 
@@ -25,6 +25,7 @@ public abstract class Page<T extends Model> {
         this.offset = offset;
     }
 
+    protected abstract List<T> goToPage(Long pageNumber);
     protected abstract List<T> previous();
     protected abstract List<T> next();
     protected abstract List<T> first();
@@ -52,17 +53,25 @@ public abstract class Page<T extends Model> {
     }
 
     protected void checkPageNumber(Integer pageNumber) {
-        if (pageNumber >= PAGE_START)
+        if (pageNumber >= FIRST_PAGE)
             this.pageNumber = pageNumber;
         else
-            this.pageNumber = PAGE_START;
+            this.pageNumber = FIRST_PAGE;
+    }
+
+    protected void checkValidPageNumber(Long requestedPage, Long currentLastPageNumber) {
+        if (requestedPage >= FIRST_PAGE && requestedPage <= currentLastPageNumber)
+            this.pageNumber = requestedPage.intValue();
+        else
+            this.pageNumber = requestedPage < FIRST_PAGE ? FIRST_PAGE : currentLastPageNumber.intValue();
+
     }
 
     protected void checkPreviousPageNumber() {
-        if (this.pageNumber-1 >= PAGE_START)
+        if (this.pageNumber-1 >= FIRST_PAGE)
             this.pageNumber--;
         else
-            this.pageNumber = PAGE_START;
+            this.pageNumber = FIRST_PAGE;
     }
 
     protected void checkNextPageNumber(Long currentLastPageNumber) {

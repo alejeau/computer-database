@@ -17,6 +17,14 @@ public class ComputerPage extends Page<Computer> {
         super();
     }
 
+    protected List<Computer> goToPage(Long pageNumber) {
+        this.checkValidPageNumber(pageNumber, currentLastPageNumber());
+
+        Integer start = this.pageNumber * this.offset.getValue();
+        this.page = ComputerService.INSTANCE.getComputers(start, this.offset.getValue());
+        return this.page;
+    }
+
     protected List<Computer> previous() {
         this.checkPreviousPageNumber();
 
@@ -34,7 +42,7 @@ public class ComputerPage extends Page<Computer> {
     }
 
     protected List<Computer> first() {
-        this.page = ComputerService.INSTANCE.getComputers(PAGE_START, this.offset.getValue());
+        this.page = ComputerService.INSTANCE.getComputers(FIRST_PAGE, this.offset.getValue());
         return this.page;
     }
 

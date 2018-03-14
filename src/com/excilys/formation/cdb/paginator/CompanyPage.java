@@ -17,6 +17,14 @@ public class CompanyPage extends Page<Company> {
         super();
     }
 
+    protected List<Company> goToPage(Long pageNumber) {
+        this.checkValidPageNumber(pageNumber, currentLastPageNumber());
+
+        Integer start = this.pageNumber * this.offset.getValue();
+        this.page = CompanyService.INSTANCE.getCompanies(start, this.offset.getValue());
+        return this.page;
+    }
+
     protected List<Company> previous() {
         this.checkPreviousPageNumber();
 
@@ -34,7 +42,7 @@ public class CompanyPage extends Page<Company> {
     }
 
     protected List<Company> first() {
-        this.page = CompanyService.INSTANCE.getCompanies(PAGE_START, this.offset.getValue());
+        this.page = CompanyService.INSTANCE.getCompanies(FIRST_PAGE, this.offset.getValue());
         return this.page;
     }
 
