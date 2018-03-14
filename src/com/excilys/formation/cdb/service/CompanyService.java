@@ -5,7 +5,8 @@ import com.excilys.formation.cdb.persistance.dao.impl.CompanyDAOImpl;
 
 import java.util.List;
 
-public class CompanyService {
+public enum CompanyService {
+    INSTANCE;
 
     public Long getNumberOfCompanies() {
         return CompanyDAOImpl.INSTANCE.getNumberOfCompanies();

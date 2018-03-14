@@ -1,16 +1,19 @@
 package com.excilys.formation.cdb.ui;
 
+import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.Model;
-import com.excilys.formation.cdb.persistance.dao.impl.CompanyDAOImpl;
-import com.excilys.formation.cdb.persistance.dao.impl.ComputerDAOImpl;
+import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
-public class CLI {
+public enum CLI {
+    INSTANCE;
 
     private static final int CODE_COMPUTER = 0;
     private static final int CODE_COMPANY = 1;
@@ -60,7 +63,7 @@ public class CLI {
                 checkComputerByName();
                 break;
             case 5:
-                addComputer();
+                editComputer(new Computer());
                 break;
             case 6:
                 updateComputer();
@@ -76,10 +79,10 @@ public class CLI {
     private void viewList(int code, int pageNumber) {
         List<? extends Model> page = null;
         if (code == CODE_COMPUTER) {
-            page = ComputerDAOImpl.INSTANCE.getComputers(pageNumber, PAGE_OFFSET);
+            page = ComputerService.INSTANCE.getComputers(pageNumber, PAGE_OFFSET);
         }
         else if (code == CODE_COMPANY) {
-            page = CompanyDAOImpl.INSTANCE.getCompanies(pageNumber, PAGE_OFFSET);
+            page = CompanyService.INSTANCE.getCompanies(pageNumber, PAGE_OFFSET);
         }
 
         if (page != null)
@@ -95,7 +98,7 @@ public class CLI {
         id = sc.nextLong();
         sc.nextLine();
 
-        c = ComputerDAOImpl.INSTANCE.getComputer(id);
+        c = ComputerService.INSTANCE.getComputer(id);
 
         if (c != null)
             System.out.println(c);
@@ -111,7 +114,7 @@ public class CLI {
         name = sc.next();
         sc.nextLine();
 
-        l = ComputerDAOImpl.INSTANCE.getComputer(name, 0, PAGE_OFFSET);
+        l = ComputerService.INSTANCE.getComputer(name, 0, PAGE_OFFSET);
 
         if (l == null || l.size() == 0)
             System.out.println("No computer registered under the name: " + name);
@@ -119,40 +122,73 @@ public class CLI {
             l.forEach(e -> System.out.println(e.shortToString()));
     }
 
-    private void addComputer() {
+    private void editComputer(Computer c) {
         String name = null;
+        LocalDate introduced = null, discontinued = null;
+        Company company = null;
+
         System.out.println("Please enter the computer's name:");
         name = sc.next();
         sc.nextLine();
 
-        //TODO: Finish the method
+        introduced = getDate("introduction");
+        discontinued = getDate("discontinuation");
 
-    }
+        company = getCompany();
 
-    private LocalDate getDate() {
-        int day = -1, month = -1, year = -1;
-        while (day < 1 || day > 31) {
-            System.out.println("Please enter the day (1-31):");
-            day = sc.nextInt();
-            sc.nextLine();
+        c.setName(name);
+        c.setIntroduced(introduced);
+        c.setDiscontinued(discontinued);
+        c.setCompany(company);
+
+        try {
+            if (c.getId() == null)
+                ComputerService.INSTANCE.persistComputer(c);
+            else
+                ComputerService.INSTANCE.updateComputer(c);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
         }
-
-        while (month < 1 || month > 12) {
-            System.out.println("Please enter the month (1-12):");
-            month = sc.nextInt();
-            sc.nextLine();
-        }
-
-        while (year < -9999 || year > 9999) {
-            System.out.println("Please enter the year (XXXX):");
-            year = sc.nextInt();
-            sc.nextLine();
-        }
-        return LocalDate.of(year, month, day);
     }
 
     private void updateComputer() {
-        //TODO: Finish the method
+        System.out.println("Which computer would you like to update (ID)?");
+        Long id = sc.nextLong();
+        sc.nextLine();
+        Computer c = ComputerService.INSTANCE.getComputer(id);
+        editComputer(c);
+    }
+
+    private LocalDate getDate(String event) {
+        LocalDate date = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        boolean ok = false;
+
+        while (!ok) {
+            System.out.println("Please enter the computer's " + event + " date (yyyy-MM-dd or 'Enter'):");
+            String d1 = sc.next();
+            sc.nextLine();
+            if (d1.matches("\\d{4}-\\d{2}-\\d{2}") || d1.equals("")) {
+                if (!d1.equals(""))
+                    date = LocalDate.parse(d1, formatter);
+                ok = true;
+            }
+        }
+
+        return date;
+    }
+
+    private Company getCompany() {
+        Company c = null;
+
+        while (c == null) {
+            System.out.println("Please enter the computer's manufacturer ID:");
+            Long companyId = sc.nextLong();
+            sc.nextLine();
+            c = CompanyService.INSTANCE.getCompany(companyId);
+        }
+
+        return c;
     }
 
     private void deleteComputer() {
@@ -162,42 +198,14 @@ public class CLI {
         id = sc.nextLong();
         sc.nextLine();
 
-        Computer c = ComputerDAOImpl.INSTANCE.getComputer(id);
+        Computer c = ComputerService.INSTANCE.getComputer(id);
         if (c != null)
-            ComputerDAOImpl.INSTANCE.deleteComputer(id);
+            ComputerService.INSTANCE.deleteComputer(id);
         else
             System.out.println("There is no computer with the ID: " + id);
     }
 
 	public static void main(String[] args) {
-//		ComputerDAOImpl crdi = new ComputerDAOImpl();
-//		CompanyDAOImpl cydi = new CompanyDAOImpl();
-//
-//		Computer c1 = crdi.getComputer(1l);
-//        Company apple = cydi.getCompany(1l);
-//
-//        System.out.println(c1);
-//
-//        LocalDate introduced = LocalDate.of(2000, 01, 01);
-//		LocalDate discontinued = LocalDate.now();
-//		Computer c2 = new Computer.Builder()
-//				.name("Testouille1")
-//				.introduced(introduced)
-//				.discontinued(discontinued)
-//				.company(apple.getId())
-//                .build();
-//        System.out.println("c2: " + c2);
-//
-//		Long c2Id = crdi.persistComputer(c2);
-//        System.out.println("c2Id: " + c2Id);
-//
-//        Computer c2Bis = crdi.getComputer(c2Id);
-//        System.out.println("c2Bis:\n" + c2Bis);
-//
-//        crdi.deleteComputer(c2Id);
-//        Computer c2Ter = crdi.getComputer(c2Id);
-//        System.out.println(c2Ter);
-        CLI cli = new CLI();
-        cli.mainLoop();
+        CLI.INSTANCE.mainLoop();
 	}
 }
