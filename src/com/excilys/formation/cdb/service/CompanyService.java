@@ -16,10 +16,10 @@ public class CompanyService {
     }
 
     public List<Company> getCompany(String name, int index, int offset) {
-        CompanyDAOImpl.INSTANCE.getCompany(name, index, offset);
+        return CompanyDAOImpl.INSTANCE.getCompany(name, index, offset);
     }
 
     public List<Company> getCompanies(int index, int offset) {
-        CompanyDAOImpl.INSTANCE.getCompanies(index, offset);
+        return CompanyDAOImpl.INSTANCE.getCompanies(index, offset);
     }
 }
