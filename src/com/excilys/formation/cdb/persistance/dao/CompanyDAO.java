@@ -10,6 +10,6 @@ public interface CompanyDAO {
 	
 	public abstract Company getCompany(Long id);
 	public abstract List<Company> getCompany(String name, int index, int offset);
-	public abstract List<Company> getCompanies(int index, int stop);
+	public abstract List<Company> getCompanies(int index, int offset);
 
 }

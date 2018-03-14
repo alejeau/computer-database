@@ -12,12 +12,9 @@ import java.util.List;
 public enum ComputerService {
     INSTANCE;
 
-//    ComputerDAOImpl
-
     private ComputerService() {
 
     }
-
 
     public Long getNumberOfComputers() {
         return ComputerDAOImpl.INSTANCE.getNumberOfComputers();

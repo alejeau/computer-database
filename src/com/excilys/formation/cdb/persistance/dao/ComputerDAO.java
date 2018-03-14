@@ -10,7 +10,7 @@ public interface ComputerDAO {
 
     public abstract Computer getComputer(Long id);
     public abstract List<Computer> getComputer(String name, int index, int offset);
-    public abstract List<Computer> getComputers(int index, int stop);
+    public abstract List<Computer> getComputers(int index, int offset);
 
     public abstract void updateComputer(Computer c);
     public abstract Long persistComputer(Computer c);
