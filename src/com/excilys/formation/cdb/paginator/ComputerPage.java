@@ -40,6 +40,7 @@ public class ComputerPage extends Page<Computer> {
         this.checkNextPageNumber(this.currentLastPageNumber());
 
         Integer start = this.pageNumber * this.offset.getValue();
+        System.out.println("this.pageNumber: " + this.pageNumber + ", this.offset.getValue(): " + this.offset.getValue() + ", start: " + start);
         this.page = ComputerService.INSTANCE.getComputers(start, this.offset.getValue());
         return this.page;
     }
@@ -53,6 +54,7 @@ public class ComputerPage extends Page<Computer> {
 
     @Override
     public List<Computer> last() {
+        this.pageNumber = currentLastPageNumber().intValue();
         Integer start = this.pageNumber * this.offset.getValue();
         this.page = ComputerService.INSTANCE.getComputers(start, this.offset.getValue());
         return this.page;
@@ -61,6 +63,6 @@ public class ComputerPage extends Page<Computer> {
     @Override
     public Long currentLastPageNumber() {
         Long numberOfComputer = ComputerService.INSTANCE.getNumberOfComputers();
-        return numberOfComputer / this.offset.getValue() + 1;
+        return numberOfComputer / this.offset.getValue();
     }
 }

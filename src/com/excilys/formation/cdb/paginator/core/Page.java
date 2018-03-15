@@ -69,14 +69,11 @@ public abstract class Page<T extends Model> {
     protected void checkPreviousPageNumber() {
         if (this.pageNumber-1 >= FIRST_PAGE)
             this.pageNumber--;
-        else
-            this.pageNumber = FIRST_PAGE;
     }
 
     protected void checkNextPageNumber(Long currentLastPageNumber) {
+        System.out.println("currentLastPageNumber: " + currentLastPageNumber);
         if (this.pageNumber+1 <= currentLastPageNumber)
             this.pageNumber++;
-        else
-            this.pageNumber = currentLastPageNumber.intValue();
     }
 }

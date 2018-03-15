@@ -17,6 +17,7 @@ public class CompanyPage extends Page<Company> {
         super();
     }
 
+    @Override
     public List<Company> goToPage(Long pageNumber) {
         this.checkValidPageNumber(pageNumber, currentLastPageNumber());
 
@@ -25,6 +26,7 @@ public class CompanyPage extends Page<Company> {
         return this.page;
     }
 
+    @Override
     public List<Company> previous() {
         this.checkPreviousPageNumber();
 
@@ -33,6 +35,7 @@ public class CompanyPage extends Page<Company> {
         return this.page;
     }
 
+    @Override
     public List<Company> next() {
         this.checkNextPageNumber(this.currentLastPageNumber());
 
@@ -41,20 +44,23 @@ public class CompanyPage extends Page<Company> {
         return this.page;
     }
 
+    @Override
     public List<Company> first() {
         this.page = CompanyService.INSTANCE.getCompanies(FIRST_PAGE, this.offset.getValue());
         return this.page;
     }
 
+    @Override
     public List<Company> last() {
-
+        this.pageNumber = currentLastPageNumber().intValue();
         Integer start = this.pageNumber * this.offset.getValue();
         this.page = CompanyService.INSTANCE.getCompanies(start, this.offset.getValue());
         return this.page;
     }
 
+    @Override
     public Long currentLastPageNumber() {
         Long numberOfCompany = CompanyService.INSTANCE.getNumberOfCompanies();
-        return numberOfCompany / this.offset.getValue() + 1;
+        return numberOfCompany / this.offset.getValue();
     }
 }

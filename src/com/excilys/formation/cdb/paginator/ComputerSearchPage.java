@@ -20,6 +20,7 @@ public class ComputerSearchPage extends ComputerPage {
         this.search = search;
     }
 
+    @Override
     public List<Computer> goToPage(Long pageNumber) {
         this.checkValidPageNumber(pageNumber, currentLastPageNumber());
 
@@ -28,6 +29,7 @@ public class ComputerSearchPage extends ComputerPage {
         return this.page;
     }
 
+    @Override
     public List<Computer> previous() {
         this.checkPreviousPageNumber();
 
@@ -36,28 +38,33 @@ public class ComputerSearchPage extends ComputerPage {
         return this.page;
     }
 
+    @Override
     public List<Computer> next() {
         this.checkNextPageNumber(this.currentLastPageNumber());
 
         Integer start = this.pageNumber * this.offset.getValue();
+        System.out.println("this.pageNumber: " + this.pageNumber + ", this.offset.getValue(): " + this.offset.getValue() + ", start: " + start);
         this.page = ComputerService.INSTANCE.getComputer(search, start, this.offset.getValue());
         return this.page;
     }
 
+    @Override
     public List<Computer> first() {
         this.page = ComputerService.INSTANCE.getComputer(search, FIRST_PAGE, this.offset.getValue());
         return this.page;
     }
 
+    @Override
     public List<Computer> last() {
-
+        this.pageNumber = currentLastPageNumber().intValue();
         Integer start = this.pageNumber * this.offset.getValue();
         this.page = ComputerService.INSTANCE.getComputer(search, start, this.offset.getValue());
         return this.page;
     }
 
+    @Override
     public Long currentLastPageNumber() {
         Long numberOfComputer = ComputerService.INSTANCE.getNumberOfCompaniesWithName(this.search);
-        return numberOfComputer / this.offset.getValue() + 1;
+        return numberOfComputer / this.offset.getValue();
     }
 }
