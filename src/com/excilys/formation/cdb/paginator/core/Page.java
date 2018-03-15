@@ -25,12 +25,8 @@ public abstract class Page<T extends Model> {
         this.limit = limit;
     }
 
-    protected abstract List<T> goToPage(Long pageNumber);
-    protected abstract List<T> previous();
-    protected abstract List<T> next();
-    protected abstract List<T> first();
-    protected abstract List<T> last();
     protected abstract Long currentLastPageNumber();
+    protected abstract void refresh(Integer offset);
 
     public List<T> getPage() {
         return page;
@@ -50,6 +46,39 @@ public abstract class Page<T extends Model> {
 
     public void setLimit(LIMIT_VALUE limit) {
         this.limit = limit;
+    }
+
+    public List<T> goToPage(Long pageNumber) {
+        this.checkValidPageNumber(pageNumber, currentLastPageNumber());
+        Integer start = this.pageNumber * this.limit.getValue();
+        this.refresh(start);
+        return this.page;
+    }
+
+    public List<T> previous() {
+        this.checkPreviousPageNumber();
+        Integer offset = this.pageNumber * this.limit.getValue();
+        this.refresh(offset);
+        return this.page;
+    }
+
+    public List<T> next() {
+        this.checkNextPageNumber(this.currentLastPageNumber());
+        Integer offset = this.pageNumber * this.limit.getValue();
+        this.refresh(offset);
+        return this.page;
+    }
+
+    public List<T> first() {
+        this.refresh(FIRST_PAGE);
+        return this.page;
+    }
+
+    public List<T> last() {
+        this.pageNumber = currentLastPageNumber().intValue();
+        Integer offset = this.pageNumber * this.limit.getValue();
+        this.refresh(offset);
+        return this.page;
     }
 
     protected void checkPageNumber(Integer pageNumber) {

@@ -21,49 +21,13 @@ public class CompanySearchPage extends CompanyPage {
     }
 
     @Override
-    public List<Company> goToPage(Long pageNumber) {
-        this.checkValidPageNumber(pageNumber, currentLastPageNumber());
-
-        Integer start = this.pageNumber * this.limit.getValue();
-        this.page = CompanyService.INSTANCE.getCompany(search, start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
-    public List<Company> previous() {
-        this.checkPreviousPageNumber();
-
-        Integer start = this.pageNumber * this.limit.getValue();
-        this.page = CompanyService.INSTANCE.getCompany(search, start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
-    public List<Company> next() {
-        this.checkNextPageNumber(this.currentLastPageNumber());
-
-        Integer start = this.pageNumber * this.limit.getValue();
-        this.page = CompanyService.INSTANCE.getCompany(search, start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
-    public List<Company> first() {
-        this.page = CompanyService.INSTANCE.getCompany(search, FIRST_PAGE, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
-    public List<Company> last() {
-        this.pageNumber = currentLastPageNumber().intValue();
-        Integer start = this.pageNumber * this.limit.getValue();
-        this.page = CompanyService.INSTANCE.getCompany(search, start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
     public Long currentLastPageNumber() {
         Long numberOfComputer = CompanyService.INSTANCE.getNumberOfCompaniesWithName(this.search);
         return numberOfComputer / this.limit.getValue();
+    }
+
+    @Override
+    protected void refresh(Integer offset){
+        this.page = CompanyService.INSTANCE.getCompany(search, offset, this.limit.getValue());
     }
 }

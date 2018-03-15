@@ -18,51 +18,13 @@ public class ComputerPage extends Page<Computer> {
     }
 
     @Override
-    public List<Computer> goToPage(Long pageNumber) {
-        this.checkValidPageNumber(pageNumber, currentLastPageNumber());
-
-        Integer start = this.pageNumber * this.limit.getValue();
-        this.page = ComputerService.INSTANCE.getComputers(start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
-    public List<Computer> previous() {
-        this.checkPreviousPageNumber();
-
-        Integer start = this.pageNumber * this.limit.getValue();
-        this.page = ComputerService.INSTANCE.getComputers(start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
-    public List<Computer> next() {
-        this.checkNextPageNumber(this.currentLastPageNumber());
-
-        Integer start = this.pageNumber * this.limit.getValue();
-        System.out.println("this.pageNumber: " + this.pageNumber + ", this.limit.getValue(): " + this.limit.getValue() + ", start: " + start);
-        this.page = ComputerService.INSTANCE.getComputers(start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
-    public List<Computer> first() {
-        this.page = ComputerService.INSTANCE.getComputers(FIRST_PAGE, this.limit.getValue());
-
-        return this.page;
-    }
-
-    @Override
-    public List<Computer> last() {
-        this.pageNumber = currentLastPageNumber().intValue();
-        Integer start = this.pageNumber * this.limit.getValue();
-        this.page = ComputerService.INSTANCE.getComputers(start, this.limit.getValue());
-        return this.page;
-    }
-
-    @Override
     public Long currentLastPageNumber() {
         Long numberOfComputer = ComputerService.INSTANCE.getNumberOfComputers();
         return numberOfComputer / this.limit.getValue();
+    }
+
+    @Override
+    protected void refresh(Integer offset){
+        this.page = ComputerService.INSTANCE.getComputers(offset, this.limit.getValue());
     }
 }
