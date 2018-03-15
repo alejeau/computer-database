@@ -39,14 +39,14 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     public Long countElementsWithName(String query, String name) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long l = null;
 
         try {
-            prep_stmt = conn.prepareStatement(query);
-            prep_stmt.setString(1, "%" + name + "%");
-            rs = prep_stmt.executeQuery();
+            prepStmt = conn.prepareStatement(query);
+            prepStmt.setString(1, "%" + name + "%");
+            rs = prepStmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
                     l = rs.getLong(1);
@@ -55,7 +55,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return l;

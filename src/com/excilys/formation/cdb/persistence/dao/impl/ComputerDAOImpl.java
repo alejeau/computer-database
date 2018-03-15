@@ -39,20 +39,20 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public Computer getComputer(Long id) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Computer c = null;
 
         try {
-            prep_stmt = conn.prepareStatement(SELECT_COMPUTER_BY_ID);
-            prep_stmt.setLong(1, id);
-            rs = prep_stmt.executeQuery();
+            prepStmt = conn.prepareStatement(SELECT_COMPUTER_BY_ID);
+            prepStmt.setLong(1, id);
+            rs = prepStmt.executeQuery();
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             c = ComputerMapper.map(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return c;
@@ -60,21 +60,21 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public List<Computer> getComputer(String name, int index, int limit) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers = new ArrayList<>();
 
         try {
-            prep_stmt = conn.prepareStatement(SELECT_COMPUTER_BY_NAME);
-            prep_stmt.setString(1, "%" + name + "%");
-            prep_stmt.setLong(2, index);
-            prep_stmt.setLong(3, limit);
-            rs = prep_stmt.executeQuery();
+            prepStmt = conn.prepareStatement(SELECT_COMPUTER_BY_NAME);
+            prepStmt.setString(1, "%" + name + "%");
+            prepStmt.setLong(2, index);
+            prepStmt.setLong(3, limit);
+            rs = prepStmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return computers;
@@ -82,20 +82,20 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public List<Computer> getComputers(int index, int limit) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers = new ArrayList<>();
 
         try {
-            prep_stmt = conn.prepareStatement(SELECT_ALL_COMPUTERS);
-            prep_stmt.setLong(1, index);
-            prep_stmt.setLong(2, limit);
-            rs = prep_stmt.executeQuery();
+            prepStmt = conn.prepareStatement(SELECT_ALL_COMPUTERS);
+            prepStmt.setLong(1, index);
+            prepStmt.setLong(2, limit);
+            rs = prepStmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return computers;
@@ -103,32 +103,32 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public Long persistComputer(Computer c) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long createdId = null;
 
         try {
-            prep_stmt = conn.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
-            prep_stmt.setString(1, c.getName());
+            prepStmt = conn.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
+            prepStmt.setString(1, c.getName());
             if (c.getIntroduced() != null)
-                prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
+                prepStmt.setDate(2, Date.valueOf(c.getIntroduced()));
             else
-                prep_stmt.setNull(2, Types.DATE);
+                prepStmt.setNull(2, Types.DATE);
             if (c.getDiscontinued() !=  null)
-                prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+                prepStmt.setDate(3, Date.valueOf(c.getDiscontinued()));
             else
-                prep_stmt.setNull(3, Types.DATE);
-            prep_stmt.setLong(4, c.getCompany().getId());
-            prep_stmt.executeUpdate();
+                prepStmt.setNull(3, Types.DATE);
+            prepStmt.setLong(4, c.getCompany().getId());
+            prepStmt.executeUpdate();
 
-            rs = prep_stmt.getGeneratedKeys();
+            rs = prepStmt.getGeneratedKeys();
             if(rs.next()) {
                 createdId = rs.getLong(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return createdId;
@@ -136,41 +136,41 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public void updateComputer(Computer c) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
 
         try {
-            prep_stmt = conn.prepareStatement(UPDATE_COMPUTER);
-            prep_stmt.setString(1, c.getName());
+            prepStmt = conn.prepareStatement(UPDATE_COMPUTER);
+            prepStmt.setString(1, c.getName());
             if (c.getIntroduced() != null)
-                prep_stmt.setDate(2, Date.valueOf(c.getIntroduced()));
+                prepStmt.setDate(2, Date.valueOf(c.getIntroduced()));
             else
-                prep_stmt.setNull(2, Types.DATE);
+                prepStmt.setNull(2, Types.DATE);
             if (c.getDiscontinued() !=  null)
-                prep_stmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+                prepStmt.setDate(3, Date.valueOf(c.getDiscontinued()));
             else
-                prep_stmt.setNull(3, Types.DATE);
-            prep_stmt.setLong(4, c.getCompany().getId());
-            prep_stmt.setLong(5, c.getId());
-            prep_stmt.executeUpdate();
+                prepStmt.setNull(3, Types.DATE);
+            prepStmt.setLong(4, c.getCompany().getId());
+            prepStmt.setLong(5, c.getId());
+            prepStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, null);
+            ConnectionManager.closeElements(conn, prepStmt, null);
         }
     }
 
     public void deleteComputer(Long id) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
 
         try {
-            prep_stmt = conn.prepareStatement(DELETE_COMPUTER);
-            prep_stmt.setLong(1, id);
-            prep_stmt.executeUpdate();
+            prepStmt = conn.prepareStatement(DELETE_COMPUTER);
+            prepStmt.setLong(1, id);
+            prepStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, null);
+            ConnectionManager.closeElements(conn, prepStmt, null);
         }
     }
 }

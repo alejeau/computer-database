@@ -39,19 +39,19 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	@Override
 	public Company getCompany(Long id) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Company c = null;
 
         try {
-            prep_stmt = conn.prepareStatement(COMPANY_BY_ID);
-            prep_stmt.setLong(1, id);
-            rs = prep_stmt.executeQuery();
+            prepStmt = conn.prepareStatement(COMPANY_BY_ID);
+            prepStmt.setLong(1, id);
+            rs = prepStmt.executeQuery();
             c = CompanyMapper.map(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return c;
@@ -60,21 +60,21 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	@Override
 	public List<Company> getCompany(String name, int index, int limit) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies = new ArrayList<>();
 
         try {
-            prep_stmt = conn.prepareStatement(COMPANY_BY_NAME);
-            prep_stmt.setString(1, "%" + name + "%");
-            prep_stmt.setInt(2, index);
-            prep_stmt.setInt(3, limit);
-            rs = prep_stmt.executeQuery();
+            prepStmt = conn.prepareStatement(COMPANY_BY_NAME);
+            prepStmt.setString(1, "%" + name + "%");
+            prepStmt.setInt(2, index);
+            prepStmt.setInt(3, limit);
+            rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return companies;
@@ -83,20 +83,20 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	@Override
 	public List<Company> getCompanies(int index, int limit) {
         Connection conn = connectionManager.getConnection();
-        PreparedStatement prep_stmt = null;
+        PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies = new ArrayList<>();
 
         try {
-            prep_stmt = conn.prepareStatement(ALL_COMPANIES);
-            prep_stmt.setInt(1, index);
-            prep_stmt.setInt(2, limit);
-            rs = prep_stmt.executeQuery();
+            prepStmt = conn.prepareStatement(ALL_COMPANIES);
+            prepStmt.setInt(1, index);
+            prepStmt.setInt(2, limit);
+            rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prep_stmt, rs);
+            ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
         return companies;

@@ -19,7 +19,7 @@ public class ComputerSearchPage extends ComputerPage {
 
     @Override
     public Long currentLastPageNumber() {
-        Long numberOfComputer = ComputerService.INSTANCE.getNumberOfCompaniesWithName(this.search);
+        Long numberOfComputer = ComputerService.INSTANCE.getNumberOfComputersWithName(this.search);
         return numberOfComputer / this.limit.getValue();
     }
 
