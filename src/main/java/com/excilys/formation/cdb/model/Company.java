@@ -31,28 +31,6 @@ public class Company implements Model {
 		this.name = name;
 	}
 
-	public static class Builder {
-		private Long nestedId = null;
-		private String nestedName = null;
-
-		public Builder() {
-		}
-
-		public Company.Builder id(final Long id) {
-			this.nestedId = id;
-			return this;
-		}
-
-		public Company.Builder name(final String name) {
-			this.nestedName = name;
-			return this;
-		}
-
-		public Company build() {
-			return new Company(nestedId, nestedName);
-		}
-	}
-
 	@Override
     public String shortToString() {
 	    return this.toString();
@@ -76,5 +54,27 @@ public class Company implements Model {
 	public int hashCode() {
 
 		return Objects.hash(id);
+	}
+
+	public static class Builder {
+		private Long nestedId = null;
+		private String nestedName = null;
+
+		public Builder() {
+		}
+
+		public Company.Builder id(final Long id) {
+			this.nestedId = id;
+			return this;
+		}
+
+		public Company.Builder name(final String name) {
+			this.nestedName = name;
+			return this;
+		}
+
+		public Company build() {
+			return new Company(nestedId, nestedName);
+		}
 	}
 }
