@@ -7,6 +7,7 @@ import com.excilys.formation.cdb.paginator.CompanyPage;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
+import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 
@@ -19,6 +20,7 @@ public enum CLI {
     INSTANCE;
 
     private static final LIMIT_VALUE NUMBER_OF_ELEMENTS_PER_PAGE = LIMIT_VALUE.TEN;
+    private static Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
 
     private Scanner sc = new Scanner(System.in);
 
@@ -58,10 +60,12 @@ public enum CLI {
     private void executeChoice(int choice) {
         switch (choice) {
             case 1:
-                viewComputerPage(ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE));
+                ComputerPage computerPage = ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
+                viewPage(computerPage, displayShortToString);
                 break;
             case 2:
-                viewCompanyPage(CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE));
+                CompanyPage companyPage = CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+                viewPage(companyPage, System.out::println);
                 break;
             case 3:
                 checkComputerById();
@@ -83,53 +87,27 @@ public enum CLI {
         }
     }
 
-    private <T extends ComputerPage> void viewComputerPage(T page) {
+    private <T extends Page> void viewPage(T page, Consumer printer) {
         boolean exit = false;
         String choice = null;
-        Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
 
         while (!exit) {
-            System.out.println("Which page would you like to view?");
+            System.out.println("Which page would you like to view (current page: " + page.getPageNumber() + ")?");
             System.out.println("n for next, p for previous, f for first, l for last and q to quit");
             choice = sc.nextLine();
 
             if (choice.isEmpty() || choice.equals("f"))
-                page.first().forEach(displayShortToString);
+                page.first().forEach(printer);
             else if (choice.equals("q"))
                 exit = true;
             else if (choice.equals("p"))
-                page.previous().forEach(displayShortToString);
+                page.previous().forEach(printer);
             else if (choice.equals("n"))
-                page.next().forEach(displayShortToString);
+                page.next().forEach(printer);
             else if (choice.equals("l"))
-                page.last().forEach(displayShortToString);
+                page.last().forEach(printer);
             else if (choice.matches("[0-9]+"))
-                page.goToPage(Long.decode(choice)).forEach(displayShortToString);
-            System.out.println();
-        }
-    }
-
-    private void viewCompanyPage(CompanyPage companyPage) {
-        boolean exit = false;
-        String choice = null;
-
-        while (!exit) {
-            System.out.println("Which page would you like to view?");
-            System.out.println("[0-9], n for next, p for previous, f for first, l for last and q to quit");
-            choice = sc.nextLine();
-
-            if (choice.isEmpty() || choice.equals("f"))
-                companyPage.first().forEach(System.out::println);
-            else if (choice.equals("q"))
-                exit = true;
-            else if (choice.equals("p"))
-                companyPage.previous().forEach(System.out::println);
-            else if (choice.equals("n"))
-                companyPage.next().forEach(System.out::println);
-            else if (choice.equals("l"))
-                companyPage.last().forEach(System.out::println);
-            else if (choice.matches("[0-9]+"))
-                companyPage.goToPage(Long.decode(choice)).forEach(System.out::println);
+                page.goToPage(Long.decode(choice)).forEach(printer);
             System.out.println();
         }
     }
@@ -158,7 +136,7 @@ public enum CLI {
         sc.nextLine();
 
         ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
-        viewComputerPage(computerSearchPage);
+        viewPage(computerSearchPage, displayShortToString);
     }
 
     private void editComputer(Computer c) {
