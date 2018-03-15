@@ -58,7 +58,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	}
 
 	@Override
-	public List<Company> getCompany(String name, int index, int offset) {
+	public List<Company> getCompany(String name, int index, int limit) {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prep_stmt = null;
         ResultSet rs = null;
@@ -68,7 +68,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prep_stmt = conn.prepareStatement(COMPANY_BY_NAME);
             prep_stmt.setString(1, "%" + name + "%");
             prep_stmt.setInt(2, index);
-            prep_stmt.setInt(3, offset);
+            prep_stmt.setInt(3, limit);
             rs = prep_stmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
@@ -81,7 +81,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 	}
 
 	@Override
-	public List<Company> getCompanies(int index, int offset) {
+	public List<Company> getCompanies(int index, int limit) {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prep_stmt = null;
         ResultSet rs = null;
@@ -90,7 +90,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
         try {
             prep_stmt = conn.prepareStatement(ALL_COMPANIES);
             prep_stmt.setInt(1, index);
-            prep_stmt.setInt(2, offset);
+            prep_stmt.setInt(2, limit);
             rs = prep_stmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {

@@ -1,13 +1,13 @@
 package com.excilys.formation.cdb.paginator.core;
 
-public enum OFFSET_VALUE {
+public enum LIMIT_VALUE {
     TEN(10),
     TWENTY(20),
     ONE_HUNDRED(100);
 
     private final int value;
 
-    OFFSET_VALUE(final int newValue) {
+    LIMIT_VALUE(final int newValue) {
         value = newValue;
     }
 

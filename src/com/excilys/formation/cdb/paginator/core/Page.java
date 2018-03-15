@@ -12,17 +12,17 @@ import java.util.List;
 public abstract class Page<T extends Model> {
     protected List<T> page = null;
     protected Integer pageNumber;
-    protected OFFSET_VALUE offset;
+    protected LIMIT_VALUE limit;
     protected static final Integer FIRST_PAGE = 0;
 
     protected Page() {
         this.pageNumber = FIRST_PAGE;
-        this.offset = OFFSET_VALUE.TEN;
+        this.limit = LIMIT_VALUE.TEN;
     }
 
-    protected Page(OFFSET_VALUE offset) {
+    protected Page(LIMIT_VALUE limit) {
         this.pageNumber = FIRST_PAGE;
-        this.offset = offset;
+        this.limit = limit;
     }
 
     protected abstract List<T> goToPage(Long pageNumber);
@@ -44,12 +44,12 @@ public abstract class Page<T extends Model> {
         this.checkPageNumber(pageNumber);
     }
 
-    public OFFSET_VALUE getOffset() {
-        return offset;
+    public LIMIT_VALUE getLimit() {
+        return limit;
     }
 
-    public void setOffset(OFFSET_VALUE offset) {
-        this.offset = offset;
+    public void setLimit(LIMIT_VALUE limit) {
+        this.limit = limit;
     }
 
     protected void checkPageNumber(Integer pageNumber) {

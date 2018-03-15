@@ -6,7 +6,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.CompanyPage;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
-import com.excilys.formation.cdb.paginator.core.OFFSET_VALUE;
+import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public enum CLI {
     INSTANCE;
 
-    private static final OFFSET_VALUE NUMBER_OF_ELEMENTS_PER_PAGE = OFFSET_VALUE.TEN;
+    private static final LIMIT_VALUE NUMBER_OF_ELEMENTS_PER_PAGE = LIMIT_VALUE.TEN;
 
     private Scanner sc = new Scanner(System.in);
 

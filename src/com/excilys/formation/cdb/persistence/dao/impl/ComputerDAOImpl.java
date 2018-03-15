@@ -58,7 +58,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return c;
     }
 
-    public List<Computer> getComputer(String name, int index, int offset) {
+    public List<Computer> getComputer(String name, int index, int limit) {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prep_stmt = null;
         ResultSet rs = null;
@@ -68,7 +68,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prep_stmt = conn.prepareStatement(SELECT_COMPUTER_BY_NAME);
             prep_stmt.setString(1, "%" + name + "%");
             prep_stmt.setLong(2, index);
-            prep_stmt.setLong(3, offset);
+            prep_stmt.setLong(3, limit);
             rs = prep_stmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return computers;
     }
 
-    public List<Computer> getComputers(int index, int offset) {
+    public List<Computer> getComputers(int index, int limit) {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prep_stmt = null;
         ResultSet rs = null;
@@ -89,7 +89,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         try {
             prep_stmt = conn.prepareStatement(SELECT_ALL_COMPUTERS);
             prep_stmt.setLong(1, index);
-            prep_stmt.setLong(2, offset);
+            prep_stmt.setLong(2, limit);
             rs = prep_stmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
