@@ -1,5 +1,7 @@
 package com.excilys.formation.cdb.model;
 
+import java.util.Objects;
+
 public class Company implements Model {
 	private Long id;
 	private String name;
@@ -61,6 +63,18 @@ public class Company implements Model {
 		return new StringBuilder("ID: ").append(this.id)
                 .append(", name: ").append(this.name).toString();
 	}
-	
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Company company = (Company) o;
+		return Objects.equals(id, company.id);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id);
+	}
 }
