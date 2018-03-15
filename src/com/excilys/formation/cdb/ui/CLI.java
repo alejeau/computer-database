@@ -15,17 +15,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-public class CLI {
+public enum CLI {
+    INSTANCE;
 
     private static final OFFSET_VALUE NUMBER_OF_ELEMENTS_PER_PAGE = OFFSET_VALUE.TEN;
 
     private Scanner sc = new Scanner(System.in);
 
-    private ComputerPage computerPage = ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
-    private CompanyPage companyPage = CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
-    private ComputerSearchPage computerSearchPage = null;
-
-    public CLI() {
+    private CLI() {
 
     }
 
@@ -53,6 +50,7 @@ public class CLI {
         do {
             code = mainMenu();
             executeChoice(code);
+            System.out.println();
         }
         while (code != 8);
     }
@@ -60,10 +58,10 @@ public class CLI {
     private void executeChoice(int choice) {
         switch (choice) {
             case 1:
-                viewComputerPage();
+                viewComputerPage(ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE));
                 break;
             case 2:
-                viewCompanyPage();
+                viewCompanyPage(CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE));
                 break;
             case 3:
                 checkComputerById();
@@ -85,51 +83,54 @@ public class CLI {
         }
     }
 
-    private void viewComputerPage() {
+    private <T extends ComputerPage> void viewComputerPage(T page) {
         boolean exit = false;
         String choice = null;
         Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
+
         while (!exit) {
             System.out.println("Which page would you like to view?");
-            System.out.println("[0-9], n for next, p for previous, f for first, l for last and q to quit");
-            choice = sc.next();
-            if (!sc.hasNextLine() || choice.equals("f"))
-                this.computerPage.first().forEach(displayShortToString);
+            System.out.println("n for next, p for previous, f for first, l for last and q to quit");
+            choice = sc.nextLine();
+
+            if (choice.isEmpty() || choice.equals("f"))
+                page.first().forEach(displayShortToString);
             else if (choice.equals("q"))
                 exit = true;
             else if (choice.equals("p"))
-                this.computerPage.previous().forEach(displayShortToString);
+                page.previous().forEach(displayShortToString);
             else if (choice.equals("n"))
-                this.computerPage.next().forEach(displayShortToString);
+                page.next().forEach(displayShortToString);
             else if (choice.equals("l"))
-                this.computerPage.last().forEach(displayShortToString);
+                page.last().forEach(displayShortToString);
             else if (choice.matches("[0-9]+"))
-                this.computerPage.goToPage(Long.decode(choice)).forEach(displayShortToString);
-            sc.nextLine();
+                page.goToPage(Long.decode(choice)).forEach(displayShortToString);
+            System.out.println();
         }
     }
 
-    private void viewCompanyPage() {
+    private void viewCompanyPage(CompanyPage companyPage) {
         boolean exit = false;
         String choice = null;
+
         while (!exit) {
             System.out.println("Which page would you like to view?");
             System.out.println("[0-9], n for next, p for previous, f for first, l for last and q to quit");
-            choice = sc.next();
+            choice = sc.nextLine();
 
-            if (!sc.hasNextLine() || choice.equals("f"))
-                this.companyPage.first().forEach(System.out::println);
+            if (choice.isEmpty() || choice.equals("f"))
+                companyPage.first().forEach(System.out::println);
             else if (choice.equals("q"))
                 exit = true;
             else if (choice.equals("p"))
-                this.companyPage.previous().forEach(System.out::println);
+                companyPage.previous().forEach(System.out::println);
             else if (choice.equals("n"))
-                this.companyPage.next().forEach(System.out::println);
+                companyPage.next().forEach(System.out::println);
             else if (choice.equals("l"))
-                this.companyPage.last().forEach(System.out::println);
+                companyPage.last().forEach(System.out::println);
             else if (choice.matches("[0-9]+"))
-                this.companyPage.goToPage(Long.decode(choice)).forEach(System.out::println);
-            sc.nextLine();
+                companyPage.goToPage(Long.decode(choice)).forEach(System.out::println);
+            System.out.println();
         }
     }
 
@@ -156,32 +157,8 @@ public class CLI {
         name = sc.next();
         sc.nextLine();
 
-        computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
-
-        boolean exit = false;
-        String choice = null;
-        Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
-        while (!exit) {
-            System.out.println("Which page would you like to view?");
-            System.out.println("n for next, p for previous, f for first, la for last and q to quit");
-            choice = sc.next();
-
-            if (!sc.hasNextLine() || choice.equals("f"))
-                this.computerSearchPage.first().forEach(displayShortToString);
-            else if (choice.equals("q"))
-                exit = true;
-            else if (choice.equals("p"))
-                this.computerSearchPage.previous().forEach(displayShortToString);
-            else if (choice.equals("n"))
-                this.computerSearchPage.next().forEach(displayShortToString);
-            else if (choice.equals("l"))
-                this.computerSearchPage.last().forEach(displayShortToString);
-            else if (choice.matches("[0-9]+"))
-                this.computerSearchPage.goToPage(Long.decode(choice));
-            sc.nextLine();
-        }
-
-        computerSearchPage = null;
+        ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
+        viewComputerPage(computerSearchPage);
     }
 
     private void editComputer(Computer c) {
@@ -190,13 +167,12 @@ public class CLI {
         Company company = null;
 
         System.out.println("Please enter the computer's name:");
-        name = sc.next();
-        sc.nextLine();
+        name = sc.nextLine();
 
         introduced = getDate("introduction");
         discontinued = getDate("discontinuation");
 
-        company = getCompany();
+        company = getCompanyId();
 
         c.setName(name);
         c.setIntroduced(introduced);
@@ -223,13 +199,18 @@ public class CLI {
         editComputer(c);
     }
 
+    /**
+     * Asks the user for a date with the pattern "yyyy-MM-dd", or nothing if 'Enter'is hit.
+     * @param event the name of the event you want a date for.
+     * @return a LocalDate corresponding to the input user's date.
+     */
     private LocalDate getDate(String event) {
         LocalDate date = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         boolean ok = false;
 
         while (!ok) {
-            System.out.println("Please enter the computer's " + event + " date (yyyy-MM-dd or 'Enter'):");
+            System.out.println("Please enter the computer's " + event + " date (yyyy-MM-dd or 'Enter' for no date):");
             String d1 = sc.nextLine();
             if (d1.isEmpty() || d1.matches("\\d{4}-\\d{2}-\\d{2}")) {
                 if (!d1.isEmpty())
@@ -241,7 +222,7 @@ public class CLI {
         return date;
     }
 
-    private Company getCompany() {
+    private Company getCompanyId() {
         Company c = null;
 
         while (c == null) {
@@ -265,11 +246,10 @@ public class CLI {
         if (c != null)
             ComputerService.INSTANCE.deleteComputer(id);
         else
-            System.out.println("There is no computer with the ID: " + id);
+            System.out.println("There is no computer with the ID: " + id + "\n");
     }
 
 	public static void main(String[] args) {
-        CLI cli = new CLI();
-        cli.mainLoop();
+        CLI.INSTANCE.mainLoop();
     }
 }
