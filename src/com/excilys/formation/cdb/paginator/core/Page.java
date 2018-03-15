@@ -101,7 +101,6 @@ public abstract class Page<T extends Model> {
     }
 
     protected void checkNextPageNumber(Long currentLastPageNumber) {
-        System.out.println("currentLastPageNumber: " + currentLastPageNumber);
         if (this.pageNumber+1 <= currentLastPageNumber)
             this.pageNumber++;
     }

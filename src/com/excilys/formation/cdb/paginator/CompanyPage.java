@@ -5,8 +5,6 @@ import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 
-import java.util.List;
-
 public class CompanyPage extends Page<Company> {
 
     public CompanyPage() {

@@ -1,10 +1,7 @@
 package com.excilys.formation.cdb.paginator;
 
-import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
 import com.excilys.formation.cdb.service.CompanyService;
-
-import java.util.List;
 
 public class CompanySearchPage extends CompanyPage {
 

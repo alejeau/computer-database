@@ -1,7 +1,6 @@
 package com.excilys.formation.cdb.mapper;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
