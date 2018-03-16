@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_STAR;
+
 public enum CompanyDAOImpl implements CompanyDAO {
     INSTANCE;
 
@@ -19,9 +21,9 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(company_id) FROM company;";
     private static final String NUMBER_OF_COMPANIES_WITH_NAME = "SELECT COUNT(company_id) FROM company WHERE company_name LIKE ?;";
-    private static final String COMPANY_BY_ID = "SELECT * FROM company WHERE company_id=?;";
-    private static final String COMPANY_BY_NAME = "SELECT * FROM company WHERE company_name LIKE ? ORDER BY company_name LIMIT ?, ?;";
-    private static final String ALL_COMPANIES = "SELECT * FROM company ORDER BY company_name LIMIT ?, ?;";
+    private static final String COMPANY_BY_ID = "SELECT " + COMPANY_STAR + " FROM company WHERE company_id=?;";
+    private static final String COMPANY_BY_NAME = "SELECT " + COMPANY_STAR + " FROM company WHERE company_name LIKE ? ORDER BY company_name LIMIT ?, ?;";
+    private static final String ALL_COMPANIES = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name LIMIT ?, ?;";
 
     CompanyDAOImpl() {
 

@@ -17,6 +17,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_STAR;
+
 public enum ComputerDAOImpl implements ComputerDAO {
     INSTANCE;
 
@@ -24,9 +26,9 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(computer_id) FROM computer;";
     private static final String NUMBER_OF_COMPUTERS_WITH_NAME = "SELECT COUNT(computer_id) FROM computer WHERE computer_name LIKE ?;";
-    private static final String SELECT_COMPUTER_BY_ID = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_id=?;";
-    private static final String SELECT_COMPUTER_BY_NAME = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_name LIKE ? ORDER BY computer_name LIMIT ?, ?;";
-    private static final String SELECT_ALL_COMPUTERS = "SELECT * FROM computer LEFT JOIN company ON computer_company_id=company_id ORDER BY computer_name LIMIT ?, ?;";
+    private static final String SELECT_COMPUTER_BY_ID = "SELECT " + COMPUTER_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_id=?;";
+    private static final String SELECT_COMPUTER_BY_NAME = "SELECT " + COMPUTER_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_name LIKE ? ORDER BY computer_name LIMIT ?, ?;";
+    private static final String SELECT_ALL_COMPUTERS = "SELECT " + COMPUTER_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company_id ORDER BY computer_name LIMIT ?, ?;";
     private static final String INSERT_COMPUTER = "INSERT INTO computer (computer_name, computer_introduced, computer_discontinued, computer_company_id) values (?, ?, ?, ?);";
     private static final String UPDATE_COMPUTER = "UPDATE computer SET computer_name = ?, computer_introduced = ?, computer_discontinued = ?, computer_company_id = ? WHERE computer_id = ?;";
     private static final String DELETE_COMPUTER = "DELETE from computer WHERE computer_id = ?;";
