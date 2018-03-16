@@ -17,6 +17,7 @@
         <!-- sets the projects encoding to UTF-8 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <mojo.version>1.2.1</mojo.version>
 
         <!-- test -->
         <junit.version>4.12</junit.version>
@@ -25,8 +26,8 @@
         <!-- compile -->
         <!-- logs -->
         <log4j.version>1.2.17</log4j.version>
-        <slf4j.version>1.7.19</slf4j.version>
-        <logback.version>1.1.6</logback.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <logback.version>1.2.3</logback.version>
 
         <!-- runtime -->
         <mysql.version>5.1.38</mysql.version>
@@ -42,6 +43,23 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Enables launching the CLI via command line using Maven -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${mojo.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.excilys.formation.cdb.ui.CLI</mainClass>
                 </configuration>
             </plugin>
         </plugins>
@@ -62,6 +80,24 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
