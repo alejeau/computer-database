@@ -6,7 +6,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.CompanyPage;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
-import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
@@ -19,13 +19,12 @@ import java.util.function.Consumer;
 public enum CLI {
     INSTANCE;
 
-    private static final LIMIT_VALUE NUMBER_OF_ELEMENTS_PER_PAGE = LIMIT_VALUE.TEN;
+    private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
     private static Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
 
     private Scanner sc = new Scanner(System.in);
 
-    private CLI() {
-
+    CLI() {
     }
 
     private int mainMenu() {
@@ -48,7 +47,7 @@ public enum CLI {
     }
 
     public void mainLoop() {
-        int code = -1;
+        int code;
         do {
             code = mainMenu();
             executeChoice(code);
@@ -89,31 +88,32 @@ public enum CLI {
 
     private <T extends Page> void viewPage(T page, Consumer printer) {
         boolean exit = false;
-        String choice = null;
+        String choice;
 
         while (!exit) {
             System.out.println("Which page would you like to view (current page: " + page.getPageNumber() + ")?");
             System.out.println("n for next, p for previous, f for first, l for last and q to quit");
             choice = sc.nextLine();
 
-            if (choice.isEmpty() || choice.equals("f"))
+            if (choice.isEmpty() || choice.equals("f")) {
                 page.first().forEach(printer);
-            else if (choice.equals("q"))
+            } else if (choice.equals("q")) {
                 exit = true;
-            else if (choice.equals("p"))
+            } else if (choice.equals("p")) {
                 page.previous().forEach(printer);
-            else if (choice.equals("n"))
+            } else if (choice.equals("n")) {
                 page.next().forEach(printer);
-            else if (choice.equals("l"))
+            } else if (choice.equals("l")) {
                 page.last().forEach(printer);
-            else if (choice.matches("[0-9]+"))
+            } else if (choice.matches("[0-9]+")) {
                 page.goToPage(Long.decode(choice)).forEach(printer);
+            }
             System.out.println();
         }
     }
 
     private void checkComputerById() {
-        Long id = null;
+        Long id;
         Computer c = null;
 
         System.out.println("Please enter the computer's ID: ");
@@ -122,14 +122,15 @@ public enum CLI {
 
         c = ComputerService.INSTANCE.getComputer(id);
 
-        if (c != null)
+        if (c != null) {
             System.out.println(c);
-        else
+        } else {
             System.out.println("No computer registered with the ID " + id);
+        }
     }
 
     private void checkComputerByName() {
-        String name = null;
+        String name;
 
         System.out.println("Please enter the computer's name: ");
         name = sc.next();
@@ -140,9 +141,9 @@ public enum CLI {
     }
 
     private void editComputer(Computer c) {
-        String name = null;
-        LocalDate introduced = null, discontinued = null;
-        Company company = null;
+        String name;
+        LocalDate introduced, discontinued;
+        Company company;
 
         System.out.println("Please enter the computer's name:");
         name = sc.nextLine();
@@ -161,9 +162,9 @@ public enum CLI {
             if (c.getId() == null) {
                 Long id = ComputerService.INSTANCE.persistComputer(c);
                 System.out.println("The computer has the ID: " + id);
-            }
-            else
+            } else {
                 ComputerService.INSTANCE.updateComputer(c);
+            }
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
         }
@@ -179,6 +180,7 @@ public enum CLI {
 
     /**
      * Asks the user for a date with the pattern "yyyy-MM-dd", or nothing if 'Enter'is hit.
+     *
      * @param event the name of the event you want a date for.
      * @return a LocalDate corresponding to the input user's date.
      */
@@ -191,8 +193,9 @@ public enum CLI {
             System.out.println("Please enter the computer's " + event + " date (yyyy-MM-dd or 'Enter' for no date):");
             String d1 = sc.nextLine();
             if (d1.isEmpty() || d1.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                if (!d1.isEmpty())
+                if (!d1.isEmpty()) {
                     date = LocalDate.parse(d1, formatter);
+                }
                 ok = true;
             }
         }
@@ -214,20 +217,21 @@ public enum CLI {
     }
 
     private void deleteComputer() {
-        Long id = null;
+        Long id;
 
         System.out.println("Please enter the computer's ID you wish to delete: ");
         id = sc.nextLong();
         sc.nextLine();
 
         Computer c = ComputerService.INSTANCE.getComputer(id);
-        if (c != null)
+        if (c != null) {
             ComputerService.INSTANCE.deleteComputer(id);
-        else
+        } else {
             System.out.println("There is no computer with the ID: " + id + "\n");
+        }
     }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         CLI.INSTANCE.mainLoop();
     }
 }

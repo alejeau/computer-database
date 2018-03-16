@@ -1,18 +1,18 @@
 package com.excilys.formation.cdb.paginator;
 
-import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
 
 public class ComputerSearchPage extends ComputerPage {
 
-    protected String search = "";
+    protected String search;
 
     public ComputerSearchPage(String search) {
         super();
         this.search = search;
     }
 
-    public ComputerSearchPage(String search, LIMIT_VALUE limit) {
+    public ComputerSearchPage(String search, LimitValue limit) {
         super();
         this.search = search;
     }
@@ -24,7 +24,7 @@ public class ComputerSearchPage extends ComputerPage {
     }
 
     @Override
-    protected void refresh(Integer offset){
+    protected void refresh(Integer offset) {
         this.page = ComputerService.INSTANCE.getComputer(search, offset, this.limit.getValue());
     }
 }

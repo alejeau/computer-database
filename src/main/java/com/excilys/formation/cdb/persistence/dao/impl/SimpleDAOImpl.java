@@ -3,10 +3,14 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 
-import java.sql.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public enum SimpleDAOImpl implements SimpleDAO {
     INSTANCE;
@@ -15,7 +19,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
-    private SimpleDAOImpl() {
+    SimpleDAOImpl() {
 
     }
 
@@ -38,8 +42,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             ConnectionManager.closeElements(conn, stmt, rs);
         }
 

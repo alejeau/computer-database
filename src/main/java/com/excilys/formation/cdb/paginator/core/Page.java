@@ -5,27 +5,31 @@ import com.excilys.formation.cdb.model.Model;
 import java.util.List;
 
 /**
- *  Page class to enable the pagination.<br>
- *  The index starts at 0.
+ * Page class to enable the pagination.<br>
+ * The index starts at 0.
+ *
  * @param <T> A model extending the Model class.
  */
 public abstract class Page<T extends Model> {
+    private static final Integer FIRST_PAGE = 0;
+
+    private Integer pageNumber;
+
     protected List<T> page = null;
-    protected Integer pageNumber;
-    protected LIMIT_VALUE limit;
-    protected static final Integer FIRST_PAGE = 0;
+    protected LimitValue limit;
 
     protected Page() {
         this.pageNumber = FIRST_PAGE;
-        this.limit = LIMIT_VALUE.TEN;
+        this.limit = LimitValue.TEN;
     }
 
-    protected Page(LIMIT_VALUE limit) {
+    protected Page(LimitValue limit) {
         this.pageNumber = FIRST_PAGE;
         this.limit = limit;
     }
 
     protected abstract Long currentLastPageNumber();
+
     protected abstract void refresh(Integer offset);
 
     public List<T> getPage() {
@@ -36,15 +40,11 @@ public abstract class Page<T extends Model> {
         return pageNumber;
     }
 
-    public void setPageNumber(Integer pageNumber) {
-        this.checkPageNumber(pageNumber);
-    }
-
-    public LIMIT_VALUE getLimit() {
+    public LimitValue getLimit() {
         return limit;
     }
 
-    public void setLimit(LIMIT_VALUE limit) {
+    public void setLimit(LimitValue limit) {
         this.limit = limit;
     }
 
@@ -81,27 +81,23 @@ public abstract class Page<T extends Model> {
         return this.page;
     }
 
-    protected void checkPageNumber(Integer pageNumber) {
-        if (pageNumber >= FIRST_PAGE)
-            this.pageNumber = pageNumber;
-        else
-            this.pageNumber = FIRST_PAGE;
-    }
-
-    protected void checkValidPageNumber(Long requestedPage, Long currentLastPageNumber) {
-        if (requestedPage >= FIRST_PAGE && requestedPage <= currentLastPageNumber)
+    private void checkValidPageNumber(Long requestedPage, Long currentLastPageNumber) {
+        if (requestedPage >= FIRST_PAGE && requestedPage <= currentLastPageNumber) {
             this.pageNumber = requestedPage.intValue();
-        else
+        } else {
             this.pageNumber = requestedPage < FIRST_PAGE ? FIRST_PAGE : currentLastPageNumber.intValue();
+        }
     }
 
-    protected void checkPreviousPageNumber() {
-        if (this.pageNumber-1 >= FIRST_PAGE)
+    private void checkPreviousPageNumber() {
+        if (this.pageNumber - 1 >= FIRST_PAGE) {
             this.pageNumber--;
+        }
     }
 
-    protected void checkNextPageNumber(Long currentLastPageNumber) {
-        if (this.pageNumber+1 <= currentLastPageNumber)
+    private void checkNextPageNumber(Long currentLastPageNumber) {
+        if (this.pageNumber + 1 <= currentLastPageNumber) {
             this.pageNumber++;
+        }
     }
 }

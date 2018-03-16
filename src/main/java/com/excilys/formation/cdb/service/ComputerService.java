@@ -4,8 +4,7 @@ import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
-import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
-import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.persistence.dao.impl.ComputerDAOImpl;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public enum ComputerService {
     INSTANCE;
 
-    private ComputerService() {
+    ComputerService() {
 
     }
 
@@ -34,11 +33,11 @@ public enum ComputerService {
         return ComputerDAOImpl.INSTANCE.getComputer(name, index, limit);
     }
 
-    public ComputerSearchPage getComputer(String name, LIMIT_VALUE limit) {
+    public ComputerSearchPage getComputer(String name, LimitValue limit) {
         return new ComputerSearchPage(name, limit);
     }
 
-    public ComputerPage getComputers(LIMIT_VALUE limit) {
+    public ComputerPage getComputers(LimitValue limit) {
         return new ComputerPage(limit);
     }
 

@@ -1,18 +1,18 @@
 package com.excilys.formation.cdb.paginator;
 
-import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.CompanyService;
 
 public class CompanySearchPage extends CompanyPage {
 
-    protected String search = "";
+    protected String search;
 
     public CompanySearchPage(String search) {
         super();
         this.search = search;
     }
 
-    public CompanySearchPage(String search, LIMIT_VALUE limit) {
+    public CompanySearchPage(String search, LimitValue limit) {
         super();
         this.search = search;
     }
@@ -24,7 +24,7 @@ public class CompanySearchPage extends CompanyPage {
     }
 
     @Override
-    protected void refresh(Integer offset){
+    protected void refresh(Integer offset) {
         this.page = CompanyService.INSTANCE.getCompany(search, offset, this.limit.getValue());
     }
 }

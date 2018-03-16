@@ -10,7 +10,7 @@ import java.util.List;
 public enum CompanyMapper {
     INSTANCE;
 
-    private CompanyMapper() {
+    CompanyMapper() {
 
     }
 
@@ -21,8 +21,7 @@ public enum CompanyMapper {
                 c.setId(rs.getLong("company_id"));
                 c.setName(rs.getString("company_name"));
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return c;
@@ -44,8 +43,7 @@ public enum CompanyMapper {
                 c.setName(rs.getString("company_name"));
                 companies.add(c);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return companies;

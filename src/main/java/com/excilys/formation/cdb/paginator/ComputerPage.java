@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.paginator;
 
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.paginator.core.LIMIT_VALUE;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.ComputerService;
 
@@ -11,7 +11,7 @@ public class ComputerPage extends Page<Computer> {
         super();
     }
 
-    public ComputerPage(LIMIT_VALUE limit) {
+    public ComputerPage(LimitValue limit) {
         super();
     }
 
@@ -22,7 +22,7 @@ public class ComputerPage extends Page<Computer> {
     }
 
     @Override
-    protected void refresh(Integer offset){
+    protected void refresh(Integer offset) {
         this.page = ComputerService.INSTANCE.getComputers(offset, this.limit.getValue());
     }
 }

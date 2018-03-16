@@ -5,7 +5,15 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +31,11 @@ public enum ComputerDAOImpl implements ComputerDAO {
     private static final String UPDATE_COMPUTER = "UPDATE computer SET computer_name = ?, computer_introduced = ?, computer_discontinued = ?, computer_company_id = ? WHERE computer_id = ?;";
     private static final String DELETE_COMPUTER = "DELETE from computer WHERE computer_id = ?;";
 
-    private ComputerDAOImpl() {
+    ComputerDAOImpl() {
 
     }
 
     public Long getNumberOfComputers() {
-//        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return SimpleDAOImpl.INSTANCE.count(NUMBER_OF_COMPUTERS);
     }
 
@@ -110,19 +117,22 @@ public enum ComputerDAOImpl implements ComputerDAO {
         try {
             prepStmt = conn.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             prepStmt.setString(1, c.getName());
-            if (c.getIntroduced() != null)
+            if (c.getIntroduced() != null) {
                 prepStmt.setDate(2, Date.valueOf(c.getIntroduced()));
-            else
+            } else {
                 prepStmt.setNull(2, Types.DATE);
-            if (c.getDiscontinued() !=  null)
+            }
+
+            if (c.getDiscontinued() != null) {
                 prepStmt.setDate(3, Date.valueOf(c.getDiscontinued()));
-            else
+            } else {
                 prepStmt.setNull(3, Types.DATE);
+            }
             prepStmt.setLong(4, c.getCompany().getId());
             prepStmt.executeUpdate();
 
             rs = prepStmt.getGeneratedKeys();
-            if(rs.next()) {
+            if (rs.next()) {
                 createdId = rs.getLong(1);
             }
         } catch (SQLException e) {
@@ -141,14 +151,16 @@ public enum ComputerDAOImpl implements ComputerDAO {
         try {
             prepStmt = conn.prepareStatement(UPDATE_COMPUTER);
             prepStmt.setString(1, c.getName());
-            if (c.getIntroduced() != null)
+            if (c.getIntroduced() != null) {
                 prepStmt.setDate(2, Date.valueOf(c.getIntroduced()));
-            else
+            } else {
                 prepStmt.setNull(2, Types.DATE);
-            if (c.getDiscontinued() !=  null)
+            }
+            if (c.getDiscontinued() != null) {
                 prepStmt.setDate(3, Date.valueOf(c.getDiscontinued()));
-            else
+            } else {
                 prepStmt.setNull(3, Types.DATE);
+            }
             prepStmt.setLong(4, c.getCompany().getId());
             prepStmt.setLong(5, c.getId());
             prepStmt.executeUpdate();
