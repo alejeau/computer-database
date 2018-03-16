@@ -31,13 +31,6 @@ public enum ConnectionManager {
 	}
 
 	private ConnectionManager() {
-		String driver = props.getProperty("jdbc.driver");
-	    try {
-	      Class.forName(driver);       
-	    } catch (Exception e) {
-	      e.printStackTrace();
-	    }
-	    
 		url = props.getProperty("jdbc.url");
 		username = props.getProperty("jdbc.username");
 		password = props.getProperty("jdbc.password");
