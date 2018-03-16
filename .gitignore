@@ -16,4 +16,5 @@ computer-database.iml
 
 #config files
 config/db/db.properties
-
+cdb.log
+logs/*

@@ -30,14 +30,14 @@ public enum CLI {
     private int mainMenu() {
 
         System.out.println("What would you like to do?");
-        System.out.println("1) View the list of computers");
-        System.out.println("2) View the list of companies");
-        System.out.println("3) Check a computer by ID");
-        System.out.println("4) Check a computer by name");
-        System.out.println("5) Add a computer to the list");
-        System.out.println("6) Update a computer in the list (by id)");
-        System.out.println("7) Delete a computer in the list (by id)");
-        System.out.println("8) Exit this program");
+        System.out.println(CliActions.VIEW_COMPUTER_LIST.getValue());
+        System.out.println(CliActions.VIEW_COMPANY_LIST.getValue());
+        System.out.println(CliActions.CHECK_COMPUTER_BY_ID.getValue());
+        System.out.println(CliActions.CHECK_COMPUTERS_BY_NAME.getValue());
+        System.out.println(CliActions.ADD_COMPUTER.getValue());
+        System.out.println(CliActions.UPDATE_COMPUTER.getValue());
+        System.out.println(CliActions.DELETE_COMPUTER.getValue());
+        System.out.println(CliActions.EXIT.getValue());
 
         System.out.println("Enter your choice: ");
         int entry = sc.nextInt();
@@ -50,35 +50,35 @@ public enum CLI {
         int code;
         do {
             code = mainMenu();
-            executeChoice(code);
+            executeChoice(CliActions.map(code));
             System.out.println();
         }
         while (code != 8);
     }
 
-    private void executeChoice(int choice) {
+    private void executeChoice(CliActions choice) {
         switch (choice) {
-            case 1:
+            case VIEW_COMPUTER_LIST:
                 ComputerPage computerPage = ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(computerPage, displayShortToString);
                 break;
-            case 2:
+            case VIEW_COMPANY_LIST:
                 CompanyPage companyPage = CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(companyPage, System.out::println);
                 break;
-            case 3:
+            case CHECK_COMPUTER_BY_ID:
                 checkComputerById();
                 break;
-            case 4:
+            case CHECK_COMPUTERS_BY_NAME:
                 checkComputerByName();
                 break;
-            case 5:
+            case ADD_COMPUTER:
                 editComputer(new Computer());
                 break;
-            case 6:
+            case UPDATE_COMPUTER:
                 updateComputer();
                 break;
-            case 7:
+            case DELETE_COMPUTER:
                 deleteComputer();
                 break;
             default:
