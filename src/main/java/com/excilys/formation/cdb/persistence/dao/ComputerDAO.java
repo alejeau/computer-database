@@ -12,9 +12,9 @@ public interface ComputerDAO {
 
     Computer getComputer(Long id);
 
-    List<Computer> getComputer(String name, int index, int limit);
+    List<Computer> getComputer(String name, long index, Long limit);
 
-    List<Computer> getComputers(int index, int limit);
+    List<Computer> getComputers(long index, Long limit);
 
     void updateComputer(Computer c);
 

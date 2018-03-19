@@ -24,7 +24,15 @@ public class CompanySearchPage extends CompanyPage {
     }
 
     @Override
-    protected void refresh(Integer offset) {
+    protected void refresh(long offset) {
         this.page = CompanyService.INSTANCE.getCompany(search, offset, this.limit.getValue());
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.mapper.CompanyMapper;
+import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
@@ -48,7 +48,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public Company getCompany(Long id) {
-        LOG.debug("getCompanyId (with id)");
+        LOG.debug("getCompanyName (with id)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -73,8 +73,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompany(String name, int index, int limit) {
-        LOG.debug("getCompanyId (with name)");
+    public List<Company> getCompany(String name, long index, Long limit) {
+        LOG.debug("getCompanyName (with name)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -101,7 +101,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompanies(int index, int limit) {
+    public List<Company> getCompanies(long index, Long limit) {
         LOG.debug("getCompanies");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;

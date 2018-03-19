@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.mapper.ComputerMapper;
+import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
@@ -76,7 +75,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return c;
     }
 
-    public List<Computer> getComputer(String name, int index, int limit) {
+    public List<Computer> getComputer(String name, long index, Long limit) {
         LOG.debug("getComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -103,7 +102,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return computers;
     }
 
-    public List<Computer> getComputers(int index, int limit) {
+    public List<Computer> getComputers(long index, Long limit) {
         LOG.debug("getComputers");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;

@@ -22,7 +22,7 @@ public class CompanyPage extends Page<Company> {
     }
 
     @Override
-    protected void refresh(Integer offset) {
+    protected void refresh(long offset) {
         this.page = CompanyService.INSTANCE.getCompanies(offset, this.limit.getValue());
     }
 }

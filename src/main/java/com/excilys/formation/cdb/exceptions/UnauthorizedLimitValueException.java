@@ -1,16 +1,16 @@
 package com.excilys.formation.cdb.exceptions;
 
-public class UnauthorizedLiimitValueException extends Exception {
+public class UnauthorizedLimitValueException extends Exception {
 
-    public MissingElementException() {
+    public UnauthorizedLimitValueException() {
 
     }
 
-    public MissingElementException(String message) {
+    public UnauthorizedLimitValueException(String message) {
         super(message);
     }
 
-    public MissingElementException(String message, Throwable throwable) {
+    public UnauthorizedLimitValueException(String message, Throwable throwable) {
         super(message, throwable);
     }
 }

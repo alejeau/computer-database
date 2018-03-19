@@ -29,7 +29,7 @@ public enum ComputerService {
         return ComputerDAOImpl.INSTANCE.getComputer(id);
     }
 
-    public List<Computer> getComputer(String name, int index, int limit) {
+    public List<Computer> getComputer(String name, long index, Long limit) {
         return ComputerDAOImpl.INSTANCE.getComputer(name, index, limit);
     }
 
@@ -41,7 +41,7 @@ public enum ComputerService {
         return new ComputerPage(limit);
     }
 
-    public List<Computer> getComputers(int index, int limit) {
+    public List<Computer> getComputers(long index, Long limit) {
         return ComputerDAOImpl.INSTANCE.getComputers(index, limit);
     }
 

@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.mapper;
+package com.excilys.formation.cdb.mapper.model;
 
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.model.Company;

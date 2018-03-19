@@ -22,7 +22,7 @@ public class ComputerPage extends Page<Computer> {
     }
 
     @Override
-    protected void refresh(Integer offset) {
+    protected void refresh(long offset) {
         this.page = ComputerService.INSTANCE.getComputers(offset, this.limit.getValue());
     }
 }

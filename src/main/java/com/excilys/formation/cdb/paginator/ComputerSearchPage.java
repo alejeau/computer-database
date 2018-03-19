@@ -24,7 +24,15 @@ public class ComputerSearchPage extends ComputerPage {
     }
 
     @Override
-    protected void refresh(Integer offset) {
+    protected void refresh(long offset) {
         this.page = ComputerService.INSTANCE.getComputer(search, offset, this.limit.getValue());
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

@@ -1,5 +1,5 @@
 #!/bin/bash
-command="INSERT IGNORE INTO companyId (id,name) VALUES "
+command="INSERT IGNORE INTO companyName (id,name) VALUES "
 for i in {1..1000}
 do
    command="$command, ($i,CONCAT('companyTest',$i))"
