@@ -1,6 +1,9 @@
 package com.excilys.formation.cdb.mapper;
 
+import com.excilys.formation.cdb.dto.model.ComputerDTO;
+import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.model.DatePattern;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -10,6 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComputerMapper {
+
+    public static ComputerDTO toDTO(Computer c) {
+        ComputerDTO cdto = new ComputerDTO();
+        cdto.setId(c.getId());
+        cdto.setName(c.getName());
+        cdto.setIntroduced(c.getIntroduced().format(DatePattern.FORMATTER));
+        cdto.setDiscontinued(c.getDiscontinued().format(DatePattern.FORMATTER));
+        cdto.setCompanyName(c.getCompany().getName());
+        return cdto;
+    }
+
+    public static Computer toComputer(ComputerDTO cdto, Company company) {
+        return new Computer.Builder()
+                .id(cdto.getId())
+                .name(cdto.getName())
+                .introduced(cdto.getIntroduced())
+                .discontinued(cdto.getDiscontinued())
+                .company(company)
+                .build();
+    }
 
     public static Computer map(ResultSet rs) {
         Computer c = null;

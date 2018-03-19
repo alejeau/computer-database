@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.ui;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.model.Model;
 import com.excilys.formation.cdb.paginator.CompanyPage;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
@@ -14,13 +15,13 @@ import com.excilys.formation.cdb.service.ComputerService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-import java.util.function.Consumer;
 
 public enum CLI {
     INSTANCE;
 
     private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
-    private static Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
+//    private static Consumer<? extends Model> displayShortToString = c -> System.out.println(c.shortToString());
+//    private static Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
 
     private Scanner sc = new Scanner(System.in);
 
@@ -59,12 +60,13 @@ public enum CLI {
     private void executeChoice(CliActions choice) {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
+//                CLI.displayShortToString;
                 ComputerPage computerPage = ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
-                viewPage(computerPage, displayShortToString);
+                viewPage(computerPage);
                 break;
             case VIEW_COMPANY_LIST:
                 CompanyPage companyPage = CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
-                viewPage(companyPage, System.out::println);
+                viewPage(companyPage);
                 break;
             case CHECK_COMPUTER_BY_ID:
                 checkComputerById();
@@ -86,7 +88,7 @@ public enum CLI {
         }
     }
 
-    private <T extends Page> void viewPage(T page, Consumer printer) {
+    private <T extends Page<U>, U extends Model> void viewPage(T page) {
         boolean exit = false;
         String choice;
 
@@ -96,17 +98,17 @@ public enum CLI {
             choice = sc.nextLine();
 
             if (choice.isEmpty() || choice.equals("f")) {
-                page.first().forEach(printer);
+                page.first().forEach(c -> System.out.println(c.shortToString()));
             } else if (choice.equals("q")) {
                 exit = true;
             } else if (choice.equals("p")) {
-                page.previous().forEach(printer);
+                page.previous().forEach(c -> System.out.println(c.shortToString()));
             } else if (choice.equals("n")) {
-                page.next().forEach(printer);
+                page.next().forEach(c -> System.out.println(c.shortToString()));
             } else if (choice.equals("l")) {
-                page.last().forEach(printer);
+                page.last().forEach(c -> System.out.println(c.shortToString()));
             } else if (choice.matches("[0-9]+")) {
-                page.goToPage(Long.decode(choice)).forEach(printer);
+                page.goToPage(Long.decode(choice)).forEach(c -> System.out.println(c.shortToString()));
             }
             System.out.println();
         }
@@ -137,7 +139,7 @@ public enum CLI {
         sc.nextLine();
 
         ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
-        viewPage(computerSearchPage, displayShortToString);
+        viewPage(computerSearchPage);
     }
 
     private void editComputer(Computer c) {

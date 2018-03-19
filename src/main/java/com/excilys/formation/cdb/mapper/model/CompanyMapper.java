@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.mapper;
 
+import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.model.Company;
 
 import java.sql.ResultSet;
@@ -12,6 +13,16 @@ public enum CompanyMapper {
 
     CompanyMapper() {
 
+    }
+
+    public static CompanyDTO toDTO(Company company) {
+        return new CompanyDTO(company.getId(), company.getName());
+    }
+
+
+
+    public static Company toCompany(CompanyDTO companyDTO) {
+        return new Company(companyDTO.getId(), companyDTO.getName());
     }
 
     public static Company map(ResultSet rs) {
