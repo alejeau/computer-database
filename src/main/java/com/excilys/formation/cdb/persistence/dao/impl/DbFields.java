@@ -14,5 +14,7 @@ public class DbFields {
     public static final String COMPANY_NAME = "company_name";
     public static final String COMPANY_STAR = COMPANY_ID + ", " + COMPANY_NAME;
 
+    public static final String COMPUTER_AND_COMPANY_STAR = COMPUTER_STAR + ", " + COMPANY_STAR;
+
 
 }

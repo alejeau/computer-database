@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
@@ -18,7 +19,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_STAR;
+import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_AND_COMPANY_STAR;
 
 public enum ComputerDAOImpl implements ComputerDAO {
     INSTANCE;
@@ -28,9 +29,9 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(computer_id) FROM computer;";
     private static final String NUMBER_OF_COMPUTERS_WITH_NAME = "SELECT COUNT(computer_id) FROM computer WHERE computer_name LIKE ?;";
-    private static final String SELECT_COMPUTER_BY_ID = "SELECT " + COMPUTER_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_id=?;";
-    private static final String SELECT_COMPUTER_BY_NAME = "SELECT " + COMPUTER_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company_id WHERE computer_name LIKE ? ORDER BY computer_name LIMIT ?, ?;";
-    private static final String SELECT_ALL_COMPUTERS = "SELECT " + COMPUTER_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company_id ORDER BY computer_name LIMIT ?, ?;";
+    private static final String SELECT_COMPUTER_BY_ID = "SELECT " + COMPUTER_AND_COMPANY_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company.company_id WHERE computer_id=?;";
+    private static final String SELECT_COMPUTER_BY_NAME = "SELECT " + COMPUTER_AND_COMPANY_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company.company_id WHERE computer_name LIKE ? ORDER BY computer_name LIMIT ?, ?;";
+    private static final String SELECT_ALL_COMPUTERS = "SELECT " + COMPUTER_AND_COMPANY_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company.company_id ORDER BY computer_name LIMIT ?, ?;";
     private static final String INSERT_COMPUTER = "INSERT INTO computer (computer_name, computer_introduced, computer_discontinued, computer_company_id) values (?, ?, ?, ?);";
     private static final String UPDATE_COMPUTER = "UPDATE computer SET computer_name = ?, computer_introduced = ?, computer_discontinued = ?, computer_company_id = ? WHERE computer_id = ?;";
     private static final String DELETE_COMPUTER = "DELETE from computer WHERE computer_id = ?;";
@@ -40,18 +41,18 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     public Long getNumberOfComputers() {
-        LOG.debug("ComputerDAOImpl.getNumberOfComputers");
+        LOG.debug("getNumberOfComputers");
         return SimpleDAOImpl.INSTANCE.count(NUMBER_OF_COMPUTERS);
     }
 
     public Long getNumberOfComputersWithName(String name) {
-        LOG.debug("ComputerDAOImpl.getNumberOfComputersWithName");
+        LOG.debug("getNumberOfComputersWithName");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.countElementsWithName(NUMBER_OF_COMPUTERS_WITH_NAME, name);
     }
 
     public Computer getComputer(Long id) {
-        LOG.debug("ComputerDAOImpl.getComputer");
+        LOG.debug("getComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -76,7 +77,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     public List<Computer> getComputer(String name, int index, int limit) {
-        LOG.debug("ComputerDAOImpl.getComputer");
+        LOG.debug("getComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -103,7 +104,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     public List<Computer> getComputers(int index, int limit) {
-        LOG.debug("ComputerDAOImpl.getComputers");
+        LOG.debug("getComputers");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -116,6 +117,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
+
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
             LOG.error(e.getMessage());
@@ -129,7 +131,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     public Long persistComputer(Computer c) {
-        LOG.debug("ComputerDAOImpl.persistComputer");
+        LOG.debug("persistComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -169,7 +171,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     public void updateComputer(Computer c) {
-        LOG.debug("ComputerDAOImpl.updateComputer");
+        LOG.debug("updateComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
 
@@ -200,7 +202,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     public void deleteComputer(Long id) {
-        LOG.debug("ComputerDAOImpl.deleteComputer");
+        LOG.debug("deleteComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
 

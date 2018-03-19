@@ -24,7 +24,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
     }
 
     public Long count(String query) {
-        LOG.debug("SimpleDAOImpl.count:");
+        LOG.debug("count:");
         Connection conn = connectionManager.getConnection();
         Statement stmt = null;
         ResultSet rs = null;
@@ -52,7 +52,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
     }
 
     public Long countElementsWithName(String query, String name) {
-        LOG.debug("SimpleDAOImpl.countElementsWithName");
+        LOG.debug("countElementsWithName");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;

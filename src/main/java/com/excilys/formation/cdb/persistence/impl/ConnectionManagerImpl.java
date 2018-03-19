@@ -18,7 +18,6 @@ import java.util.Properties;
 
 public enum ConnectionManagerImpl implements ConnectionManager {
     INSTANCE;
-    private static final Logger LOG = LoggerFactory.getLogger(ConnectionManagerImpl.class);
 
     private Properties props = new Properties();
     private FileInputStream in;
@@ -49,12 +48,10 @@ public enum ConnectionManagerImpl implements ConnectionManager {
 
     @Override
     public Connection getConnection() {
-        LOG.debug("ConnectionManagerImpl.getConnection");
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
             e.printStackTrace();
         }
         return conn;

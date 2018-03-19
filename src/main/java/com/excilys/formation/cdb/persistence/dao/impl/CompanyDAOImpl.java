@@ -34,21 +34,21 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public Long getNumberOfCompanies() {
-        LOG.debug("CompanyDAOImpl.getNumberOfCompanies");
+        LOG.debug("getNumberOfCompanies");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.count(NUMBER_OF_COMPANIES);
     }
 
     @Override
     public Long getNumberOfCompaniesWithName(String name) {
-        LOG.debug("CompanyDAOImpl.getNumberOfCompaniesWithName");
+        LOG.debug("getNumberOfCompaniesWithName");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.countElementsWithName(NUMBER_OF_COMPANIES_WITH_NAME, name);
     }
 
     @Override
     public Company getCompany(Long id) {
-        LOG.debug("CompanyDAOImpl.getCompany (with id)");
+        LOG.debug("getCompany (with id)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -74,7 +74,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public List<Company> getCompany(String name, int index, int limit) {
-        LOG.debug("CompanyDAOImpl.getCompany (with name)");
+        LOG.debug("getCompany (with name)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -102,7 +102,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public List<Company> getCompanies(int index, int limit) {
-        LOG.debug("CompanyDAOImpl.getCompanies");
+        LOG.debug("getCompanies");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
