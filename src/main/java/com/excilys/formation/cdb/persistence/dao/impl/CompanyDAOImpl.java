@@ -2,7 +2,7 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.ConnectionManager;
+import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
-    private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    private static ConnectionManagerImpl connectionManager = ConnectionManagerImpl.INSTANCE;
 
     private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(company_id) FROM company;";
     private static final String NUMBER_OF_COMPANIES_WITH_NAME = "SELECT COUNT(company_id) FROM company WHERE company_name LIKE ?;";
@@ -62,9 +62,10 @@ public enum CompanyDAOImpl implements CompanyDAO {
             rs = prepStmt.executeQuery();
             c = CompanyMapper.map(rs);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning " + c);
@@ -89,9 +90,10 @@ public enum CompanyDAOImpl implements CompanyDAO {
             rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + companies.size());
@@ -115,9 +117,10 @@ public enum CompanyDAOImpl implements CompanyDAO {
             rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + companies.size());

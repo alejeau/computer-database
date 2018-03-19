@@ -2,7 +2,7 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ConnectionManager;
+import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
@@ -25,7 +24,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     INSTANCE;
 
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
-    private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    private static ConnectionManagerImpl connectionManager = ConnectionManagerImpl.INSTANCE;
 
     private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(computer_id) FROM computer;";
     private static final String NUMBER_OF_COMPUTERS_WITH_NAME = "SELECT COUNT(computer_id) FROM computer WHERE computer_name LIKE ?;";
@@ -66,9 +65,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
             rs = prepStmt.executeQuery();
             c = ComputerMapper.map(rs);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning " + c);
@@ -92,9 +92,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
             rs = prepStmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + computers.size());
@@ -117,9 +118,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
             rs = prepStmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + computers.size());
@@ -156,9 +158,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
                 createdId = rs.getLong(1);
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning id " + createdId);
@@ -189,9 +192,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.debug("Executing query \"" + prepStmt + "\"");
             prepStmt.executeUpdate();
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, null);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, null);
         }
     }
 
@@ -207,9 +211,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.debug("Executing query \"" + prepStmt + "\"");
             prepStmt.executeUpdate();
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, null);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, null);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.persistence.ConnectionManager;
+import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimpleDAOImpl.class);
 
-    private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    private static ConnectionManagerImpl connectionManager = ConnectionManagerImpl.INSTANCE;
 
     SimpleDAOImpl() {
 
@@ -41,9 +41,10 @@ public enum SimpleDAOImpl implements SimpleDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, stmt, rs);
+            ConnectionManagerImpl.closeElements(conn, stmt, rs);
         }
 
         LOG.debug("Returning " + l);
@@ -69,9 +70,10 @@ public enum SimpleDAOImpl implements SimpleDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG.error(e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionManager.closeElements(conn, prepStmt, rs);
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning " + l);
