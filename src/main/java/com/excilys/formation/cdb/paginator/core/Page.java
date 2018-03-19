@@ -70,6 +70,7 @@ public abstract class Page<T extends Model> {
     }
 
     public List<T> first() {
+        this.pageNumber = FIRST_PAGE;
         this.refresh(FIRST_PAGE);
         return this.page;
     }
