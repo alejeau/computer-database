@@ -24,7 +24,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
     }
 
     public Long count(String query) {
-        LOG.info("SimpleDAOImpl count");
+        LOG.debug("SimpleDAOImpl.count:");
         Connection conn = connectionManager.getConnection();
         Statement stmt = null;
         ResultSet rs = null;
@@ -33,7 +33,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
         try {
             stmt = conn.createStatement();
 
-            LOG.info("Executing query \"" + query + "\"");
+            LOG.debug("Executing query \"" + query + "\"");
             rs = stmt.executeQuery(query);
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -46,12 +46,12 @@ public enum SimpleDAOImpl implements SimpleDAO {
             ConnectionManager.closeElements(conn, stmt, rs);
         }
 
-        LOG.info("Result: " + l);
+        LOG.debug("Returning " + l);
         return l;
     }
 
     public Long countElementsWithName(String query, String name) {
-        LOG.info("SimpleDAOImpl countElementsWithName");
+        LOG.debug("SimpleDAOImpl.countElementsWithName");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -60,6 +60,8 @@ public enum SimpleDAOImpl implements SimpleDAO {
         try {
             prepStmt = conn.prepareStatement(query);
             prepStmt.setString(1, "%" + name + "%");
+
+            LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -72,6 +74,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
+        LOG.debug("Returning " + l);
         return l;
     }
 }

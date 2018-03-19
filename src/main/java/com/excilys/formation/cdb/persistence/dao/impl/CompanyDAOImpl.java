@@ -4,6 +4,8 @@ import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +18,7 @@ import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_ST
 
 public enum CompanyDAOImpl implements CompanyDAO {
     INSTANCE;
+    private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
     private static ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
@@ -31,18 +34,21 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public Long getNumberOfCompanies() {
+        LOG.debug("CompanyDAOImpl.getNumberOfCompanies");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.count(NUMBER_OF_COMPANIES);
     }
 
     @Override
     public Long getNumberOfCompaniesWithName(String name) {
+        LOG.debug("CompanyDAOImpl.getNumberOfCompaniesWithName");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.countElementsWithName(NUMBER_OF_COMPANIES_WITH_NAME, name);
     }
 
     @Override
     public Company getCompany(Long id) {
+        LOG.debug("CompanyDAOImpl.getCompany (with id)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -51,6 +57,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
         try {
             prepStmt = conn.prepareStatement(COMPANY_BY_ID);
             prepStmt.setLong(1, id);
+
+            LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
             c = CompanyMapper.map(rs);
         } catch (SQLException e) {
@@ -59,11 +67,13 @@ public enum CompanyDAOImpl implements CompanyDAO {
             ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
+        LOG.debug("Returning " + c);
         return c;
     }
 
     @Override
     public List<Company> getCompany(String name, int index, int limit) {
+        LOG.debug("CompanyDAOImpl.getCompany (with name)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -74,6 +84,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prepStmt.setString(1, "%" + name + "%");
             prepStmt.setInt(2, index);
             prepStmt.setInt(3, limit);
+
+            LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
@@ -82,11 +94,13 @@ public enum CompanyDAOImpl implements CompanyDAO {
             ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
+        LOG.debug("Returning list of size " + companies.size());
         return companies;
     }
 
     @Override
     public List<Company> getCompanies(int index, int limit) {
+        LOG.debug("CompanyDAOImpl.getCompanies");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -96,6 +110,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prepStmt = conn.prepareStatement(ALL_COMPANIES);
             prepStmt.setInt(1, index);
             prepStmt.setInt(2, limit);
+
+            LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
@@ -104,6 +120,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             ConnectionManager.closeElements(conn, prepStmt, rs);
         }
 
+        LOG.debug("Returning list of size " + companies.size());
         return companies;
     }
 }
