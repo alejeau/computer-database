@@ -3,9 +3,9 @@ drop schema if exists `computer-database-db`;
   use `computer-database-db`;
 
   drop table if exists computer;
-  drop table if exists company;
+  drop table if exists companyId;
 
-  create table company (
+  create table companyId (
     company_id                        bigint not null auto_increment,
     company_name                      varchar(255),
     constraint pk_company primary key (company_id))
@@ -20,5 +20,5 @@ drop schema if exists `computer-database-db`;
     constraint pk_computer primary key (computer_id))
   ;
 
-  alter table computer add constraint fk_computer_company_1 foreign key (computer_company_id) references company (company_id) on delete restrict on update restrict;
+  alter table computer add constraint fk_computer_company_1 foreign key (computer_company_id) references companyId (company_id) on delete restrict on update restrict;
   create index ix_computer_company_1 on computer (computer_company_id);

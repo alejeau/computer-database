@@ -21,7 +21,7 @@ Here is the macro-planning and timeline of all milestones:
 Create a local **MySQL** server.  
 Execute scripts **1-SCHEMA.sql**, **2-PRIVILEGES.sql** and **3-ENTRIES.sql** in config/db.  
 Schema created: **computer-database-db**
-Tables created: **company, computer**  
+Tables created: **companyId, computer**  
 User created: `admincdb`
 with password: `qwerty1234`
 
@@ -111,10 +111,10 @@ Implement Computer edit, delete, total count features.
 Warning: All features will be implemented and tested using Selenium automated with maven  
 
 #### 4.3.7. Implement search and order by features
-Search box can look for either computer or company objects.
+Search box can look for either computer or companyId objects.
 
 #### 4.3.8. Add Company deletion feature in cli
-In the command line interface, add a feature which deletes a company, and all computers related to this company. Warning: Using SQL CASCADE is forbidden. This implies the use of a transaction.  
+In the command line interface, add a feature which deletes a companyId, and all computers related to this companyId. Warning: Using SQL CASCADE is forbidden. This implies the use of a transaction.  
 
 #### 4.3.9. Code review (t0 + 11 days)
 Important Points: Maven structure? Library scopes? Architecture (daos, mappers, services, models, dtos, controllers, exceptions, validators)? Validation? Unit test coverage? Search and order by design choices? JSTL Tags and HTML documents structure.  

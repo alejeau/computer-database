@@ -33,5 +33,5 @@ object Edit {
       .formParam(config.getString("application.urls.form.edit.name").get, "${addComputerName}_edited")
       .formParam(config.getString("application.urls.form.edit.introduced").get, "${addComputerIntroduced}")
       .formParam(config.getString("application.urls.form.edit.discontinued").get, "${addComputerDiscontinued}")
-      .formParam(config.getString("application.urls.form.edit.company").get, "${addComputerCompany}"))
+      .formParam(config.getString("application.urls.form.edit.companyId").get, "${addComputerCompany}"))
 }

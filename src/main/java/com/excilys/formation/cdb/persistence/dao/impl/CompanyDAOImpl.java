@@ -48,7 +48,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public Company getCompany(Long id) {
-        LOG.debug("getCompany (with id)");
+        LOG.debug("getCompanyId (with id)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -74,7 +74,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public List<Company> getCompany(String name, int index, int limit) {
-        LOG.debug("getCompany (with name)");
+        LOG.debug("getCompanyId (with name)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;

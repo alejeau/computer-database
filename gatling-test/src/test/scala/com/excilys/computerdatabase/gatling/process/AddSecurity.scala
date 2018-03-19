@@ -31,7 +31,7 @@ object AddSecurity {
       .formParam(config.getString("application.urls.form.add.name").get, "${addComputerName}")
       .formParam(config.getString("application.urls.form.add.introduced").get, "${addComputerIntroduced}")
       .formParam(config.getString("application.urls.form.add.discontinued").get, "${addComputerDiscontinued}")
-      .formParam(config.getString("application.urls.form.add.company").get, "${addComputerCompany}")
+      .formParam(config.getString("application.urls.form.add.companyId").get, "${addComputerCompany}")
       .formParam(config.getString("application.urls.form.add.csrf").get, "${csrf_token}"))
     .pause(3, 10)
 
