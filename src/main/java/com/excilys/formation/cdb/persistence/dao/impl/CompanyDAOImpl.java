@@ -2,8 +2,8 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
+import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

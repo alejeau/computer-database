@@ -1,9 +1,11 @@
 package com.excilys.formation.cdb.mapper.model;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
+import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
+import com.excilys.formation.cdb.paginator.ComputerPage;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -18,8 +20,12 @@ public class ComputerMapper {
         ComputerDTO cdto = new ComputerDTO();
         cdto.setId(c.getId());
         cdto.setName(c.getName());
-        cdto.setIntroduced(c.getIntroduced().format(DatePattern.FORMATTER));
-        cdto.setDiscontinued(c.getDiscontinued().format(DatePattern.FORMATTER));
+        if (c.getIntroduced() != null) {
+            cdto.setIntroduced(c.getIntroduced().format(DatePattern.FORMATTER));
+        }
+        if (c.getDiscontinued() != null) {
+            cdto.setDiscontinued(c.getDiscontinued().format(DatePattern.FORMATTER));
+        }
         cdto.setCompanyName(c.getCompany().getName());
         return cdto;
     }

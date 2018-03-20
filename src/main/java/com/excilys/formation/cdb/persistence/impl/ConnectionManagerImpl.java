@@ -1,19 +1,15 @@
 package com.excilys.formation.cdb.persistence.impl;
 
 import com.excilys.formation.cdb.persistence.ConnectionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import java.util.Properties;
 
 public enum ConnectionManagerImpl implements ConnectionManager {
@@ -22,25 +18,27 @@ public enum ConnectionManagerImpl implements ConnectionManager {
     private Properties props = new Properties();
     private FileInputStream in;
 
+    private static final String PROPERTIES_FILE = "properties/db.properties";
+
     private String url;
     private String username;
     private String password;
 
     {
         try {
-            in = new FileInputStream("config/db/db.properties");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            props.load(in);
-            in.close();
+            props.load(ConnectionManagerImpl.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     ConnectionManagerImpl() {
+        String driver = props.getProperty("jdbc.driver");
+        try {
+            Class.forName(driver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         url = props.getProperty("jdbc.url");
         username = props.getProperty("jdbc.username");
         password = props.getProperty("jdbc.password");

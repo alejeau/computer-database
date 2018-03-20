@@ -2,8 +2,8 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
+import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-
 import java.util.ArrayList;
 import java.util.List;
 
