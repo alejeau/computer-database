@@ -28,12 +28,12 @@ public enum CompanyService implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompany(String name, long index, Long limit) {
+    public List<Company> getCompany(String name, Long index, Long limit) {
         return CompanyDAOImpl.INSTANCE.getCompany(name, index, limit);
     }
 
     @Override
-    public List<Company> getCompanies(long index, Long limit) {
+    public List<Company> getCompanies(Long index, Long limit) {
         return CompanyDAOImpl.INSTANCE.getCompanies(index, limit);
     }
 

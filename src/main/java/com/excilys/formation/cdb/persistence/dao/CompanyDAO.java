@@ -12,7 +12,7 @@ public interface CompanyDAO {
 
     Company getCompany(Long id);
 
-    List<Company> getCompany(String name, long index, Long limit);
+    List<Company> getCompany(String name, Long index, Long limit);
 
-    List<Company> getCompanies(long index, Long limit);
+    List<Company> getCompanies(Long index, Long limit);
 }

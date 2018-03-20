@@ -73,7 +73,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompany(String name, long index, Long limit) {
+    public List<Company> getCompany(String name, Long index, Long limit) {
         LOG.debug("getCompanyName (with name)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -83,8 +83,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
         try {
             prepStmt = conn.prepareStatement(COMPANY_BY_NAME);
             prepStmt.setString(1, "%" + name + "%");
-            prepStmt.setInt(2, index);
-            prepStmt.setInt(3, limit);
+            prepStmt.setLong(2, index);
+            prepStmt.setLong(3, limit);
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
@@ -101,7 +101,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompanies(long index, Long limit) {
+    public List<Company> getCompanies(Long index, Long limit) {
         LOG.debug("getCompanies");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -110,8 +110,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
         try {
             prepStmt = conn.prepareStatement(ALL_COMPANIES);
-            prepStmt.setInt(1, index);
-            prepStmt.setInt(2, limit);
+            prepStmt.setLong(1, index);
+            prepStmt.setLong(2, limit);
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
