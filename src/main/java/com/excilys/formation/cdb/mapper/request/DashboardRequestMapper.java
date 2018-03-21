@@ -19,8 +19,8 @@ public class DashboardRequestMapper {
 
         ComputerPage computerPage;
 
-        String stringPageNb = request.getParameter(UrlFields.URL_PAGE_NB);
-        String stringDisplayBy = request.getParameter(UrlFields.URL_DISPLAY_BY);
+        String stringPageNb = request.getParameter(UrlFields.PAGE_NB);
+        String stringDisplayBy = request.getParameter(UrlFields.DISPLAY_BY);
 
         LimitValue displayBy = LimitValue.TEN;
         Long pageNb = Page.FIRST_PAGE.longValue();
