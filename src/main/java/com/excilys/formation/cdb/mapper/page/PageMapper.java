@@ -46,7 +46,7 @@ public class PageMapper {
         ComputerPage computerPage = new ComputerPage();
         LimitValue limit = LimitValueMapper.toLimitValue(pageDTO.getObjectsPerPage());
         computerPage.setLimit(limit);
-        computerPage.goToPage(pageDTO.getPageNumber());
+        computerPage.goToPage(pageDTO.getCurrentPageNumber());
         return computerPage;
     }
 
@@ -54,21 +54,21 @@ public class PageMapper {
         CompanyPage companyPage = new CompanyPage();
         LimitValue limit = LimitValueMapper.toLimitValue(pageDTO.getObjectsPerPage());
         companyPage.setLimit(limit);
-        companyPage.goToPage(pageDTO.getPageNumber());
+        companyPage.goToPage(pageDTO.getCurrentPageNumber());
         return companyPage;
     }
 
     public static ComputerSearchPage toComputerSearchPage(SearchPageDTO<ComputerDTO> searchPageDTO) throws UnauthorizedLimitValueException {
         LimitValue limit = LimitValueMapper.toLimitValue(searchPageDTO.getObjectsPerPage());
         ComputerSearchPage computerSearchPage = new ComputerSearchPage(searchPageDTO.getSearch(), limit);
-        computerSearchPage.goToPage(searchPageDTO.getPageNumber());
+        computerSearchPage.goToPage(searchPageDTO.getCurrentPageNumber());
         return computerSearchPage;
     }
 
     public static CompanySearchPage toCompanySearchPage(SearchPageDTO<CompanyDTO> searchPageDTO) throws UnauthorizedLimitValueException {
         LimitValue limit = LimitValueMapper.toLimitValue(searchPageDTO.getObjectsPerPage());
         CompanySearchPage companySearchPage = new CompanySearchPage(searchPageDTO.getSearch(), limit);
-        companySearchPage.goToPage(searchPageDTO.getPageNumber());
+        companySearchPage.goToPage(searchPageDTO.getCurrentPageNumber());
         return companySearchPage;
     }
 }

@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="cst" tagdir="/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -14,17 +15,16 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
+        <a class="navbar-brand" href="<cst:links linkTo="reset" />"> Application - Computer Database </a>
     </div>
 </header>
 
 <section id="main">
     <div class="container">
         <h1 id="homeTitle">
-            ${computerPageDTO.numberOfEntries} Computers found
+            ${pageDTO.numberOfEntries} Computers found
         </h1>
         <div id="actions" class="form-horizontal">
-            <conf:path/>
             <div class="pull-left">
                 <form id="searchForm" action="#" method="GET" class="form-inline">
 
@@ -47,35 +47,40 @@
     <div class="container" style="margin-top: 10px;">
         <table class="table table-striped table-bordered">
             <thead>
-                <tr>
-                    <!-- Variable declarations for passing labels as parameters -->
-                    <!-- Table header for Computer Name -->
+            <tr>
+                <!-- Variable declarations for passing labels as parameters -->
+                <!-- Table header for Computer Name -->
 
-                    <th class="editMode" style="width: 60px; height: 22px;">
-                        <input type="checkbox" id="selectall"/>
-                        <span style="vertical-align: top;">
+                <th class="editMode" style="width: 60px; height: 22px;">
+                    <input type="checkbox" id="selectall"/>
+                    <span style="vertical-align: top;">
                                      -  <a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();">
                                             <i class="fa fa-trash-o fa-lg"></i>
                                         </a>
                         </span>
-                    </th>
-                    <th>Computer name</th>
-                    <th>Introduced date</th>
-                    <!-- Table header for Discontinued Date -->
-                    <th>Discontinued date</th>
-                    <!-- Table header for Company -->
-                    <th>Company</th>
-                </tr>
+                </th>
+                <th>Computer name</th>
+                <th>Introduced date</th>
+                <!-- Table header for Discontinued Date -->
+                <th>Discontinued date</th>
+                <!-- Table header for Company -->
+                <th>Company</th>
+            </tr>
             </thead>
             <!-- Browse attribute computers -->
             <tbody id="results">
-            <tr>
-                <td class="editMode"><input type="checkbox" name="cb" class="cb" value="0"></td>
-                <td><a href="editComputer.html" onclick="">IBM 650</a></td>
-                <td>1953-01-01</td>
-                <td>1962-01-01</td>
-                <td>IBM</td>
-            </tr>
+            <c:forEach items="${ pageDTO.content }" var="computer">
+                <tr>
+                    <td class="editMode"><input type="checkbox" name="cb" class="cb"
+                                                value="<c:out value="${ computer.id }" />"></td>
+                    <td><a href="<c:out value="${ pathEditComputer }?computer=${ computer.name }" />" onclick=""><c:out
+                            value="${ computer.name }"/></a></td>
+                        <%--<td><a href="" onclick=""><c:out value="${ computer.name }"/></a></td>--%>
+                    <td><c:out value="${ computer.introduced }"/></td>
+                    <td><c:out value="${ computer.discontinued }"/></td>
+                    <td><c:out value="${ computer.companyName }"/></td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>
@@ -84,31 +89,26 @@
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
         <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+            <cst:pager/>
         </ul>
-    </div>
 
-    <div class="btn-group btn-group-sm pull-right" role="group">
-        <button type="button" class="btn btn-default">10</button>
-        <button type="button" class="btn btn-default">50</button>
-        <button type="button" class="btn btn-default">100</button>
+        <div class="btn-group btn-group-sm pull-right" role="group">
+            <a href='<cst:links linkTo="self" displayBy="10" />'>
+                <button type="button" class="btn btn-default">10</button>
+            </a>
+            <a href='<cst:links linkTo="self" displayBy="20" />'>
+                <button type="button" class="btn btn-default">20</button>
+            </a>
+            <a href='<cst:links linkTo="self" displayBy="50" />'>
+                <button type="button" class="btn btn-default">50</button>
+            </a>
+            <a href='<cst:links linkTo="self" displayBy="100" />'>
+                <button type="button" class="btn btn-default">100</button>
+            </a>
+        </div>
     </div>
-
 </footer>
+
 <script src="<c:url value="/static"/>/js/jquery.min.js"></script>
 <script src="<c:url value="/static"/>/js/bootstrap.min.js"></script>
 <script src="<c:url value="/static"/>/js/dashboard.js"></script>

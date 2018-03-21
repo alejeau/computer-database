@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PageDTO<T extends ModelDTO> {
     protected List<T> content;
-    protected long pageNumber;
+    protected long currentPageNumber;
     protected long maxPageNumber;
     protected long objectsPerPage;
     protected long numberOfEntries;
@@ -14,9 +14,9 @@ public class PageDTO<T extends ModelDTO> {
     public PageDTO() {
     }
 
-    public PageDTO(List<T> content, long pageNumber, long maxPageNumber, long objectsPerPage, long numberOfEntries) {
+    public PageDTO(List<T> content, long currentPageNumber, long maxPageNumber, long objectsPerPage, long numberOfEntries) {
         this.content = content;
-        this.pageNumber = pageNumber;
+        this.currentPageNumber = currentPageNumber;
         this.maxPageNumber = maxPageNumber;
         this.objectsPerPage = objectsPerPage;
         this.numberOfEntries = numberOfEntries;
@@ -30,12 +30,12 @@ public class PageDTO<T extends ModelDTO> {
         this.content = content;
     }
 
-    public long getPageNumber() {
-        return pageNumber;
+    public long getCurrentPageNumber() {
+        return currentPageNumber;
     }
 
-    public void setPageNumber(long pageNumber) {
-        this.pageNumber = pageNumber;
+    public void setCurrentPageNumber(long currentPageNumber) {
+        this.currentPageNumber = currentPageNumber;
     }
 
     public long getMaxPageNumber() {
