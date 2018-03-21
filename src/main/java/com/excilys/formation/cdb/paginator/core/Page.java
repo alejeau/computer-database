@@ -11,7 +11,7 @@ import java.util.List;
  * @param <T> A model extending the Model class.
  */
 public abstract class Page<T extends Model> {
-    private static final Integer FIRST_PAGE = 0;
+    public static final Integer FIRST_PAGE = 0;
 
     private Integer pageNumber;
 
@@ -82,11 +82,11 @@ public abstract class Page<T extends Model> {
         return this.page;
     }
 
-    private void checkValidPageNumber(Long requestedPage, Long currentLastPageNumber) {
-        if (requestedPage >= FIRST_PAGE && requestedPage <= currentLastPageNumber) {
+    private void checkValidPageNumber(Long requestedPage, Long lastPageNumber) {
+        if (requestedPage >= FIRST_PAGE && requestedPage <= lastPageNumber) {
             this.pageNumber = requestedPage.intValue();
         } else {
-            this.pageNumber = requestedPage < FIRST_PAGE ? FIRST_PAGE : currentLastPageNumber.intValue();
+            this.pageNumber = requestedPage < FIRST_PAGE ? FIRST_PAGE : lastPageNumber.intValue();
         }
     }
 

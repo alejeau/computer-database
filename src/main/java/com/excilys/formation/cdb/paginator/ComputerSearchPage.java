@@ -13,7 +13,7 @@ public class ComputerSearchPage extends ComputerPage {
     }
 
     public ComputerSearchPage(String search, LimitValue limit) {
-        super();
+        super(limit);
         this.search = search;
     }
 

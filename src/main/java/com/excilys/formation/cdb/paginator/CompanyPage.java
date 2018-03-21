@@ -12,7 +12,7 @@ public class CompanyPage extends Page<Company> {
     }
 
     public CompanyPage(LimitValue limit) {
-        super();
+        super(limit);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class ComputerPage extends Page<Computer> {
     }
 
     public ComputerPage(LimitValue limit) {
-        super();
+        super(limit);
     }
 
     @Override
@@ -23,6 +23,6 @@ public class ComputerPage extends Page<Computer> {
 
     @Override
     protected void refresh(long offset) {
-        this.page = ComputerService.INSTANCE.getComputers(offset, this.limit.getValue());
+        this.page = ComputerService.INSTANCE.getComputers(offset, limit.getValue());
     }
 }
