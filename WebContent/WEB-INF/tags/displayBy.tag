@@ -7,7 +7,6 @@
     <c:forEach items="${ limitValues }" var="limit">
         <a href='<cst:links target="self" displayBy="${limit}" />'>
             <button type="button" class="btn btn-default">${limit}</button>
-
         </a>
     </c:forEach>
 </div>

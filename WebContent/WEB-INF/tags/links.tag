@@ -31,23 +31,23 @@
             <c:when
                     test="${ target.equals('dashboard') }">
                 <c:set var="tmpPath"
-                       value="${ tmpPath.concat('/computer-database/access') }"/>
+                       value="${ tmpPath.concat(pathDash) }"/>
             </c:when>
             <c:when test="${ target.equals('add') }">
                 <c:set var="tmpPath"
-                       value="${ tmpPath.concat('/computer-database/access/add') }"/>
+                       value="${ tmpPath.concat(pathAdd) }"/>
             </c:when>
             <c:when test="${ target.equals('edit') }">
                 <c:set var="tmpPath"
-                       value="${ tmpPath.concat('/computer-database/access/edit') }"/>
+                       value="${ tmpPath.concat(pathEdit) }"/>
             </c:when>
             <c:when test="${ target.equals('search') }">
                 <c:set var="tmpPath"
-                       value="${ tmpPath.concat('/computer-database/access/search') }"/>
+                       value="${ tmpPath.concat(pathSearch) }"/>
             </c:when>
             <c:when test="${ target.equals('reset') }">
                 <c:set var="tmpPath"
-                       value="${ tmpPath.concat('/computer-database/access?') }"/>
+                       value="${ tmpPath.concat(pathDash) }"/>
                 <c:set var="tmpPageNb"
                        value="${ emptyText.concat('?pageNb=0') }"/>
                 <c:set var="tmpDisplayBy"
