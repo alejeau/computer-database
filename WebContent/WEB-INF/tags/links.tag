@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%@attribute name="linkTo" required="true" %>
+<%@attribute name="target" required="true" %>
 <%@attribute name="search" required="false" %>
 <%@attribute name="pageNb" required="false" %>
 <%@attribute name="displayBy" required="false" %>
@@ -26,26 +26,26 @@
 
 <%-- --%>
 <c:choose>
-    <c:when test="${not empty linkTo}">
+    <c:when test="${not empty target}">
         <c:choose>
             <c:when
-                    test="${ linkTo.equals('dashboard') }">
+                    test="${ target.equals('dashboard') }">
                 <c:set var="tmpPath"
                        value="${ tmpPath.concat('/computer-database/access') }"/>
             </c:when>
-            <c:when test="${ linkTo.equals('add') }">
+            <c:when test="${ target.equals('add') }">
                 <c:set var="tmpPath"
                        value="${ tmpPath.concat('/computer-database/access/add') }"/>
             </c:when>
-            <c:when test="${ linkTo.equals('edit') }">
+            <c:when test="${ target.equals('edit') }">
                 <c:set var="tmpPath"
                        value="${ tmpPath.concat('/computer-database/access/edit') }"/>
             </c:when>
-            <c:when test="${ linkTo.equals('search') }">
+            <c:when test="${ target.equals('search') }">
                 <c:set var="tmpPath"
                        value="${ tmpPath.concat('/computer-database/access/search') }"/>
             </c:when>
-            <c:when test="${ linkTo.equals('reset') }">
+            <c:when test="${ target.equals('reset') }">
                 <c:set var="tmpPath"
                        value="${ tmpPath.concat('/computer-database/access?') }"/>
                 <c:set var="tmpPageNb"
@@ -53,7 +53,7 @@
                 <c:set var="tmpDisplayBy"
                        value="${ emptyText.concat('&displayBy=10') }"/>
             </c:when>
-            <c:when test="${ linkTo.equals('self') }">
+            <c:when test="${ target.equals('self') }">
                 <c:set var="tmpPath" value="${ tmpPath.concat(currentPath) }"/>
             </c:when>
             <c:otherwise>

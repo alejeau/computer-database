@@ -12,6 +12,7 @@ import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.paginator.ComputerPage;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.servlets.constants.Paths;
 import com.excilys.formation.cdb.servlets.constants.Views;
@@ -34,6 +35,7 @@ public class ServletDashboard extends HttpServlet {
         request.setAttribute("pageDTO", computerPageDTO);
         // Setting the vars
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
+        request.setAttribute("limitValues", LimitValue.toLongList());
 
         return request;
     }

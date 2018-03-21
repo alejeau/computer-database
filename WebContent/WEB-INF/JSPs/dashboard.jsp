@@ -15,7 +15,7 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="<cst:links linkTo="reset" />"> Application - Computer Database </a>
+        <a class="navbar-brand" href="<cst:links target="reset" />"> Application - Computer Database </a>
     </div>
 </header>
 
@@ -34,7 +34,7 @@
                 </form>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" id="addComputer" href="addComputer.html">Add Computer</a>
+                <a class="btn btn-success" id="addComputer" href="<cst:links target="pathAdd" />">Add Computer</a>
                 <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
             </div>
         </div>
@@ -75,7 +75,6 @@
                                                 value="<c:out value="${ computer.id }" />"></td>
                     <td><a href="<c:out value="${ pathEditComputer }?computer=${ computer.name }" />" onclick=""><c:out
                             value="${ computer.name }"/></a></td>
-                        <%--<td><a href="" onclick=""><c:out value="${ computer.name }"/></a></td>--%>
                     <td><c:out value="${ computer.introduced }"/></td>
                     <td><c:out value="${ computer.discontinued }"/></td>
                     <td><c:out value="${ computer.companyName }"/></td>
@@ -88,24 +87,8 @@
 
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
-        <ul class="pagination">
-            <cst:pager/>
-        </ul>
-
-        <div class="btn-group btn-group-sm pull-right" role="group">
-            <a href='<cst:links linkTo="self" displayBy="10" />'>
-                <button type="button" class="btn btn-default">10</button>
-            </a>
-            <a href='<cst:links linkTo="self" displayBy="20" />'>
-                <button type="button" class="btn btn-default">20</button>
-            </a>
-            <a href='<cst:links linkTo="self" displayBy="50" />'>
-                <button type="button" class="btn btn-default">50</button>
-            </a>
-            <a href='<cst:links linkTo="self" displayBy="100" />'>
-                <button type="button" class="btn btn-default">100</button>
-            </a>
-        </div>
+        <cst:pager/>
+        <cst:displayBy/>
     </div>
 </footer>
 
