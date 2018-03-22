@@ -50,11 +50,12 @@ public enum ComputerValidator {
 
     public static List<Error> validateDates(String introduced, String discontinued) {
         List<Error> errorList = null;
-        Error e1 = null;
-        Error e2 = null;
+        Error e1;
+        Error e2;
 
         e1 = validateDate(Field.COMPUTER_INTRODUCED, introduced);
         e2 = validateDate(Field.COMPUTER_DISCONTINUED, discontinued);
+        
         errorList = addToList(errorList, e1);
         errorList = addToList(errorList, e2);
 
