@@ -48,6 +48,12 @@ public enum ComputerValidator {
         return null;
     }
 
+    /**
+     * Checks whether the Strings are parsable LocalDates, and if introduced < discontinued.
+     * @param introduced the introduction date
+     * @param discontinued the discontinuation date
+     * @return null if no errors, a list of Error otherwise
+     */
     public static List<Error> validateDates(String introduced, String discontinued) {
         List<Error> errorList = null;
         Error e1;
@@ -55,7 +61,7 @@ public enum ComputerValidator {
 
         e1 = validateDate(Field.COMPUTER_INTRODUCED, introduced);
         e2 = validateDate(Field.COMPUTER_DISCONTINUED, discontinued);
-        
+
         errorList = addToList(errorList, e1);
         errorList = addToList(errorList, e2);
 
