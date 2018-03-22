@@ -19,8 +19,6 @@ public enum CompanyMapper {
         return new CompanyDTO(company.getId(), company.getName());
     }
 
-
-
     public static Company toCompany(CompanyDTO companyDTO) {
         return new Company(companyDTO.getId(), companyDTO.getName());
     }
@@ -59,5 +57,12 @@ public enum CompanyMapper {
         }
         return companies;
     }
+
+    public static List<CompanyDTO> mapList(List<Company> companyList) {
+        List<CompanyDTO> companyDTOList = new ArrayList<>();
+        companyList.forEach(company -> companyDTOList.add(CompanyMapper.toDTO(company)));
+        return companyDTOList;
+    }
+
 
 }
