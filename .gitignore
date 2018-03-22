@@ -19,3 +19,4 @@ config/db/db.properties
 cdb.log
 logs/*
 WebContent/WEB-INF/lib/*
+out/*
