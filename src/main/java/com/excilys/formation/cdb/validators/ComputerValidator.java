@@ -54,7 +54,7 @@ public enum ComputerValidator {
      * @param discontinued the discontinuation date
      * @return null if no errors, a list of Error otherwise
      */
-    public static List<Error> validateDates(String introduced, String discontinued) {
+    public List<Error> validateDates(String introduced, String discontinued) {
         List<Error> errorList = null;
         Error e1;
         Error e2;
@@ -79,7 +79,7 @@ public enum ComputerValidator {
      * @param date  the String to evaluate
      * @return null if valid date, an Error otherwise
      */
-    public static Error validateDate(Field field, String date) {
+    public Error validateDate(Field field, String date) {
         if (date != null) {
             if (!date.equals("")) {
                 // If the date ain't correctly formatted
@@ -94,7 +94,7 @@ public enum ComputerValidator {
         return null;
     }
 
-    protected static List<Error> addToList(List<Error> list, Error p) {
+    protected List<Error> addToList(List<Error> list, Error p) {
         if (p != null) {
             if (list == null) {
                 list = new ArrayList<Error>();
@@ -104,7 +104,7 @@ public enum ComputerValidator {
         return list;
     }
 
-    protected static List<Error> addToList(List<Error> list, List<Error> listToAdd) {
+    protected List<Error> addToList(List<Error> list, List<Error> listToAdd) {
         if (listToAdd != null) {
             if (list == null) {
                 list = new ArrayList<Error>();
@@ -112,8 +112,5 @@ public enum ComputerValidator {
             list.addAll(listToAdd);
         }
         return list;
-    }
-
-    public static void main(String[] args) {
     }
 }
