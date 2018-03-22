@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="cst" tagdir="/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -39,14 +40,14 @@
                             <div class="form-group">
                                 <label for="companyName">Company</label>
                                 <select class="form-control" id="companyName" >
-                                    <option value="0">--</option>
+                                    <cst:companyList/>
                                 </select>
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="Add" class="btn btn-primary">
                             or
-                            <a href="dashboard.html" class="btn btn-default">Cancel</a>
+                            <a href="<cst:links target="dashboard"/>" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>
