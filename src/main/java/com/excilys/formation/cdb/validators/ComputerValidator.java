@@ -26,8 +26,10 @@ public enum ComputerValidator {
     }
 
     public List<Error> validate(String name, String introduced, String discontinued) {
-
-        return null;
+        List<Error> errorList = null;
+        errorList = addToList(errorList, validateName(name));
+        errorList = addToList(errorList, validateDates(introduced, discontinued));
+        return errorList;
     }
 
     /**
@@ -50,7 +52,8 @@ public enum ComputerValidator {
 
     /**
      * Checks whether the Strings are parsable LocalDates, and if introduced < discontinued.
-     * @param introduced the introduction date
+     *
+     * @param introduced   the introduction date
      * @param discontinued the discontinuation date
      * @return null if no errors, a list of Error otherwise
      */
@@ -65,7 +68,7 @@ public enum ComputerValidator {
         errorList = addToList(errorList, e1);
         errorList = addToList(errorList, e2);
 
-        if (e1 != null && e2 != null && introduced.compareTo(discontinued) >= 0) {
+        if (e1 == null && e2 == null && (introduced.compareTo(discontinued) >= 0)) {
             errorList = addToList(errorList, new Error(Field.COMPUTER_DATES, ErrorMessage.INTRO_DATE_MUST_BE_BEFORE_DISCONTINUATION_DATE));
         }
 

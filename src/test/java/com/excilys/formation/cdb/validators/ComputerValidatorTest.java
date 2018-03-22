@@ -24,6 +24,15 @@ public class ComputerValidatorTest {
     private static final Error ERROR_DATE_PATTERN = new Error(Field.COMPUTER_DATES, ErrorMessage.MUST_FOLLOW_DATE_PATTERN);
 
     @Test
+    public void validate() {
+        assertNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, GOOD_DATE1, GOOD_DATE2));
+        assertNotNull(ComputerValidator.INSTANCE.validate(EMPTY_NAME, GOOD_DATE1, GOOD_DATE2));
+        assertNotNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, BAD_DATE1, GOOD_DATE2));
+        assertNotNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, GOOD_DATE1, BAD_DATE2));
+        assertNotNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, GOOD_DATE2, GOOD_DATE1));
+    }
+
+    @Test
     public void validateName() {
         assertNull(ComputerValidator.INSTANCE.validateName(GOOD_NAME));
         assertEquals(ComputerValidator.INSTANCE.validateName(null), ERROR_NULL_NAME);
@@ -35,6 +44,7 @@ public class ComputerValidatorTest {
     public void validateDates() {
         assertNull(ComputerValidator.INSTANCE.validateDates(GOOD_DATE1, GOOD_DATE2));
         assertNotNull(ComputerValidator.INSTANCE.validateDates(GOOD_DATE1, BAD_DATE1));
+        assertNotNull(ComputerValidator.INSTANCE.validateDates(GOOD_DATE2, GOOD_DATE1));
     }
 
     @Test
