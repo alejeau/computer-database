@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.ui;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.model.DatePattern;
 import com.excilys.formation.cdb.model.Model;
 import com.excilys.formation.cdb.paginator.CompanyPage;
 import com.excilys.formation.cdb.paginator.ComputerPage;
@@ -188,7 +189,6 @@ public enum CLI {
      */
     private LocalDate getDate(String event) {
         LocalDate date = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         boolean ok = false;
 
         while (!ok) {
@@ -196,7 +196,7 @@ public enum CLI {
             String d1 = sc.nextLine();
             if (d1.isEmpty() || d1.matches("\\d{4}-\\d{2}-\\d{2}")) {
                 if (!d1.isEmpty()) {
-                    date = LocalDate.parse(d1, formatter);
+                    date = LocalDate.parse(d1, DatePattern.FORMATTER);
                 }
                 ok = true;
             }
