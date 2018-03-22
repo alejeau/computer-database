@@ -97,7 +97,7 @@ public enum ComputerValidator {
     protected List<Error> addToList(List<Error> list, Error p) {
         if (p != null) {
             if (list == null) {
-                list = new ArrayList<Error>();
+                list = new ArrayList<>();
             }
             list.add(p);
         }
@@ -107,7 +107,7 @@ public enum ComputerValidator {
     protected List<Error> addToList(List<Error> list, List<Error> listToAdd) {
         if (listToAdd != null) {
             if (list == null) {
-                list = new ArrayList<Error>();
+                list = new ArrayList<>();
             }
             list.addAll(listToAdd);
         }
