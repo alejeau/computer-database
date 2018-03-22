@@ -5,13 +5,22 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0">
 
-	<servlet>	
-	    <servlet-name>ServletDashboard</servlet-name>
-	    <servlet-class>com.excilys.formation.cdb.servlets.ServletDashboard</servlet-class>
+	<servlet>
+		<servlet-name>ServletDashboard</servlet-name>
+		<servlet-class>com.excilys.formation.cdb.servlets.ServletDashboard</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>ServletAddComputer</servlet-name>
+		<servlet-class>com.excilys.formation.cdb.servlets.ServletAddComputer</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
 	    <servlet-name>ServletDashboard</servlet-name>
     	<url-pattern>/computer-database/access</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletAddComputer</servlet-name>
+		<url-pattern>/computer-database/access/add</url-pattern>
 	</servlet-mapping>
 </web-app>

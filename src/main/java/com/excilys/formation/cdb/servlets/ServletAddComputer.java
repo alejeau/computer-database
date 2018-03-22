@@ -18,14 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ServletDashboard extends HttpServlet {
-    private static final Logger LOG = LoggerFactory.getLogger(ServletDashboard.class);
+public class ServletAddComputer extends HttpServlet {
+    private static final Logger LOG = LoggerFactory.getLogger(ServletAddComputer.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ComputerPage computerPage = DashboardRequestMapper.mapDoGet(request);
         PageDTO<ComputerDTO> computerPageDTO = PageMapper.toPageDTO(computerPage, ComputerService.INSTANCE.getNumberOfComputers());
         request = setRequest(request, computerPageDTO);
-        this.getServletContext().getRequestDispatcher(Views.DASHBOARD).forward(request, response);
+        this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
     }
 
     private static HttpServletRequest setRequest(HttpServletRequest request, PageDTO<ComputerDTO> computerPageDTO) {
