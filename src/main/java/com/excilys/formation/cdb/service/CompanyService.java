@@ -33,6 +33,11 @@ public enum CompanyService implements CompanyDAO {
     }
 
     @Override
+    public List<Company> getCompanies() {
+        return CompanyDAOImpl.INSTANCE.getCompanies();
+    }
+
+    @Override
     public List<Company> getCompanies(Long index, Long limit) {
         return CompanyDAOImpl.INSTANCE.getCompanies(index, limit);
     }

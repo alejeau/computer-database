@@ -14,5 +14,7 @@ public interface CompanyDAO {
 
     List<Company> getCompany(String name, Long index, Long limit);
 
+    List<Company> getCompanies();
+    
     List<Company> getCompanies(Long index, Long limit);
 }

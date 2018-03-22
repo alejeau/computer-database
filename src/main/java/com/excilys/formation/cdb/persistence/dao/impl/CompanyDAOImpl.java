@@ -26,7 +26,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
     private static final String NUMBER_OF_COMPANIES_WITH_NAME = "SELECT COUNT(company_id) FROM company WHERE company_name LIKE ?;";
     private static final String COMPANY_BY_ID = "SELECT " + COMPANY_STAR + " FROM company WHERE company_id=?;";
     private static final String COMPANY_BY_NAME = "SELECT " + COMPANY_STAR + " FROM company WHERE company_name LIKE ? ORDER BY company_name LIMIT ?, ?;";
-    private static final String ALL_COMPANIES = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name LIMIT ?, ?;";
+    private static final String ALL_COMPANIES = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name;";
+    private static final String ALL_COMPANIES_WITH_LIMIT = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name LIMIT ?, ?;";
 
     CompanyDAOImpl() {
 
@@ -101,7 +102,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompanies(Long index, Long limit) {
+    public List<Company> getCompanies() {
         LOG.debug("getCompanies");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -110,6 +111,31 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
         try {
             prepStmt = conn.prepareStatement(ALL_COMPANIES);
+
+            LOG.debug("Executing query \"" + prepStmt + "\"");
+            rs = prepStmt.executeQuery();
+            companies = CompanyMapper.mapList(rs);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+        }
+
+        LOG.debug("Returning list of size " + companies.size());
+        return companies;
+    }
+
+    @Override
+    public List<Company> getCompanies(Long index, Long limit) {
+        LOG.debug("getCompanies, index" + index, ", limit: " + limit);
+        Connection conn = connectionManager.getConnection();
+        PreparedStatement prepStmt = null;
+        ResultSet rs = null;
+        List<Company> companies = new ArrayList<>();
+
+        try {
+            prepStmt = conn.prepareStatement(ALL_COMPANIES_WITH_LIMIT);
             prepStmt.setLong(1, index);
             prepStmt.setLong(2, limit);
 
