@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.servlets;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
+import com.excilys.formation.cdb.mapper.request.UrlMapper;
 import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
@@ -78,8 +79,10 @@ public class ServletAddComputer extends HttpServlet {
         request.setAttribute("companyList", companyList);
 
         HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
-        request.setAttribute("errorMap", hashMap
-        );
+        request.setAttribute("errorMap", hashMap);
+
+        request.setAttribute("currentPageNumber", UrlMapper.mapPageNumber(request));
+        request.setAttribute("currentDisplayBy", UrlMapper.mapDisplayBy(request).getValue());
 
         return request;
     }
