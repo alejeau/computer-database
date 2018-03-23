@@ -21,8 +21,6 @@ public enum CLI {
     INSTANCE;
 
     private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
-//    private static Consumer<? extends Model> displayShortToString = c -> System.out.println(c.shortToString());
-//    private static Consumer<Computer> displayShortToString = c -> System.out.println(c.shortToString());
 
     private Scanner sc = new Scanner(System.in);
 

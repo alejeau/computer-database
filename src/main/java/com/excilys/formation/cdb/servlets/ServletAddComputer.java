@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.servlets;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
+import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -68,16 +70,16 @@ public class ServletAddComputer extends HttpServlet {
     }
 
     private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList) {
-        // Setting the paths
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
-        // Setting the vars
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
 
         List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyService.INSTANCE.getCompanies());
         request.setAttribute("companyList", companyList);
 
-        request.setAttribute("errorList", errorList);
+        HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
+        request.setAttribute("errorMap", hashMap
+        );
 
         return request;
     }

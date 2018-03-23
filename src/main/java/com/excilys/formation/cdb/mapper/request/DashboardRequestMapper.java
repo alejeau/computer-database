@@ -1,10 +1,7 @@
 package com.excilys.formation.cdb.mapper.request;
 
-import com.excilys.formation.cdb.exceptions.UnauthorizedLimitValueException;
-import com.excilys.formation.cdb.mapper.LimitValueMapper;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.core.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,25 +16,8 @@ public class DashboardRequestMapper {
 
         ComputerPage computerPage;
 
-        String stringPageNb = request.getParameter(UrlFields.PAGE_NB);
-        String stringDisplayBy = request.getParameter(UrlFields.DISPLAY_BY);
-
-        LimitValue displayBy = LimitValue.TEN;
-        Long pageNb = Page.FIRST_PAGE.longValue();
-
-        if ((stringPageNb != null) && !stringPageNb.isEmpty() && stringPageNb.matches("[0-9]+")) {
-            pageNb = Long.parseLong(stringPageNb);
-        } else {
-            LOG.error("Can't parse '" + stringPageNb + "' as a Long!");
-        }
-
-        if ((stringDisplayBy != null) && !stringDisplayBy.isEmpty() && stringDisplayBy.matches("[0-9]+")) {
-            try {
-                displayBy = LimitValueMapper.toLimitValue(stringDisplayBy);
-            } catch (UnauthorizedLimitValueException e) {
-                LOG.error(e.getMessage());
-            }
-        }
+        Long pageNb = UrlMapper.mapPageNumber(request);
+        LimitValue displayBy = UrlMapper.mapDisplayBy(request);
 
         computerPage = new ComputerPage(displayBy);
         computerPage.goToPage(pageNb);
