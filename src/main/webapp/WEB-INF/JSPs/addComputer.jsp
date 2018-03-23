@@ -27,15 +27,19 @@
                     <fieldset>
                         <div class="form-group">
                             <label for="computerName">Computer name</label>
-                            <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name">
+                            <input type="text" class="form-control"
+                                   id="computerName" name="computerName" placeholder="Computer name"
+                                   data-validation="custom" data-validation-regexp="^[\wÀ-ÿ]+[\wÀ-ÿ_\-' \+]*$" >
                         </div>
                         <div class="form-group">
                             <label for="introduced">Introduced date</label>
-                            <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
+                            <input type="text" class="form-control" id="introduced" name="introduced" placeholder="Introduction date"
+                                   data-validation="custom" data-validation-regexp="^^(19[7-9]{1}[0-9]{1}|20[0-2]{1}[0-9]{1}|203[0-7]{1})-(1[0-2]{1}|0[1-9]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$|^$">
                         </div>
                         <div class="form-group">
                             <label for="discontinued">Discontinued date</label>
-                            <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
+                            <input type="text" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinuation date"
+                                   data-validation="custom" data-validation-regexp="^^(19[7-9]{1}[0-9]{1}|20[0-2]{1}[0-9]{1}|203[0-7]{1})-(1[0-2]{1}|0[1-9]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$|^$">
                         </div>
                         <div class="form-group">
                             <label for="companyId">Company</label>
@@ -54,5 +58,9 @@
         </div>
     </div>
 </section>
+
+<script src="<c:url value="/static"/>/js/jquery.min.js"></script>
+<script src="<c:url value="/static"/>/js/validator.min.js"></script>
+<script> $.validate(); </script>
 </body>
 </html>
