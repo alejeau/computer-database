@@ -1,18 +1,18 @@
-package com.excilys.formation.cdb.validators;
+package com.excilys.formation.cdb.validators.core;
 
 import java.util.Objects;
 
 public class Error {
-    private Field field;
+    private FieldName fieldName;
     private String message;
 
-    public Error(Field field, String message) {
-        this.field = field;
+    public Error(FieldName fieldName, String message) {
+        this.fieldName = fieldName;
         this.message = message;
     }
 
-    public Field getField() {
-        return field;
+    public FieldName getFieldName() {
+        return fieldName;
     }
 
     public String getMessage() {
@@ -21,10 +21,7 @@ public class Error {
 
     @Override
     public String toString() {
-        return "Error{" +
-                "field=" + field +
-                ", message='" + message + '\'' +
-                '}';
+        return new StringBuilder(fieldName.toString()).append(" ").append(message).toString();
     }
 
     @Override
@@ -36,11 +33,11 @@ public class Error {
             return false;
         }
         Error error = (Error) o;
-        return field == error.field && Objects.equals(message, error.message);
+        return fieldName == error.fieldName && Objects.equals(message, error.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(field, message);
+        return Objects.hash(fieldName, message);
     }
 }

@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.validators;
+package com.excilys.formation.cdb.validators.core;
 
 import com.excilys.formation.cdb.model.DatePattern;
 

@@ -1,5 +1,8 @@
 package com.excilys.formation.cdb.validators;
 
+import com.excilys.formation.cdb.validators.core.Error;
+import com.excilys.formation.cdb.validators.core.ErrorMessage;
+import com.excilys.formation.cdb.validators.core.FieldName;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -17,11 +20,11 @@ public class ComputerValidatorTest {
     private static final String BAD_DATE2 = "2018-03-35";
     private static final String BAD_DATE3 = "vcidbqciouqb";
 
-    private static final Error ERROR_NULL_NAME = new Error(Field.COMPUTER_NAME, ErrorMessage.CANT_BE_NULL);
-    private static final Error ERROR_EMPTY_NAME = new Error(Field.COMPUTER_NAME, ErrorMessage.CANT_BE_EMPTY);
-    private static final Error ERROR_SPACE = new Error(Field.COMPUTER_NAME, ErrorMessage.CANT_START_WITH_SPACE);
+    private static final Error ERROR_NULL_NAME = new Error(FieldName.COMPUTER_NAME, ErrorMessage.CANT_BE_NULL);
+    private static final Error ERROR_EMPTY_NAME = new Error(FieldName.COMPUTER_NAME, ErrorMessage.CANT_BE_EMPTY);
+    private static final Error ERROR_SPACE = new Error(FieldName.COMPUTER_NAME, ErrorMessage.CANT_START_WITH_SPACE);
 
-    private static final Error ERROR_DATE_PATTERN = new Error(Field.COMPUTER_DATES, ErrorMessage.MUST_FOLLOW_DATE_PATTERN);
+    private static final Error ERROR_DATE_PATTERN = new Error(FieldName.COMPUTER_DATES, ErrorMessage.MUST_FOLLOW_DATE_PATTERN);
 
     @Test
     public void validate() {
@@ -49,10 +52,10 @@ public class ComputerValidatorTest {
 
     @Test
     public void validateDate() {
-        assertNull(ComputerValidator.INSTANCE.validateDate(Field.COMPUTER_DATES, GOOD_DATE1));
-        assertNull(ComputerValidator.INSTANCE.validateDate(Field.COMPUTER_DATES, EMPTY_DATE));
-        assertEquals(ComputerValidator.INSTANCE.validateDate(Field.COMPUTER_DATES, BAD_DATE1), ERROR_DATE_PATTERN);
-        assertEquals(ComputerValidator.INSTANCE.validateDate(Field.COMPUTER_DATES, BAD_DATE2), ERROR_DATE_PATTERN);
-        assertEquals(ComputerValidator.INSTANCE.validateDate(Field.COMPUTER_DATES, BAD_DATE3), ERROR_DATE_PATTERN);
+        assertNull(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, GOOD_DATE1));
+        assertNull(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, EMPTY_DATE));
+        assertEquals(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE1), ERROR_DATE_PATTERN);
+        assertEquals(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE2), ERROR_DATE_PATTERN);
+        assertEquals(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE3), ERROR_DATE_PATTERN);
     }
 }

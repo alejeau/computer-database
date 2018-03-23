@@ -1,6 +1,6 @@
-package com.excilys.formation.cdb.validators;
+package com.excilys.formation.cdb.validators.core;
 
-public enum Field {
+public enum FieldName {
     COMPUTER_NAME,
     COMPUTER_INTRODUCED,
     COMPUTER_DISCONTINUED,

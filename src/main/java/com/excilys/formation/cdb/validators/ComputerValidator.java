@@ -4,6 +4,9 @@ import com.excilys.formation.cdb.exceptions.DateException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
+import com.excilys.formation.cdb.validators.core.Error;
+import com.excilys.formation.cdb.validators.core.ErrorMessage;
+import com.excilys.formation.cdb.validators.core.FieldName;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -40,11 +43,11 @@ public enum ComputerValidator {
      */
     public Error validateName(String name) {
         if (name == null) {
-            return new Error(Field.COMPUTER_NAME, ErrorMessage.CANT_BE_NULL);
+            return new Error(FieldName.COMPUTER_NAME, ErrorMessage.CANT_BE_NULL);
         } else if (name.equals("") || name.isEmpty()) {
-            return new Error(Field.COMPUTER_NAME, ErrorMessage.CANT_BE_EMPTY);
+            return new Error(FieldName.COMPUTER_NAME, ErrorMessage.CANT_BE_EMPTY);
         } else if (name.startsWith(" ")) {
-            return new Error(Field.COMPUTER_NAME, ErrorMessage.CANT_START_WITH_SPACE);
+            return new Error(FieldName.COMPUTER_NAME, ErrorMessage.CANT_START_WITH_SPACE);
         }
 
         return null;
@@ -62,14 +65,21 @@ public enum ComputerValidator {
         Error e1;
         Error e2;
 
-        e1 = validateDate(Field.COMPUTER_INTRODUCED, introduced);
-        e2 = validateDate(Field.COMPUTER_DISCONTINUED, discontinued);
+        e1 = validateDate(FieldName.COMPUTER_INTRODUCED, introduced);
+        e2 = validateDate(FieldName.COMPUTER_DISCONTINUED, discontinued);
 
         errorList = addToList(errorList, e1);
         errorList = addToList(errorList, e2);
 
-        if (e1 == null && e2 == null && (introduced.compareTo(discontinued) >= 0)) {
-            errorList = addToList(errorList, new Error(Field.COMPUTER_DATES, ErrorMessage.INTRO_DATE_MUST_BE_BEFORE_DISCONTINUATION_DATE));
+        // if no errors and both dates aren't null, we can check their validity
+        if (e1 == null
+                && e2 == null
+                && introduced != null
+                && !introduced.isEmpty()
+                && discontinued != null
+                && !discontinued.isEmpty()
+                && (introduced.compareTo(discontinued) >= 0)) {
+            errorList = addToList(errorList, new Error(FieldName.COMPUTER_DATES, ErrorMessage.INTRO_DATE_MUST_BE_BEFORE_DISCONTINUATION_DATE));
         }
 
         return errorList;
@@ -78,18 +88,18 @@ public enum ComputerValidator {
     /**
      * Checks whether a String can be converted to a LocalDate
      *
-     * @param field Field.COMPUTER_INTRODUCED or Field.COMPUTER_DISCONTINUED
+     * @param fieldName FieldName.COMPUTER_INTRODUCED or FieldName.COMPUTER_DISCONTINUED
      * @param date  the String to evaluate
      * @return null if valid date, an Error otherwise
      */
-    public Error validateDate(Field field, String date) {
+    public Error validateDate(FieldName fieldName, String date) {
         if (date != null) {
             if (!date.equals("")) {
                 // If the date ain't correctly formatted
                 try {
                     LocalDate.parse(date, DatePattern.FORMATTER);
                 } catch (DateTimeParseException e) {
-                    return new Error(field, ErrorMessage.MUST_FOLLOW_DATE_PATTERN);
+                    return new Error(fieldName, ErrorMessage.MUST_FOLLOW_DATE_PATTERN);
                 }
             }
         }
