@@ -18,5 +18,6 @@ computer-database.iml
 config/db/db.properties
 cdb.log
 logs/*
+scr/main/webapp/WEB-INF/lib/*
 WebContent/WEB-INF/lib/*
 out/*
