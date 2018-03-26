@@ -81,8 +81,8 @@ public class ServletAddComputer extends HttpServlet {
         HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
         request.setAttribute("errorMap", hashMap);
 
-        request.setAttribute("currentPageNumber", UrlMapper.mapPageNumber(request));
-        request.setAttribute("currentDisplayBy", UrlMapper.mapDisplayBy(request).getValue());
+        request.setAttribute("targetPageNumber", UrlMapper.mapPageNumber(request));
+        request.setAttribute("targetDisplayBy", UrlMapper.mapDisplayBy(request).getValue());
 
         return request;
     }

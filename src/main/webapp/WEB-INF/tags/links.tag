@@ -19,10 +19,11 @@
 <c:set var="tmpPath" value=""/>
 <c:set var="tmpSearchMode" value="${ false }"/>
 
-<c:set var="tmpPageNb"
-       value="${ emptyText.concat('?pageNb=').concat(pageDTO.currentPageNumber) }"/>
-<c:set var="tmpDisplayBy"
-       value="${ emptyText.concat('&displayBy=').concat(pageDTO.objectsPerPage) }"/>
+
+<c:set var="whichPageNb" value="${ not empty targetPageNumber ? targetPageNumber : pageDTO.currentPageNumber }"/>
+<c:set var="tmpPageNb" value="${ emptyText.concat('?pageNb=').concat(whichPageNb) }"/>
+<c:set var="whichDisplayBy" value="${ not empty targetDisplayBy ? targetDisplayBy : pageDTO.objectsPerPage }"/>
+<c:set var="tmpDisplayBy" value="${ emptyText.concat('&displayBy=').concat(whichDisplayBy) }"/>
 
 <%-- --%>
 <c:choose>
