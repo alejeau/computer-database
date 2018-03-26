@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LimitValueMapper {
-    private static final Logger LOG = LoggerFactory.getLogger(LimitValueMapper.class);
-
     public static LimitValue toLimitValue(Long value) throws UnauthorizedLimitValueException {
         for (LimitValue val : LimitValue.values()) {
             if (value.equals(val.getValue())) {

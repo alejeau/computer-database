@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     }
 
-    public Long count(String query) {
+    public Long count(String query) throws DAOException {
         LOG.debug("count:");
         Connection conn = connectionManager.getConnection();
         Statement stmt = null;
@@ -40,8 +41,8 @@ public enum SimpleDAOImpl implements SimpleDAO {
                 }
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't execute the requested COUNT query!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, stmt, rs);
         }
@@ -50,7 +51,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
         return l;
     }
 
-    public Long countElementsWithName(String query, String name) {
+    public Long countElementsWithName(String query, String name) throws DAOException {
         LOG.debug("countElementsWithName");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -69,8 +70,8 @@ public enum SimpleDAOImpl implements SimpleDAO {
                 }
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't execute the requested COUNT LIKE query!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }

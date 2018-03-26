@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
@@ -38,18 +39,18 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     }
 
-    public Long getNumberOfComputers() {
+    public Long getNumberOfComputers() throws DAOException {
         LOG.debug("getNumberOfComputers");
         return SimpleDAOImpl.INSTANCE.count(NUMBER_OF_COMPUTERS);
     }
 
-    public Long getNumberOfComputersWithName(String name) {
+    public Long getNumberOfComputersWithName(String name) throws DAOException {
         LOG.debug("getNumberOfComputersWithName");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.countElementsWithName(NUMBER_OF_COMPUTERS_WITH_NAME, name);
     }
 
-    public Computer getComputer(Long id) {
+    public Computer getComputer(Long id) throws DAOException {
         LOG.debug("getComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -64,8 +65,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
             rs = prepStmt.executeQuery();
             c = ComputerMapper.map(rs);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't get computer with ID " + id + "!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -74,12 +75,12 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return c;
     }
 
-    public List<Computer> getComputer(String name, long index, Long limit) {
+    public List<Computer> getComputer(String name, long index, Long limit) throws DAOException {
         LOG.debug("getComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
-        List<Computer> computers = new ArrayList<>();
+        List<Computer> computers;
 
         try {
             prepStmt = conn.prepareStatement(SELECT_COMPUTER_BY_NAME);
@@ -91,8 +92,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
             rs = prepStmt.executeQuery();
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't get list of computers with NAME LIKE " + name + "!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -101,12 +102,12 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return computers;
     }
 
-    public List<Computer> getComputers(long index, Long limit) {
+    public List<Computer> getComputers(long index, Long limit) throws DAOException {
         LOG.debug("getComputers");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
-        List<Computer> computers = new ArrayList<>();
+        List<Computer> computers;
 
         try {
             prepStmt = conn.prepareStatement(SELECT_ALL_COMPUTERS);
@@ -118,8 +119,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't get list of computers from " + index + " to " + limit + "!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -128,7 +129,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return computers;
     }
 
-    public Long persistComputer(Computer c) {
+    public Long persistComputer(Computer computer) throws DAOException {
         LOG.debug("persistComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -137,19 +138,19 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
         try {
             prepStmt = conn.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
-            prepStmt.setString(1, c.getName());
-            if (c.getIntroduced() != null) {
-                prepStmt.setDate(2, Date.valueOf(c.getIntroduced()));
+            prepStmt.setString(1, computer.getName());
+            if (computer.getIntroduced() != null) {
+                prepStmt.setDate(2, Date.valueOf(computer.getIntroduced()));
             } else {
                 prepStmt.setNull(2, Types.DATE);
             }
 
-            if (c.getDiscontinued() != null) {
-                prepStmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+            if (computer.getDiscontinued() != null) {
+                prepStmt.setDate(3, Date.valueOf(computer.getDiscontinued()));
             } else {
                 prepStmt.setNull(3, Types.DATE);
             }
-            prepStmt.setLong(4, c.getCompany().getId());
+            prepStmt.setLong(4, computer.getCompany().getId());
             prepStmt.executeUpdate();
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
@@ -158,8 +159,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
                 createdId = rs.getLong(1);
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't persist the computer " + computer.shortToString() + ".");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -168,38 +169,38 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return createdId;
     }
 
-    public void updateComputer(Computer c) {
+    public void updateComputer(Computer computer) throws DAOException {
         LOG.debug("updateComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
 
         try {
             prepStmt = conn.prepareStatement(UPDATE_COMPUTER);
-            prepStmt.setString(1, c.getName());
-            if (c.getIntroduced() != null) {
-                prepStmt.setDate(2, Date.valueOf(c.getIntroduced()));
+            prepStmt.setString(1, computer.getName());
+            if (computer.getIntroduced() != null) {
+                prepStmt.setDate(2, Date.valueOf(computer.getIntroduced()));
             } else {
                 prepStmt.setNull(2, Types.DATE);
             }
-            if (c.getDiscontinued() != null) {
-                prepStmt.setDate(3, Date.valueOf(c.getDiscontinued()));
+            if (computer.getDiscontinued() != null) {
+                prepStmt.setDate(3, Date.valueOf(computer.getDiscontinued()));
             } else {
                 prepStmt.setNull(3, Types.DATE);
             }
-            prepStmt.setLong(4, c.getCompany().getId());
-            prepStmt.setLong(5, c.getId());
+            prepStmt.setLong(4, computer.getCompany().getId());
+            prepStmt.setLong(5, computer.getId());
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             prepStmt.executeUpdate();
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't update the computer with ID " + computer.getId() + ".");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, null);
         }
     }
 
-    public void deleteComputer(Long id) {
+    public void deleteComputer(Long id) throws DAOException {
         LOG.debug("deleteComputer");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
@@ -211,8 +212,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.debug("Executing query \"" + prepStmt + "\"");
             prepStmt.executeUpdate();
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't delete the computer with ID " + id + ".");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, null);
         }

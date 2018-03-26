@@ -1,24 +1,25 @@
 package com.excilys.formation.cdb.persistence.dao;
 
+import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Computer;
 
 import java.util.List;
 
 public interface ComputerDAO {
 
-    Long getNumberOfComputers();
+    Long getNumberOfComputers() throws DAOException;
 
-    Long getNumberOfComputersWithName(String name);
+    Long getNumberOfComputersWithName(String name) throws DAOException;
 
-    Computer getComputer(Long id);
+    Computer getComputer(Long id) throws DAOException;
 
-    List<Computer> getComputer(String name, long index, Long limit);
+    List<Computer> getComputer(String name, long index, Long limit) throws DAOException;
 
-    List<Computer> getComputers(long index, Long limit);
+    List<Computer> getComputers(long index, Long limit) throws DAOException;
 
-    void updateComputer(Computer c);
+    void updateComputer(Computer c) throws DAOException;
 
-    Long persistComputer(Computer c);
+    Long persistComputer(Computer c) throws DAOException;
 
-    void deleteComputer(Long id);
+    void deleteComputer(Long id) throws DAOException;
 }

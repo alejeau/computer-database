@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
@@ -30,30 +31,29 @@ public enum CompanyDAOImpl implements CompanyDAO {
     private static final String ALL_COMPANIES_WITH_LIMIT = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name LIMIT ?, ?;";
 
     CompanyDAOImpl() {
-
     }
 
     @Override
-    public Long getNumberOfCompanies() {
+    public Long getNumberOfCompanies() throws DAOException {
         LOG.debug("getNumberOfCompanies");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.count(NUMBER_OF_COMPANIES);
     }
 
     @Override
-    public Long getNumberOfCompaniesWithName(String name) {
+    public Long getNumberOfCompaniesWithName(String name) throws DAOException {
         LOG.debug("getNumberOfCompaniesWithName");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.countElementsWithName(NUMBER_OF_COMPANIES_WITH_NAME, name);
     }
 
     @Override
-    public Company getCompany(Long id) {
+    public Company getCompany(Long id) throws DAOException {
         LOG.debug("getCompanyName (with id)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
-        Company c = null;
+        Company company;
 
         try {
             prepStmt = conn.prepareStatement(COMPANY_BY_ID);
@@ -61,25 +61,25 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
-            c = CompanyMapper.map(rs);
+            company = CompanyMapper.map(rs);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't get company with ID " + id + "!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning " + c);
-        return c;
+        LOG.debug("Returning " + company);
+        return company;
     }
 
     @Override
-    public List<Company> getCompany(String name, Long index, Long limit) {
+    public List<Company> getCompany(String name, Long index, Long limit) throws DAOException {
         LOG.debug("getCompanyName (with name)");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
-        List<Company> companies = new ArrayList<>();
+        List<Company> companies;
 
         try {
             prepStmt = conn.prepareStatement(COMPANY_BY_NAME);
@@ -91,8 +91,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
             rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't get list of companies with NAME LIKE " + name + "!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -102,12 +102,12 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompanies() {
+    public List<Company> getCompanies() throws DAOException {
         LOG.debug("getCompanies");
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
-        List<Company> companies = new ArrayList<>();
+        List<Company> companies;
 
         try {
             prepStmt = conn.prepareStatement(ALL_COMPANIES);
@@ -116,8 +116,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
             rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't get the list of companies!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -127,12 +127,12 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompanies(Long index, Long limit) {
+    public List<Company> getCompanies(Long index, Long limit) throws DAOException {
         LOG.debug("getCompanies, index" + index, ", limit: " + limit);
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
-        List<Company> companies = new ArrayList<>();
+        List<Company> companies;
 
         try {
             prepStmt = conn.prepareStatement(ALL_COMPANIES_WITH_LIMIT);
@@ -143,8 +143,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
             rs = prepStmt.executeQuery();
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't get list of companies from " + index + " to " + limit + "!");
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }

@@ -16,7 +16,7 @@ public class UrlMapper {
     public static Long mapPageNumber(HttpServletRequest request) {
         String stringPageNb = request.getParameter(UrlFields.PAGE_NB);
 
-        Long pageNb = Page.FIRST_PAGE.longValue();
+        Long pageNb = Page.FIRST_PAGE;
 
         if ((stringPageNb != null) && !stringPageNb.isEmpty() && stringPageNb.matches("[0-9]+")) {
             pageNb = Long.parseLong(stringPageNb);
