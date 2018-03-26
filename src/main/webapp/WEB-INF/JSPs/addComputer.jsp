@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8"/>
     <title>Computer Database</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
@@ -29,17 +30,17 @@
                         <div class="form-group">
                             <label for="computerName">Computer name</label> <span class="errmsg"><cst:errors error="name" /></span>
                             <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name"
-                                   data-validation="custom" data-validation-regexp="^[\wÀ-ÿ]+[\wÀ-ÿ_\-' \+]*$" >
+                                   pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\* ]+$" required="required" >
                         </div>
                         <div class="form-group">
                             <label for="introduced">Introduced date</label> <span class="errmsg"><cst:errors error="introduced" /> <cst:errors error="dates" /></span>
-                            <input type="text" class="form-control" id="introduced" name="introduced" placeholder="Introduction date"
-                                   data-validation="custom" data-validation-regexp="^^(19[7-9]{1}[0-9]{1}|20[0-2]{1}[0-9]{1}|203[0-7]{1})-(1[0-2]{1}|0[1-9]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$|^$">
+                            <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduction date"
+                                   data-validation="date" data-validation-format="yyyy-mm-dd">
                         </div>
                         <div class="form-group">
                             <label for="discontinued">Discontinued date</label> <span class="errmsg"><cst:errors error="discontinued" /> <cst:errors error="dates" /></span>
-                            <input type="text" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinuation date"
-                                   data-validation="custom" data-validation-regexp="^^(19[7-9]{1}[0-9]{1}|20[0-2]{1}[0-9]{1}|203[0-7]{1})-(1[0-2]{1}|0[1-9]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$|^$">
+                            <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinuation date"
+                                   data-validation="date" data-validation-format="yyyy-mm-dd">
                         </div>
                         <div class="form-group">
                             <label for="companyId">Company</label>
@@ -60,7 +61,12 @@
 </section>
 
 <script src="<c:url value="/static"/>/js/jquery.min.js"></script>
-<script src="<c:url value="/static"/>/js/validator.min.js"></script>
-<script> $.validate(); </script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+<script>
+    $.validate({
+        lang: 'en',
+        modules: 'html5'
+    });
+</script>
 </body>
 </html>
