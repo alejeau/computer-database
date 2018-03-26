@@ -24,7 +24,6 @@
 
         <!-- test -->
         <junit.version>4.12</junit.version>
-        <mockito.version>1.9.5</mockito.version>
 
         <!-- compile -->
         <!-- logs -->
@@ -124,13 +123,6 @@
             <version>${javax.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>org.apache.tomcat.embed</groupId>-->
-            <!--<artifactId>tomcat-embed-jasper</artifactId>-->
-            <!--<version>${jasper.version}</version>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
