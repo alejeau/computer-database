@@ -8,6 +8,7 @@
 <%@attribute name="displayBy" required="false" %>
 <%@attribute name="field" required="false" %>
 <%@attribute name="ascending" required="false" %>
+<%@attribute name="computerId" required="false" %>
 
 <c:set var="pathDash" value="/computer-database/access"/>
 <c:set var="pathAdd" value="/computer-database/access/add"/>

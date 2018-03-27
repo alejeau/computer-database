@@ -13,19 +13,20 @@ public class UrlMapper {
 
     private static final Logger LOG = LoggerFactory.getLogger(UrlMapper.class);
 
-    public static Long mapPageNumber(HttpServletRequest request) {
-        String stringPageNb = request.getParameter(UrlFields.PAGE_NB);
+    public static Long mapLongNumber(HttpServletRequest request, String field, Long defaultValue) {
+        String stringLong = request.getParameter(field);
+        LOG.debug("stringLong: {}", stringLong);
+        Long value = defaultValue;
 
-        Long pageNb = Page.FIRST_PAGE;
-
-        if ((stringPageNb != null) && !stringPageNb.isEmpty() && stringPageNb.matches("[0-9]+")) {
-            pageNb = Long.parseLong(stringPageNb);
+        if ((stringLong != null) && !stringLong.isEmpty() && stringLong.matches("[0-9]+")) {
+            value = Long.parseLong(stringLong);
         } else {
-            LOG.error("Can't parse '" + stringPageNb + "' as a Long!");
+            LOG.error("Can't parse '" + stringLong + "' as a Long!");
         }
 
-        return pageNb;
+        return value;
     }
+
 
     public static LimitValue mapDisplayBy(HttpServletRequest request) {
         String stringDisplayBy = request.getParameter(UrlFields.DISPLAY_BY);

@@ -35,7 +35,7 @@
             </div>
             <div class="pull-right">
                 <a class="btn btn-success" id="addComputer" href="<cst:links target="add" />">Add Computer</a>
-                <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Delete</a>
             </div>
         </div>
     </div>
@@ -73,8 +73,11 @@
                 <tr>
                     <td class="editMode"><input type="checkbox" name="cb" class="cb"
                                                 value="<c:out value="${ computer.id }" />"></td>
-                    <td><a href="<c:out value="${ pathEditComputer }?computer=${ computer.name }" />" onclick=""><c:out
-                            value="${ computer.name }"/></a></td>
+                    <td>
+                        <a href="<cst:links target="edit" />&computerId=${ computer.id }">
+                            <c:out value="${ computer.name }"/>
+                        </a>
+                    </td>
                     <td><c:out value="${ computer.introduced }"/></td>
                     <td><c:out value="${ computer.discontinued }"/></td>
                     <td><c:out value="${ computer.companyName }"/></td>

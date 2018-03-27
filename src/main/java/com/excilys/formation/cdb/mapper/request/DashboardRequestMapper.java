@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.mapper.request;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.paginator.core.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ public class DashboardRequestMapper {
 
         ComputerPage computerPage;
 
-        Long pageNb = UrlMapper.mapPageNumber(request);
+        Long pageNb = UrlMapper.mapLongNumber(request, UrlFields.PAGE_NB, Page.FIRST_PAGE);
         LimitValue displayBy = UrlMapper.mapDisplayBy(request);
 
         computerPage = new ComputerPage(displayBy);

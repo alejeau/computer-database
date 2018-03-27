@@ -14,10 +14,13 @@
         <servlet-name>ServletDashboard</servlet-name>
         <servlet-class>com.excilys.formation.cdb.servlets.ServletDashboard</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>ServletAddComputer</servlet-name>
         <servlet-class>com.excilys.formation.cdb.servlets.ServletAddComputer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletEditComputer</servlet-name>
+        <servlet-class>com.excilys.formation.cdb.servlets.ServletEditComputer</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -27,6 +30,10 @@
     <servlet-mapping>
         <servlet-name>ServletAddComputer</servlet-name>
         <url-pattern>/access/add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletEditComputer</servlet-name>
+        <url-pattern>/access/edit</url-pattern>
     </servlet-mapping>
 
     <error-page>

@@ -4,7 +4,7 @@
 <option value="-1">No company</option>
 <c:forEach items="${ companyList }" var="companyDTO">
     <option value="<c:out value="${ companyDTO.id }" />"
-            <c:out value="${ (selectedId == companyDTO.id) ? 'selected' : '' }" />>
+            <c:out value="${ (companyDTO.name == computerDTO.companyName) ? 'selected' : '' }" />>
         <c:out value="${ companyDTO.name }" />
     </option>
 </c:forEach>
