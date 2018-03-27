@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence;
 
+import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 public class ConnectionManagerTest {
 
     @Test
-    public void getConnection() {
+    public void getConnection() throws ConnectionException {
         try (Connection conn = ConnectionManagerImpl.INSTANCE.getConnection()) {
             assertNotNull(conn);
         } catch (SQLException e) {

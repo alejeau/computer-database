@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
@@ -51,7 +52,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public Computer getComputer(Long id) throws DAOException {
         LOG.debug("getComputer");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Computer c;
@@ -76,7 +83,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public List<Computer> getComputer(String name, long index, Long limit) throws DAOException {
         LOG.debug("getComputer");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers;
@@ -103,7 +116,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public List<Computer> getComputers(long index, Long limit) throws DAOException {
         LOG.debug("getComputers");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers;
@@ -130,7 +149,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public Long persistComputer(Computer computer) throws DAOException {
         LOG.debug("persistComputer");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long createdId = null;
@@ -174,7 +199,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public void updateComputer(Computer computer) throws DAOException {
         LOG.debug("updateComputer");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
 
         try {
@@ -205,7 +236,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     public void deleteComputer(Long id) throws DAOException {
         LOG.debug("deleteComputer");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
 
         try {

@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
@@ -49,7 +50,13 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public Company getCompany(Long id) throws DAOException {
         LOG.debug("getCompanyName (with id)");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Company company;
@@ -75,7 +82,13 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompany(String name, Long index, Long limit) throws DAOException {
         LOG.debug("getCompanyName (with name)");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -103,7 +116,13 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompanies() throws DAOException {
         LOG.debug("getCompanies");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -128,7 +147,13 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompanies(Long index, Long limit) throws DAOException {
         LOG.debug("getCompanies, index" + index, ", limit: " + limit);
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;

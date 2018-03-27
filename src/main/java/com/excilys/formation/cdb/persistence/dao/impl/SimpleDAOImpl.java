@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
@@ -14,9 +15,7 @@ import java.sql.Statement;
 
 public enum SimpleDAOImpl implements SimpleDAO {
     INSTANCE;
-
     private static final Logger LOG = LoggerFactory.getLogger(SimpleDAOImpl.class);
-
     private static ConnectionManagerImpl connectionManager = ConnectionManagerImpl.INSTANCE;
 
     SimpleDAOImpl() {
@@ -25,7 +24,13 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     public Long count(String query) throws DAOException {
         LOG.debug("count:");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         Statement stmt = null;
         ResultSet rs = null;
         Long l = null;
@@ -53,7 +58,13 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     public Long countElementsWithName(String query, String name) throws DAOException {
         LOG.debug("countElementsWithName");
-        Connection conn = connectionManager.getConnection();
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long l = null;

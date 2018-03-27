@@ -30,6 +30,7 @@ public class ServletAddComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletAddComputer.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug("doGet");
         try {
             request = setRequest(request, null);
         } catch (ServiceException e) {
@@ -40,6 +41,7 @@ public class ServletAddComputer extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug("doPost");
         List<Error> errorList;
 
         String computerName = request.getParameter("computerName");
@@ -81,6 +83,7 @@ public class ServletAddComputer extends HttpServlet {
     }
 
     private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList) throws ServiceException {
+        LOG.debug("setRequest");
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);

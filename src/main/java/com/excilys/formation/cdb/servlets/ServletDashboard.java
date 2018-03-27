@@ -24,6 +24,7 @@ public class ServletDashboard extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletDashboard.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug("doGet");
         try {
             ComputerPage computerPage = DashboardRequestMapper.mapDoGet(request);
             PageDTO<ComputerDTO> computerPageDTO = PageMapper.toPageDTO(computerPage, ComputerService.INSTANCE.getNumberOfComputers());
@@ -36,6 +37,7 @@ public class ServletDashboard extends HttpServlet {
     }
 
     private static HttpServletRequest setRequest(HttpServletRequest request, PageDTO<ComputerDTO> computerPageDTO) {
+        LOG.debug("setRequest");
         // Setting the paths
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
