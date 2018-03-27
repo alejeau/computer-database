@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app
-  xmlns="http://java.sun.com/xml/ns/javaee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-  version="3.0">
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        version="3.0">
 
-	<servlet>
-		<servlet-name>ServletDashboard</servlet-name>
-		<servlet-class>com.excilys.formation.cdb.servlets.ServletDashboard</servlet-class>
-	</servlet>
+    <servlet>
+        <servlet-name>ServletDashboard</servlet-name>
+        <servlet-class>com.excilys.formation.cdb.servlets.ServletDashboard</servlet-class>
+    </servlet>
 
-	<servlet>
-		<servlet-name>ServletAddComputer</servlet-name>
-		<servlet-class>com.excilys.formation.cdb.servlets.ServletAddComputer</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-	    <servlet-name>ServletDashboard</servlet-name>
-    	<url-pattern>/access</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>ServletAddComputer</servlet-name>
-		<url-pattern>/access/add</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>ServletAddComputer</servlet-name>
+        <servlet-class>com.excilys.formation.cdb.servlets.ServletAddComputer</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ServletDashboard</servlet-name>
+        <url-pattern>/access</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddComputer</servlet-name>
+        <url-pattern>/access/add</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <!-- Forbidden directory listing -->
+        <error-code>403</error-code>
+        <location>/WEB-INF/JSPs/403.jsp</location>
+    </error-page>
+    <error-page>
+        <!-- Missing resource -->
+        <error-code>404</error-code>
+        <location>/WEB-INF/JSPs/404.jsp</location>
+    </error-page>
+    <error-page>
+        <!-- Uncaught exception -->
+        <error-code>500</error-code>
+        <location>/WEB-INF/JSPs/500.jsp</location>
+    </error-page>
 </web-app>

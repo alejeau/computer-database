@@ -4,6 +4,7 @@ import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
+import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.UnauthorizedLimitValueException;
 import com.excilys.formation.cdb.mapper.LimitValueMapper;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageMapper {
-    public static PageDTO<ComputerDTO> toPageDTO(ComputerPage computerPage, long numberOfComputers) {
+    public static PageDTO<ComputerDTO> toPageDTO(ComputerPage computerPage, long numberOfComputers) throws ServiceException {
         List<ComputerDTO> list = new ArrayList<>();
         computerPage.getPage().forEach(computer -> list.add(ComputerMapper.toDTO(computer)));
 
-        return new PageDTO<ComputerDTO>(
+        return new PageDTO<>(
                 list,
                 computerPage.getPageNumber(),
                 computerPage.currentLastPageNumber(),
@@ -29,11 +30,11 @@ public class PageMapper {
                 numberOfComputers);
     }
 
-    public static SearchPageDTO<ComputerDTO> toSearchPageDTO(ComputerSearchPage computerSearchPage, long numberOfComputers) {
+    public static SearchPageDTO<ComputerDTO> toSearchPageDTO(ComputerSearchPage computerSearchPage, long numberOfComputers) throws ServiceException {
         List<ComputerDTO> list = new ArrayList<>();
         computerSearchPage.getPage().forEach(computer -> list.add(ComputerMapper.toDTO(computer)));
 
-        return new SearchPageDTO<ComputerDTO>(
+        return new SearchPageDTO<>(
                 list,
                 computerSearchPage.getPageNumber(),
                 computerSearchPage.currentLastPageNumber(),
@@ -42,7 +43,7 @@ public class PageMapper {
                 computerSearchPage.getSearch());
     }
 
-    public static ComputerPage toComputerPage(PageDTO<ComputerDTO> pageDTO) throws UnauthorizedLimitValueException {
+    public static ComputerPage toComputerPage(PageDTO<ComputerDTO> pageDTO) throws UnauthorizedLimitValueException, ServiceException {
         ComputerPage computerPage = new ComputerPage();
         LimitValue limit = LimitValueMapper.toLimitValue(pageDTO.getObjectsPerPage());
         computerPage.setLimit(limit);
@@ -50,7 +51,7 @@ public class PageMapper {
         return computerPage;
     }
 
-    public static CompanyPage toCompanyPage(PageDTO<CompanyDTO> pageDTO) throws UnauthorizedLimitValueException {
+    public static CompanyPage toCompanyPage(PageDTO<CompanyDTO> pageDTO) throws UnauthorizedLimitValueException, ServiceException {
         CompanyPage companyPage = new CompanyPage();
         LimitValue limit = LimitValueMapper.toLimitValue(pageDTO.getObjectsPerPage());
         companyPage.setLimit(limit);
@@ -58,14 +59,14 @@ public class PageMapper {
         return companyPage;
     }
 
-    public static ComputerSearchPage toComputerSearchPage(SearchPageDTO<ComputerDTO> searchPageDTO) throws UnauthorizedLimitValueException {
+    public static ComputerSearchPage toComputerSearchPage(SearchPageDTO<ComputerDTO> searchPageDTO) throws UnauthorizedLimitValueException, ServiceException {
         LimitValue limit = LimitValueMapper.toLimitValue(searchPageDTO.getObjectsPerPage());
         ComputerSearchPage computerSearchPage = new ComputerSearchPage(searchPageDTO.getSearch(), limit);
         computerSearchPage.goToPage(searchPageDTO.getCurrentPageNumber());
         return computerSearchPage;
     }
 
-    public static CompanySearchPage toCompanySearchPage(SearchPageDTO<CompanyDTO> searchPageDTO) throws UnauthorizedLimitValueException {
+    public static CompanySearchPage toCompanySearchPage(SearchPageDTO<CompanyDTO> searchPageDTO) throws UnauthorizedLimitValueException, ServiceException {
         LimitValue limit = LimitValueMapper.toLimitValue(searchPageDTO.getObjectsPerPage());
         CompanySearchPage companySearchPage = new CompanySearchPage(searchPageDTO.getSearch(), limit);
         companySearchPage.goToPage(searchPageDTO.getCurrentPageNumber());

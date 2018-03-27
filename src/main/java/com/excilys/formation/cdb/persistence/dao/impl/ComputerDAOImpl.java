@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_AND_COMPANY_STAR;
@@ -55,7 +54,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         Connection conn = connectionManager.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
-        Computer c = null;
+        Computer c;
 
         try {
             prepStmt = conn.prepareStatement(SELECT_COMPUTER_BY_ID);
@@ -66,7 +65,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             c = ComputerMapper.map(rs);
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't get computer with ID " + id + "!");
+            throw new DAOException("Couldn't get computer with ID " + id + "!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -93,7 +92,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't get list of computers with NAME LIKE " + name + "!");
+            throw new DAOException("Couldn't get list of computers with NAME LIKE " + name + "!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -120,7 +119,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             computers = ComputerMapper.mapList(rs);
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't get list of computers from " + index + " to " + limit + "!");
+            throw new DAOException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -150,7 +149,11 @@ public enum ComputerDAOImpl implements ComputerDAO {
             } else {
                 prepStmt.setNull(3, Types.DATE);
             }
-            prepStmt.setLong(4, computer.getCompany().getId());
+            if (computer.getCompany() != null && computer.getCompany().getId() != null) {
+                prepStmt.setLong(4, computer.getCompany().getId());
+            } else {
+                prepStmt.setNull(4, Types.BIGINT);
+            }
             prepStmt.executeUpdate();
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
@@ -160,7 +163,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             }
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't persist the computer " + computer.shortToString() + ".");
+            throw new DAOException("Couldn't persist the computer " + computer.shortToString() + ".", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -194,7 +197,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prepStmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't update the computer with ID " + computer.getId() + ".");
+            throw new DAOException("Couldn't update the computer with ID " + computer.getId() + ".", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, null);
         }
@@ -213,7 +216,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prepStmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't delete the computer with ID " + id + ".");
+            throw new DAOException("Couldn't delete the computer with ID " + id + ".", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, null);
         }

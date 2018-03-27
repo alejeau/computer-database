@@ -42,7 +42,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             }
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't execute the requested COUNT query!");
+            throw new DAOException("Couldn't execute the requested COUNT query!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, stmt, rs);
         }
@@ -71,7 +71,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             }
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't execute the requested COUNT LIKE query!");
+            throw new DAOException("Couldn't execute the requested COUNT LIKE query!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }

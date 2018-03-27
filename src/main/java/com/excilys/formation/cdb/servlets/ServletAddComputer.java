@@ -1,6 +1,7 @@
 package com.excilys.formation.cdb.servlets;
 
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
+import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.mapper.request.UrlMapper;
@@ -24,13 +25,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class ServletAddComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletAddComputer.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request = setRequest(request, null);
+        try {
+            request = setRequest(request, null);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+            throw new ServletException(e.getMessage(), e);
+        }
         this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
     }
 
@@ -46,31 +51,36 @@ public class ServletAddComputer extends HttpServlet {
 
         errorList = ComputerValidator.INSTANCE.validate(computerName, introduced, discontinued);
 
-        if (errorList == null) {
-            Long companyId = Long.valueOf(request.getParameter("companyId"));
-            Company company = CompanyService.INSTANCE.getCompany(companyId);
-            Computer computer = new Computer.Builder().
-                    name(computerName)
-                    .introduced(introduced)
-                    .discontinued(discontinued)
-                    .company(company)
-                    .build();
-            try {
-                ComputerService.INSTANCE.persistComputer(computer);
-            } catch (ValidationException e) {
-                LOG.error(e.getMessage());
+        try {
+            if (errorList == null) {
+                Long companyId = Long.valueOf(request.getParameter("companyId"));
+                Company company = CompanyService.INSTANCE.getCompany(companyId);
+                Computer computer = new Computer.Builder().
+                        name(computerName)
+                        .introduced(introduced)
+                        .discontinued(discontinued)
+                        .company(company)
+                        .build();
+                try {
+                    ComputerService.INSTANCE.persistComputer(computer);
+                } catch (ValidationException e) {
+                    LOG.error(e.getMessage());
+                }
+            } else {
+                errorList.stream()
+                        .filter(Objects::nonNull)
+                        .forEach(error -> LOG.error(error.toString()));
             }
-        } else {
-            errorList.stream()
-                    .filter(Objects::nonNull)
-                    .forEach(error ->  LOG.error(error.toString()));
-        }
 
-        setRequest(request, errorList);
+            setRequest(request, errorList);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+            throw new ServletException(e.getMessage(), e);
+        }
         this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList) {
+    private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList) throws ServiceException {
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);

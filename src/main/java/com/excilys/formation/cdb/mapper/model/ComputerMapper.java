@@ -1,11 +1,9 @@
 package com.excilys.formation.cdb.mapper.model;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
-import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
-import com.excilys.formation.cdb.paginator.ComputerPage;
 
 import java.sql.Date;
 import java.sql.ResultSet;

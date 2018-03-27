@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.ui;
 
+import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
@@ -12,13 +13,15 @@ import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public enum CLI {
     INSTANCE;
+    private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
 
     private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
 
@@ -50,16 +53,20 @@ public enum CLI {
         int code;
         do {
             code = mainMenu();
-            executeChoice(CliActions.map(code));
+            try {
+                executeChoice(CliActions.map(code));
+            } catch (ServiceException e) {
+                LOG.error("{}", e);
+                System.out.println("Couldn't execute the chosen action!");
+            }
             System.out.println();
         }
         while (code != 8);
     }
 
-    private void executeChoice(CliActions choice) {
+    private void executeChoice(CliActions choice) throws ServiceException {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
-//                CLI.displayShortToString;
                 ComputerPage computerPage = ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(computerPage);
                 break;
@@ -87,7 +94,7 @@ public enum CLI {
         }
     }
 
-    private <T extends Page<U>, U extends Model> void viewPage(T page) {
+    private <T extends Page<U>, U extends Model> void viewPage(T page) throws ServiceException {
         boolean exit = false;
         String choice;
 
@@ -113,9 +120,9 @@ public enum CLI {
         }
     }
 
-    private void checkComputerById() {
+    private void checkComputerById() throws ServiceException {
         Long id;
-        Computer c = null;
+        Computer c;
 
         System.out.println("Please enter the computer's ID: ");
         id = sc.nextLong();
@@ -130,7 +137,7 @@ public enum CLI {
         }
     }
 
-    private void checkComputerByName() {
+    private void checkComputerByName() throws ServiceException {
         String name;
 
         System.out.println("Please enter the computer's name: ");
@@ -141,7 +148,7 @@ public enum CLI {
         viewPage(computerSearchPage);
     }
 
-    private void editComputer(Computer c) {
+    private void editComputer(Computer c) throws ServiceException {
         String name;
         LocalDate introduced, discontinued;
         Company company;
@@ -171,7 +178,7 @@ public enum CLI {
         }
     }
 
-    private void updateComputer() {
+    private void updateComputer() throws ServiceException {
         System.out.println("Which computer would you like to update (ID)?");
         Long id = sc.nextLong();
         sc.nextLine();
@@ -203,7 +210,7 @@ public enum CLI {
         return date;
     }
 
-    private Company getCompanyId() {
+    private Company getCompanyId() throws ServiceException {
         Company c = null;
 
         while (c == null) {
@@ -216,7 +223,7 @@ public enum CLI {
         return c;
     }
 
-    private void deleteComputer() {
+    private void deleteComputer() throws ServiceException {
         Long id;
 
         System.out.println("Please enter the computer's ID you wish to delete: ");

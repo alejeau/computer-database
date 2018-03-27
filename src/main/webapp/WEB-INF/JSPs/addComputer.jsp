@@ -30,17 +30,19 @@
                         <div class="form-group">
                             <label for="computerName">Computer name</label> <span class="errmsg"><cst:errors error="name" /></span>
                             <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name"
-                                   pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\* ]+$" required="required" >
+                                   pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\* ]+$"
+                                   data-validation-error-msg="The computer name can not be empty, nor start nor end with a space, but may contain the special following chars: _-'+*."
+                                   required="required">
                         </div>
                         <div class="form-group">
                             <label for="introduced">Introduced date</label> <span class="errmsg"><cst:errors error="introduced" /> <cst:errors error="dates" /></span>
                             <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduction date"
-                                   data-validation="date" data-validation-format="yyyy-mm-dd">
+                                   data-validation="date" data-validation-format="yyyy-mm-dd" data-validation-optional="true">
                         </div>
                         <div class="form-group">
                             <label for="discontinued">Discontinued date</label> <span class="errmsg"><cst:errors error="discontinued" /> <cst:errors error="dates" /></span>
                             <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinuation date"
-                                   data-validation="date" data-validation-format="yyyy-mm-dd">
+                                   data-validation="date" data-validation-format="yyyy-mm-dd" data-validation-optional="true">
                         </div>
                         <div class="form-group">
                             <label for="companyId">Company</label>
@@ -61,6 +63,7 @@
 </section>
 
 <script src="<c:url value="/static"/>/js/jquery.min.js"></script>
+<%--<script src="<c:url value="/static"/>/js/jquery.form-validator.min.js"></script>--%>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <script>
     $.validate({

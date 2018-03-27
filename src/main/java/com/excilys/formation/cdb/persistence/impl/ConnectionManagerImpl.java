@@ -3,7 +3,6 @@ package com.excilys.formation.cdb.persistence.impl;
 import com.excilys.formation.cdb.persistence.ConnectionManager;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +15,6 @@ public enum ConnectionManagerImpl implements ConnectionManager {
     INSTANCE;
 
     private Properties props = new Properties();
-    private FileInputStream in;
 
     private static final String PROPERTIES_FILE = "properties/db.properties";
 

@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence;
 
+import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Model;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PageTest {
 
-    private static final long LAST_PAGE_NUMBER = 42l;
+    private static final long LAST_PAGE_NUMBER = 42L;
 
     private class TestObject implements Model {
         @Override
@@ -43,7 +44,7 @@ public class PageTest {
     }
 
     @Test
-    public void nextFromStart() {
+    public void nextFromStart() throws ServiceException {
         TestPage testPage = new TestPage();
         final long EXPECTED = testPage.getPageNumber() + 1;
         testPage.next();
@@ -51,7 +52,7 @@ public class PageTest {
     }
 
     @Test
-    public void nextFromEnd() {
+    public void nextFromEnd() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(LAST_PAGE_NUMBER);
         testPage.next();
@@ -59,7 +60,7 @@ public class PageTest {
     }
 
     @Test
-    public void previousFromFirst() {
+    public void previousFromFirst() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(Page.FIRST_PAGE);
         testPage.previous();
@@ -68,7 +69,7 @@ public class PageTest {
     }
 
     @Test
-    public void previousFromLast() {
+    public void previousFromLast() throws ServiceException {
         TestPage testPage = new TestPage();
         final Long EXPECTED = LAST_PAGE_NUMBER - 1;
         testPage.goToPage(LAST_PAGE_NUMBER);
@@ -77,21 +78,21 @@ public class PageTest {
     }
 
     @Test
-    public void goToLastPage() {
+    public void goToLastPage() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(LAST_PAGE_NUMBER);
         assertEquals(testPage.getPageNumber().longValue(), LAST_PAGE_NUMBER);
     }
 
     @Test
-    public void goToBeyondLastPage() {
+    public void goToBeyondLastPage() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(LAST_PAGE_NUMBER + 1);
         assertEquals(testPage.getPageNumber().longValue(), LAST_PAGE_NUMBER);
     }
 
     @Test
-    public void goToBeyondFirstPage() {
+    public void goToBeyondFirstPage() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(Page.FIRST_PAGE - 1);
         assertEquals(testPage.getPageNumber(), Page.FIRST_PAGE);

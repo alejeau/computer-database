@@ -2,8 +2,6 @@ package com.excilys.formation.cdb.mapper;
 
 import com.excilys.formation.cdb.exceptions.UnauthorizedLimitValueException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class LimitValueMapper {
     public static LimitValue toLimitValue(Long value) throws UnauthorizedLimitValueException {

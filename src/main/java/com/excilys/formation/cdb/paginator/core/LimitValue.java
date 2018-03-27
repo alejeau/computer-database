@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.List;
 
 public enum LimitValue {
-    TEN(10l),
-    TWENTY(20l),
-    FIFTY(50l),
-    ONE_HUNDRED(100l);
+    TEN(10L),
+    TWENTY(20L),
+    FIFTY(50L),
+    ONE_HUNDRED(100L);
 
     private final Long value;
 

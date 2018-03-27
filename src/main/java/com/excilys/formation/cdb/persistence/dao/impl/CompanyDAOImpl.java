@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_STAR;
@@ -64,7 +63,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             company = CompanyMapper.map(rs);
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't get company with ID " + id + "!");
+            throw new DAOException("Couldn't get company with ID " + id + "!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -92,7 +91,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't get list of companies with NAME LIKE " + name + "!");
+            throw new DAOException("Couldn't get list of companies with NAME LIKE " + name + "!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -117,7 +116,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't get the list of companies!");
+            throw new DAOException("Couldn't get the list of companies!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }
@@ -144,7 +143,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             companies = CompanyMapper.mapList(rs);
         } catch (SQLException e) {
             LOG.error("{}", e);
-            throw new DAOException("Couldn't get list of companies from " + index + " to " + limit + "!");
+            throw new DAOException("Couldn't get list of companies from " + index + " to " + limit + "!", e);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
         }

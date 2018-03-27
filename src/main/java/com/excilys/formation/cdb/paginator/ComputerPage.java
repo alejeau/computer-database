@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.paginator;
 
+import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
@@ -16,13 +17,13 @@ public class ComputerPage extends Page<Computer> {
     }
 
     @Override
-    public Long currentLastPageNumber() {
+    public Long currentLastPageNumber()throws ServiceException {
         Long numberOfComputer = ComputerService.INSTANCE.getNumberOfComputers();
         return numberOfComputer / this.limit.getValue();
     }
 
     @Override
-    protected void refresh(long offset) {
+    protected void refresh(long offset)throws ServiceException {
         this.page = ComputerService.INSTANCE.getComputers(offset, limit.getValue());
     }
 }
