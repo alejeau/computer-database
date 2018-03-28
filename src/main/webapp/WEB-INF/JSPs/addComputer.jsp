@@ -25,6 +25,7 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 box">
                 <h1>Add Computer</h1>
+                <cst:successMessage />
                 <form action="<cst:links target="add"/>" method="POST">
                     <fieldset>
                         <div class="form-group">

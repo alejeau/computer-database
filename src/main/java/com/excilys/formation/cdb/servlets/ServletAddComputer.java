@@ -34,7 +34,7 @@ public class ServletAddComputer extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         try {
-            request = setRequest(request, null);
+            request = setRequest(request, null, false);
         } catch (ServiceException e) {
             LOG.error("{}", e);
             throw new ServletException(e.getMessage(), e);
@@ -53,10 +53,12 @@ public class ServletAddComputer extends HttpServlet {
         String discontinued = request.getParameter("discontinued");
         LOG.debug("retrieved discontinued: " + discontinued);
 
+        boolean displaySuccessMessage = false;
         errorList = ComputerValidator.INSTANCE.validate(computerName, introduced, discontinued);
 
         try {
             if (errorList == null) {
+                displaySuccessMessage = true;
                 Long companyId = Long.valueOf(request.getParameter("companyId"));
                 Company company = CompanyService.INSTANCE.getCompany(companyId);
                 Computer computer = new Computer.Builder().
@@ -76,7 +78,7 @@ public class ServletAddComputer extends HttpServlet {
                         .forEach(error -> LOG.error(error.toString()));
             }
 
-            setRequest(request, errorList);
+            setRequest(request, errorList, displaySuccessMessage);
         } catch (ServiceException e) {
             LOG.error("{}", e);
             throw new ServletException(e.getMessage(), e);
@@ -84,12 +86,13 @@ public class ServletAddComputer extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList) throws ServiceException {
+    private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
 
+        request.setAttribute("displaySuccessMessage", displaySuccessMessage);
         List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyService.INSTANCE.getCompanies());
         request.setAttribute("companyList", companyList);
 
