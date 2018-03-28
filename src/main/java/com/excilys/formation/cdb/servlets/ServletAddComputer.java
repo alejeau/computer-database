@@ -10,8 +10,8 @@ import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.core.Page;
-import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
+import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
 import com.excilys.formation.cdb.servlets.constants.Views;
 import com.excilys.formation.cdb.validators.ComputerValidator;
@@ -60,7 +60,7 @@ public class ServletAddComputer extends HttpServlet {
             if (errorList == null) {
                 displaySuccessMessage = true;
                 Long companyId = Long.valueOf(request.getParameter("companyId"));
-                Company company = CompanyService.INSTANCE.getCompany(companyId);
+                Company company = CompanyServiceImpl.INSTANCE.getCompany(companyId);
                 Computer computer = new Computer.Builder().
                         name(computerName)
                         .introduced(introduced)
@@ -68,7 +68,7 @@ public class ServletAddComputer extends HttpServlet {
                         .company(company)
                         .build();
                 try {
-                    ComputerService.INSTANCE.persistComputer(computer);
+                    ComputerServiceImpl.INSTANCE.persistComputer(computer);
                 } catch (ValidationException e) {
                     LOG.error(e.getMessage());
                 }
@@ -93,7 +93,7 @@ public class ServletAddComputer extends HttpServlet {
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
 
         request.setAttribute("displaySuccessMessage", displaySuccessMessage);
-        List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyService.INSTANCE.getCompanies());
+        List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyServiceImpl.INSTANCE.getCompanies());
         request.setAttribute("companyList", companyList);
 
         HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);

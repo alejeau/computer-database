@@ -11,8 +11,8 @@ import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
-import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
+import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,11 +67,11 @@ public enum CLI {
     private void executeChoice(CliActions choice) throws ServiceException {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
-                ComputerPage computerPage = ComputerService.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
+                ComputerPage computerPage = ComputerServiceImpl.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(computerPage);
                 break;
             case VIEW_COMPANY_LIST:
-                CompanyPage companyPage = CompanyService.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+                CompanyPage companyPage = CompanyServiceImpl.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(companyPage);
                 break;
             case CHECK_COMPUTER_BY_ID:
@@ -128,7 +128,7 @@ public enum CLI {
         id = sc.nextLong();
         sc.nextLine();
 
-        c = ComputerService.INSTANCE.getComputer(id);
+        c = ComputerServiceImpl.INSTANCE.getComputer(id);
 
         if (c != null) {
             System.out.println(c);
@@ -168,10 +168,10 @@ public enum CLI {
 
         try {
             if (c.getId() == null) {
-                Long id = ComputerService.INSTANCE.persistComputer(c);
+                Long id = ComputerServiceImpl.INSTANCE.persistComputer(c);
                 System.out.println("The computer has the ID: " + id);
             } else {
-                ComputerService.INSTANCE.updateComputer(c);
+                ComputerServiceImpl.INSTANCE.updateComputer(c);
             }
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
@@ -182,7 +182,7 @@ public enum CLI {
         System.out.println("Which computer would you like to update (ID)?");
         Long id = sc.nextLong();
         sc.nextLine();
-        Computer c = ComputerService.INSTANCE.getComputer(id);
+        Computer c = ComputerServiceImpl.INSTANCE.getComputer(id);
         editComputer(c);
     }
 
@@ -217,7 +217,7 @@ public enum CLI {
             System.out.println("Please enter the computer's manufacturer ID:");
             Long companyId = sc.nextLong();
             sc.nextLine();
-            c = CompanyService.INSTANCE.getCompany(companyId);
+            c = CompanyServiceImpl.INSTANCE.getCompany(companyId);
         }
 
         return c;
@@ -230,9 +230,9 @@ public enum CLI {
         id = sc.nextLong();
         sc.nextLine();
 
-        Computer c = ComputerService.INSTANCE.getComputer(id);
+        Computer c = ComputerServiceImpl.INSTANCE.getComputer(id);
         if (c != null) {
-            ComputerService.INSTANCE.deleteComputer(id);
+            ComputerServiceImpl.INSTANCE.deleteComputer(id);
         } else {
             System.out.println("There is no computer with the ID: " + id + "\n");
         }

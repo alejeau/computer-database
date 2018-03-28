@@ -2,7 +2,7 @@ package com.excilys.formation.cdb.paginator;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 
 public class ComputerSearchPage extends ComputerPage {
 
@@ -20,13 +20,13 @@ public class ComputerSearchPage extends ComputerPage {
 
     @Override
     public Long currentLastPageNumber() throws ServiceException {
-        Long numberOfComputer = ComputerService.INSTANCE.getNumberOfComputersWithName(this.search);
+        Long numberOfComputer = ComputerServiceImpl.INSTANCE.getNumberOfComputersWithName(this.search);
         return numberOfComputer / this.limit.getValue();
     }
 
     @Override
     protected void refresh(long offset) throws ServiceException {
-        this.page = ComputerService.INSTANCE.getComputer(search, offset, this.limit.getValue());
+        this.page = ComputerServiceImpl.INSTANCE.getComputer(search, offset, this.limit.getValue());
     }
 
     public String getSearch() {

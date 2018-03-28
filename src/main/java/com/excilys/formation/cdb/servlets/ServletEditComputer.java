@@ -12,8 +12,8 @@ import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.core.Page;
-import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
+import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
 import com.excilys.formation.cdb.servlets.constants.Views;
 import com.excilys.formation.cdb.validators.ComputerValidator;
@@ -40,8 +40,8 @@ public class ServletEditComputer extends HttpServlet {
         Long computerId = UrlMapper.mapLongNumber(request, UrlFields.COMPUTER_ID, NO_COMPUTER);
         LOG.debug("Computer ID: {}", computerId);
         try {
-            if (!computerId.equals(NO_COMPUTER) && ComputerService.INSTANCE.getComputer(computerId) != null) {
-                ComputerDTO computerDTO = ComputerMapper.toDTO(ComputerService.INSTANCE.getComputer(computerId));
+            if (!computerId.equals(NO_COMPUTER) && ComputerServiceImpl.INSTANCE.getComputer(computerId) != null) {
+                ComputerDTO computerDTO = ComputerMapper.toDTO(ComputerServiceImpl.INSTANCE.getComputer(computerId));
                 LOG.debug("{}", computerDTO);
                 request = setRequest(request, computerDTO, new ArrayList<>(), false);
             } else {
@@ -74,10 +74,10 @@ public class ServletEditComputer extends HttpServlet {
         try {
             if (errorList == null) {
                 Long computerId = UrlMapper.mapLongNumber(request, UrlFields.COMPUTER_ID, NO_COMPUTER);
-                if (!computerId.equals(NO_COMPUTER) && ComputerService.INSTANCE.getComputer(computerId) != null) {
+                if (!computerId.equals(NO_COMPUTER) && ComputerServiceImpl.INSTANCE.getComputer(computerId) != null) {
                     displaySuccessMessage = true;
                     Long companyId = Long.valueOf(request.getParameter("companyId"));
-                    Company company = CompanyService.INSTANCE.getCompany(companyId);
+                    Company company = CompanyServiceImpl.INSTANCE.getCompany(companyId);
                     computer = new Computer.Builder()
                             .id(computerId)
                             .name(computerName)
@@ -86,7 +86,7 @@ public class ServletEditComputer extends HttpServlet {
                             .company(company)
                             .build();
                     try {
-                        ComputerService.INSTANCE.updateComputer(computer);
+                        ComputerServiceImpl.INSTANCE.updateComputer(computer);
                     } catch (ValidationException e) {
                         LOG.error(e.getMessage());
                     }
@@ -121,7 +121,7 @@ public class ServletEditComputer extends HttpServlet {
         request.setAttribute("displaySuccessMessage", displaySuccessMessage);
         request.setAttribute("computerDTO", computerDTO);
 
-        List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyService.INSTANCE.getCompanies());
+        List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyServiceImpl.INSTANCE.getCompanies());
         request.setAttribute("companyList", companyList);
 
         HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);

@@ -60,24 +60,24 @@ public enum ConnectionManagerImpl implements ConnectionManager {
         }
     }
 
-    public static void closeElements(Connection conn, Statement stmt, ResultSet rs) {
-        if (rs != null) {
+    public static void closeElements(Connection connection, Statement statement, ResultSet resultSet) {
+        if (resultSet != null) {
             try {
-                rs.close();
+                resultSet.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        if (stmt != null) {
+        if (statement != null) {
             try {
-                stmt.close();
+                statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        if (conn != null) {
+        if (connection != null) {
             try {
-                conn.close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

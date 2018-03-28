@@ -4,6 +4,7 @@ import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     INSTANCE;
 
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
-    private static ConnectionManagerImpl connectionManager = ConnectionManagerImpl.INSTANCE;
+    private static ConnectionManager connectionManager = ConnectionManagerImpl.INSTANCE;
 
     private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(computer_id) FROM computer;";
     private static final String NUMBER_OF_COMPUTERS_WITH_NAME = "SELECT COUNT(computer_id) FROM computer WHERE computer_name LIKE ?;";
@@ -39,17 +40,20 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     }
 
+    @Override
     public Long getNumberOfComputers() throws DAOException {
         LOG.debug("getNumberOfComputers");
         return SimpleDAOImpl.INSTANCE.count(NUMBER_OF_COMPUTERS);
     }
 
+    @Override
     public Long getNumberOfComputersWithName(String name) throws DAOException {
         LOG.debug("getNumberOfComputersWithName");
         SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.countElementsWithName(NUMBER_OF_COMPUTERS_WITH_NAME, name);
     }
 
+    @Override
     public Computer getComputer(Long id) throws DAOException {
         LOG.debug("getComputer");
         Connection conn;
@@ -81,6 +85,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return c;
     }
 
+    @Override
     public List<Computer> getComputer(String name, long index, Long limit) throws DAOException {
         LOG.debug("getComputer");
         Connection conn;
@@ -114,6 +119,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return computers;
     }
 
+    @Override
     public List<Computer> getComputers(long index, Long limit) throws DAOException {
         LOG.debug("getComputers");
         Connection conn;
@@ -147,6 +153,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return computers;
     }
 
+    @Override
     public Long persistComputer(Computer computer) throws DAOException {
         LOG.debug("persistComputer");
         Connection conn;
@@ -197,8 +204,10 @@ public enum ComputerDAOImpl implements ComputerDAO {
         return createdId;
     }
 
+    @Override
     public void updateComputer(Computer computer) throws DAOException {
         LOG.debug("updateComputer");
+        LOG.debug("Computer: {}", computer);
         Connection conn;
         try {
             conn = connectionManager.getConnection();
@@ -221,7 +230,11 @@ public enum ComputerDAOImpl implements ComputerDAO {
             } else {
                 prepStmt.setNull(3, Types.DATE);
             }
-            prepStmt.setLong(4, computer.getCompany().getId());
+            if (computer.getCompany() != null && computer.getCompany().getId() != null) {
+                prepStmt.setLong(4, computer.getCompany().getId());
+            } else {
+                prepStmt.setNull(4, Types.BIGINT);
+            }
             prepStmt.setLong(5, computer.getId());
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
@@ -234,6 +247,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         }
     }
 
+    @Override
     public void deleteComputer(Long id) throws DAOException {
         LOG.debug("deleteComputer");
         Connection conn;
@@ -254,6 +268,42 @@ public enum ComputerDAOImpl implements ComputerDAO {
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't delete the computer with ID " + id + ".", e);
+        } finally {
+            ConnectionManagerImpl.closeElements(conn, prepStmt, null);
+        }
+    }
+
+    @Override
+    public void deleteComputers(List<Long> idList) throws DAOException {
+        LOG.debug("deleteComputers (by list");
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
+        PreparedStatement prepStmt = null;
+
+        try {
+            conn.setAutoCommit(false);
+            prepStmt = conn.prepareStatement(DELETE_COMPUTER);
+            for (Long id : idList) {
+                prepStmt.setLong(1, id);
+                LOG.debug("Executing query \"" + prepStmt + "\"");
+                prepStmt.executeUpdate();
+            }
+            conn.commit();
+        } catch (SQLException e1) {
+            try {
+                conn.rollback();
+            } catch (SQLException e2) {
+                LOG.error("{}", e2);
+                throw new DAOException("An error occurred while rolling back the changes!");
+            }
+
+            LOG.error("{}", e1);
+            throw new DAOException("Couldn't delete the supplied list of computers.", e1);
         } finally {
             ConnectionManagerImpl.closeElements(conn, prepStmt, null);
         }

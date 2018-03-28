@@ -22,4 +22,6 @@ public interface ComputerDAO {
     Long persistComputer(Computer c) throws DAOException;
 
     void deleteComputer(Long id) throws DAOException;
+
+    void deleteComputers(List<Long> idList) throws DAOException;
 }

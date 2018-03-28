@@ -2,9 +2,7 @@ package com.excilys.formation.cdb.paginator;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.service.CompanyService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 
 public class CompanySearchPage extends CompanyPage {
     protected String search;
@@ -21,13 +19,13 @@ public class CompanySearchPage extends CompanyPage {
 
     @Override
     public Long currentLastPageNumber() throws ServiceException {
-        Long numberOfComputer = CompanyService.INSTANCE.getNumberOfCompaniesWithName(this.search);
+        Long numberOfComputer = CompanyServiceImpl.INSTANCE.getNumberOfCompaniesWithName(this.search);
         return numberOfComputer / this.limit.getValue();
     }
 
     @Override
     protected void refresh(long offset)throws ServiceException {
-            this.page = CompanyService.INSTANCE.getCompany(search, offset, this.limit.getValue());
+            this.page = CompanyServiceImpl.INSTANCE.getCompany(search, offset, this.limit.getValue());
     }
 
     public String getSearch() {

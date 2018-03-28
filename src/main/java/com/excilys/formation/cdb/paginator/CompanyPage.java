@@ -4,9 +4,7 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
-import com.excilys.formation.cdb.service.CompanyService;
-
-import javax.sql.rowset.serial.SerialException;
+import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 
 public class CompanyPage extends Page<Company> {
 
@@ -20,12 +18,12 @@ public class CompanyPage extends Page<Company> {
 
     @Override
     public Long currentLastPageNumber() throws ServiceException {
-        Long numberOfCompany = CompanyService.INSTANCE.getNumberOfCompanies();
+        Long numberOfCompany = CompanyServiceImpl.INSTANCE.getNumberOfCompanies();
         return numberOfCompany / this.limit.getValue();
     }
 
     @Override
     protected void refresh(long offset)throws ServiceException {
-        this.page = CompanyService.INSTANCE.getCompanies(offset, this.limit.getValue());
+        this.page = CompanyServiceImpl.INSTANCE.getCompanies(offset, this.limit.getValue());
     }
 }
