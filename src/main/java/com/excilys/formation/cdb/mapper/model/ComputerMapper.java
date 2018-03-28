@@ -14,17 +14,26 @@ import java.util.List;
 
 public class ComputerMapper {
 
+    /**
+     * Maps a Computer to ComputerDTO object
+     * @param c the computer object to map
+     * @return a ComputerDTO object if Computer is not null, an empty ComputerDTO otherwise
+     */
     public static ComputerDTO toDTO(Computer c) {
         ComputerDTO cdto = new ComputerDTO();
-        cdto.setId(c.getId());
-        cdto.setName(c.getName());
-        if (c.getIntroduced() != null) {
-            cdto.setIntroduced(c.getIntroduced().format(DatePattern.FORMATTER));
+        if (c != null) {
+            cdto.setId(c.getId());
+            cdto.setName(c.getName());
+            if (c.getIntroduced() != null) {
+                cdto.setIntroduced(c.getIntroduced().format(DatePattern.FORMATTER));
+            }
+            if (c.getDiscontinued() != null) {
+                cdto.setDiscontinued(c.getDiscontinued().format(DatePattern.FORMATTER));
+            }
+            if (c.getCompany() != null) {
+                cdto.setCompanyName(c.getCompany().getName());
+            }
         }
-        if (c.getDiscontinued() != null) {
-            cdto.setDiscontinued(c.getDiscontinued().format(DatePattern.FORMATTER));
-        }
-        cdto.setCompanyName(c.getCompany().getName());
         return cdto;
     }
 

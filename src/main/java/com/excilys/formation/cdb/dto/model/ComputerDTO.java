@@ -12,7 +12,7 @@ public class ComputerDTO extends ModelDTO {
     private String companyName;
 
     public ComputerDTO() {
-
+        this.id = -1;
     }
 
     public ComputerDTO(long id, String name, String introduced, String discontinued, String companyName) {

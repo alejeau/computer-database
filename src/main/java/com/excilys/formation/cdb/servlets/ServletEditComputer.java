@@ -43,7 +43,7 @@ public class ServletEditComputer extends HttpServlet {
             if (!computerId.equals(NO_COMPUTER)) {
                 ComputerDTO computerDTO = ComputerMapper.toDTO(ComputerService.INSTANCE.getComputer(computerId));
                 LOG.debug("{}", computerDTO);
-                request = setRequest(request, computerDTO, new ArrayList<>());
+                request = setRequest(request, computerDTO, new ArrayList<>(), false);
             }
         } catch (ServiceException e) {
             LOG.error("{}", e);
@@ -56,6 +56,8 @@ public class ServletEditComputer extends HttpServlet {
         LOG.debug("doPost");
         List<Error> errorList;
 
+        String stringComputerId = request.getParameter("computerId");
+        LOG.debug("retrieved computerId: " + stringComputerId);
         String computerName = request.getParameter("computerName");
         LOG.debug("retrieved computerName: " + computerName);
         String introduced = request.getParameter("introduced");
@@ -63,30 +65,36 @@ public class ServletEditComputer extends HttpServlet {
         String discontinued = request.getParameter("discontinued");
         LOG.debug("retrieved discontinued: " + discontinued);
 
+        Computer computer = null;
+        boolean displaySuccessMessage = false;
         errorList = ComputerValidator.INSTANCE.validate(computerName, introduced, discontinued);
-
         try {
-//            if (errorList == null) {
-//                Long companyId = Long.valueOf(request.getParameter("companyId"));
-//                Company company = CompanyService.INSTANCE.getCompany(companyId);
-//                Computer computer = new Computer.Builder().
-//                        name(computerName)
-//                        .introduced(introduced)
-//                        .discontinued(discontinued)
-//                        .company(company)
-//                        .build();
-//                try {
-//                    ComputerService.INSTANCE.persistComputer(computer);
-//                } catch (ValidationException e) {
-//                    LOG.error(e.getMessage());
-//                }
-//            } else {
-//                errorList.stream()
-//                        .filter(Objects::nonNull)
-//                        .forEach(error -> LOG.error(error.toString()));
-//            }
+            if (errorList == null) {
+                Long computerId = UrlMapper.mapLongNumber(request, UrlFields.COMPUTER_ID, NO_COMPUTER);
+                if (!computerId.equals(NO_COMPUTER)) {
+                    displaySuccessMessage = true;
+                    Long companyId = Long.valueOf(request.getParameter("companyId"));
+                    Company company = CompanyService.INSTANCE.getCompany(companyId);
+                    computer = new Computer.Builder()
+                            .id(computerId)
+                            .name(computerName)
+                            .introduced(introduced)
+                            .discontinued(discontinued)
+                            .company(company)
+                            .build();
+                    try {
+                        ComputerService.INSTANCE.updateComputer(computer);
+                    } catch (ValidationException e) {
+                        LOG.error(e.getMessage());
+                    }
+                }
+            } else {
+                errorList.stream()
+                        .filter(Objects::nonNull)
+                        .forEach(error -> LOG.error(error.toString()));
+            }
 
-            setRequest(request, null, errorList);
+            setRequest(request, ComputerMapper.toDTO(computer), errorList, displaySuccessMessage);
         } catch (ServiceException e) {
             LOG.error("{}", e);
             throw new ServletException(e.getMessage(), e);
@@ -94,11 +102,12 @@ public class ServletEditComputer extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.EDIT_COMPUTER).forward(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerDTO computerDTO, List<Error> errorList) throws ServiceException {
+    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerDTO computerDTO, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
         request.setAttribute("currentPath", Paths.PATH_EDIT_COMPUTER);
+        request.setAttribute("displaySuccessMessage", displaySuccessMessage);
         request.setAttribute("computerDTO", computerDTO);
 
         List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyService.INSTANCE.getCompanies());
