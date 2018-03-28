@@ -18,11 +18,11 @@
 
 <c:set var="emptyText" value=""/>
 <c:set var="tmpPath" value=""/>
-<c:set var="tmpSearchMode" value="${ false }"/>
 
 
 <c:set var="whichPageNb" value="${ not empty targetPageNumber ? targetPageNumber : pageDTO.currentPageNumber }"/>
 <c:set var="tmpPageNb" value="${ emptyText.concat('?pageNb=').concat(whichPageNb) }"/>
+
 <c:set var="whichDisplayBy" value="${ not empty targetDisplayBy ? targetDisplayBy : pageDTO.objectsPerPage }"/>
 <c:set var="tmpDisplayBy" value="${ emptyText.concat('&displayBy=').concat(whichDisplayBy) }"/>
 
@@ -76,8 +76,12 @@
 <c:if test="${ not empty displayBy and displayBy.matches('[0-9]+') }">
     <c:set var="tmpDisplayBy" value="${ emptyText.concat('&displayBy=').concat(displayBy) }"/>
 </c:if>
+<c:if test="${ not empty search }" >
+    <c:set var="tmpSearch" value="${ emptyText.concat('&search=').concat(search) }"/>
+</c:if>
 
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpPageNb) }"/>
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpDisplayBy) }"/>
+<c:set var="tmpPath" value="${ tmpPath.concat(tmpSearch) }"/>
 
 <c:out value="${ tmpPath }" escapeXml="false"/>

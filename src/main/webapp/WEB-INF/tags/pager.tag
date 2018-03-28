@@ -18,19 +18,24 @@
 <c:set var="stop" scope="page" value="${ tmp <= 0 ? range-1 : stop }"/>
 
 <c:set var="tmp" scope="page" value="${ stop }"/>
-<c:set var="start" scope="page" value="${ tmp > pageDTO.maxPageNumber ? start - (tmp - pageDTO.maxPageNumber) : start }"/>
+<c:set var="start" scope="page"
+       value="${ tmp > pageDTO.maxPageNumber ? start - (tmp - pageDTO.maxPageNumber) : start }"/>
 <c:set var="start" scope="page" value="${ start < 0 ? 0 : start }"/>
 <c:set var="stop" scope="page" value="${ tmp > pageDTO.maxPageNumber ? pageDTO.maxPageNumber : stop }"/>
 <c:set var="stop" scope="page" value="${ stop < 0 ? 0 : stop }"/>
 
 <ul class="pagination">
     <li>
-        <a href='<cst:links target="self" pageNb="0" />' aria-label="Previous">
+        <a href='<cst:links target="self"
+        pageNb="0"
+        search="${searchField}"/>' aria-label="Previous">
             <span aria-hidden="true">First</span>
         </a>
     </li>
     <li>
-        <a href='<cst:links target="self" pageNb="${ pageDTO.currentPageNumber-1 < 0 ? 0 : pageDTO.currentPageNumber-1 }" />'
+        <a href='<cst:links target="self"
+        pageNb="${ pageDTO.currentPageNumber-1 < 0 ? 0 : pageDTO.currentPageNumber-1 }"
+        search="${searchField}"/>'
            aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
         </a>
@@ -40,22 +45,23 @@
     <c:forEach var="i" begin="${ start }" end="${ stop }" step="1">
         <c:choose>
             <c:when test="${ i == pageDTO.currentPageNumber }">
-                <li><a class="disabled" style="color: black"><c:out value="${ i + 1 }"/></a></li>
+                <li><a class="disabled" style="color: black"><c:out value="${ i + 1 } "/></a></li>
             </c:when>
             <c:otherwise>
-                <li><a href='<cst:links target="self" pageNb="${ i }" />'><c:out value="${ i + 1 }"/></a></li>
+                <li><a href='<cst:links target="self" pageNb="${ i }" search="${searchField}"/>'><c:out value="${ i + 1 }"/></a></li>
             </c:otherwise>
         </c:choose>
     </c:forEach>
 
     <li>
-        <a href='<cst:links target="self" pageNb="${ pageDTO.currentPageNumber+1 > pageDTO.maxPageNumber ? pageDTO.maxPageNumber : pageDTO.currentPageNumber+1 }" />'
-           aria-label="Next">
+        <a href='<cst:links target="self"
+        pageNb="${ pageDTO.currentPageNumber+1 > pageDTO.maxPageNumber ? pageDTO.maxPageNumber : pageDTO.currentPageNumber+1 }"
+        search="${searchField}"/>' aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
         </a>
     </li>
     <li>
-        <a href='<cst:links target="self" pageNb="${pageDTO.maxPageNumber}" />'
+        <a href='<cst:links target="self" pageNb="${pageDTO.maxPageNumber}" search="${searchField}"/>'
            aria-label="Previous">
             <span aria-hidden="true">Last</span>
         </a>

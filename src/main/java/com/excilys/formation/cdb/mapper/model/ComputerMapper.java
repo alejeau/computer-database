@@ -74,7 +74,8 @@ public class ComputerMapper {
     }
 
     public static List<Computer> mapList(ResultSet rs) {
-        List<Computer> computers = null;
+//        List<Computer> computers = null;
+        List<Computer> computers = new ArrayList<>();
         try {
             if (rs.isBeforeFirst()) {
                 computers = new ArrayList<>();

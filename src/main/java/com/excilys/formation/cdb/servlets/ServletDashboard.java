@@ -68,6 +68,7 @@ public class ServletDashboard extends HttpServlet {
         // Setting the paths
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
+        request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
         request.setAttribute("pageDTO", computerPageDTO);
         // Setting the vars
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
