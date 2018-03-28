@@ -40,10 +40,13 @@ public class ServletEditComputer extends HttpServlet {
         Long computerId = UrlMapper.mapLongNumber(request, UrlFields.COMPUTER_ID, NO_COMPUTER);
         LOG.debug("Computer ID: {}", computerId);
         try {
-            if (!computerId.equals(NO_COMPUTER)) {
+            if (!computerId.equals(NO_COMPUTER) && ComputerService.INSTANCE.getComputer(computerId) != null) {
                 ComputerDTO computerDTO = ComputerMapper.toDTO(ComputerService.INSTANCE.getComputer(computerId));
                 LOG.debug("{}", computerDTO);
                 request = setRequest(request, computerDTO, new ArrayList<>(), false);
+            } else {
+                response.sendRedirect(Paths.PATH_DASHBOARD);
+                return;
             }
         } catch (ServiceException e) {
             LOG.error("{}", e);
@@ -71,7 +74,7 @@ public class ServletEditComputer extends HttpServlet {
         try {
             if (errorList == null) {
                 Long computerId = UrlMapper.mapLongNumber(request, UrlFields.COMPUTER_ID, NO_COMPUTER);
-                if (!computerId.equals(NO_COMPUTER)) {
+                if (!computerId.equals(NO_COMPUTER) && ComputerService.INSTANCE.getComputer(computerId) != null) {
                     displaySuccessMessage = true;
                     Long companyId = Long.valueOf(request.getParameter("companyId"));
                     Company company = CompanyService.INSTANCE.getCompany(companyId);
@@ -87,6 +90,9 @@ public class ServletEditComputer extends HttpServlet {
                     } catch (ValidationException e) {
                         LOG.error(e.getMessage());
                     }
+                } else {
+                    response.sendRedirect(Paths.PATH_DASHBOARD);
+                    return;
                 }
             } else {
                 errorList.stream()
@@ -107,6 +113,11 @@ public class ServletEditComputer extends HttpServlet {
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
         request.setAttribute("currentPath", Paths.PATH_EDIT_COMPUTER);
+
+        // URL attributes
+        request.setAttribute("targetPageNumber", UrlMapper.mapLongNumber(request, UrlFields.PAGE_NB, Page.FIRST_PAGE));
+        request.setAttribute("targetDisplayBy", UrlMapper.mapDisplayBy(request).getValue());
+
         request.setAttribute("displaySuccessMessage", displaySuccessMessage);
         request.setAttribute("computerDTO", computerDTO);
 
@@ -116,8 +127,6 @@ public class ServletEditComputer extends HttpServlet {
         HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
         request.setAttribute("errorMap", hashMap);
 
-        request.setAttribute("targetPageNumber", UrlMapper.mapLongNumber(request, UrlFields.PAGE_NB, Page.FIRST_PAGE));
-        request.setAttribute("targetDisplayBy", UrlMapper.mapDisplayBy(request).getValue());
 
         return request;
     }

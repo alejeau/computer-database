@@ -24,7 +24,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 box">
-                <h1>Add Computer</h1>
+                <h1>Edit Computer</h1>
                 <cst:successMessage />
                 <form action="<cst:links target="edit"/>" method="POST">
                     <input type="hidden" name="computerId" value="<c:out value='${ computerDTO.id }' />"/>

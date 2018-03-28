@@ -4,7 +4,7 @@
 
 <c:if test="${displaySuccessMessage == true}">
     <div class="alert alert-success">
-        The modification have been successfully recorded.
+        The modifications have been successfully recorded.
     </div>
 </c:if>
 
