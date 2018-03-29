@@ -2,7 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cst" tagdir="/WEB-INF/tags" %>
 
-<c:set var="range" scope="page" value="${ pageDTO.maxPageNumber < 5 ? pageDTO.maxPageNumber : 5 }"/>
+<c:set var="pagerRange" scope="page" value="${5}"/>
+<c:set var="range" scope="page" value="${ pageDTO.maxPageNumber < pagerRange ? pageDTO.maxPageNumber : pagerRange }"/>
 
 <c:set var="half" scope="page" value="${ range / 2 }"/>
 <%-- without the following line, 6 page number are displayed instead of five --%>
@@ -12,17 +13,14 @@
 <c:set var="start" scope="page" value="${ pageDTO.currentPageNumber - half }"/>
 <c:set var="stop" scope="page" value="${ pageDTO.currentPageNumber + half }"/>
 
-<c:set var="tmp" scope="page" value="${ start }"/>
-
-<c:set var="start" scope="page" value="${ tmp <= 0 ? 0 : start }"/>
-<c:set var="stop" scope="page" value="${ tmp <= 0 ? range-1 : stop }"/>
-
-<c:set var="tmp" scope="page" value="${ stop }"/>
-<c:set var="start" scope="page"
-       value="${ tmp > pageDTO.maxPageNumber ? start - (tmp - pageDTO.maxPageNumber) : start }"/>
-<c:set var="start" scope="page" value="${ start < 0 ? 0 : start }"/>
-<c:set var="stop" scope="page" value="${ tmp > pageDTO.maxPageNumber ? pageDTO.maxPageNumber : stop }"/>
-<c:set var="stop" scope="page" value="${ stop < 0 ? 0 : stop }"/>
+<c:if test="${start <= 0}" >
+    <c:set var="start" scope="page" value="${0}"/>
+    <c:set var="stop" scope="page" value="${(start+pagerRange-1 < pageDTO.maxPageNumber) ? start+pagerRange-1 : pageDTO.maxPageNumber}"/>
+</c:if>
+<c:if test="${stop >= pageDTO.maxPageNumber}" >
+    <c:set var="start" scope="page" value="${stop-pagerRange+1 < 0 ? 0 : pageDTO.maxPageNumber-pagerRange+1}"/>
+    <c:set var="stop" scope="page" value="${pageDTO.maxPageNumber}"/>
+</c:if>
 
 <ul class="pagination">
     <li>
