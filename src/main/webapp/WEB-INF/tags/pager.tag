@@ -24,16 +24,15 @@
 
 <ul class="pagination">
     <li>
-        <a href='<cst:links target="self"
-        pageNb="0"
-        search="${searchField}"/>' aria-label="Previous">
+        <a href='<cst:links target="self" pageNb="0" search="${searchField}"
+        field="${orderBy}" ascending="${isAscending}"/>' aria-label="Previous">
             <span aria-hidden="true">First</span>
         </a>
     </li>
     <li>
         <a href='<cst:links target="self"
         pageNb="${ pageDTO.currentPageNumber-1 < 0 ? 0 : pageDTO.currentPageNumber-1 }"
-        search="${searchField}"/>'
+        search="${searchField}" field="${orderBy}" ascending="${isAscending}"/>'
            aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
         </a>
@@ -46,7 +45,7 @@
                 <li><a class="disabled" style="color: black"><c:out value="${ i + 1 } "/></a></li>
             </c:when>
             <c:otherwise>
-                <li><a href='<cst:links target="self" pageNb="${ i }" search="${searchField}"/>'><c:out value="${ i + 1 }"/></a></li>
+                <li><a href='<cst:links target="self" pageNb="${ i }" search="${searchField}" field="${orderBy}" ascending="${isAscending}"/>'><c:out value="${ i + 1 }"/></a></li>
             </c:otherwise>
         </c:choose>
     </c:forEach>
@@ -54,12 +53,12 @@
     <li>
         <a href='<cst:links target="self"
         pageNb="${ pageDTO.currentPageNumber+1 > pageDTO.maxPageNumber ? pageDTO.maxPageNumber : pageDTO.currentPageNumber+1 }"
-        search="${searchField}"/>' aria-label="Next">
+        field="${orderBy}" ascending="${isAscending}" search="${searchField}"/>' aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
         </a>
     </li>
     <li>
-        <a href='<cst:links target="self" pageNb="${pageDTO.maxPageNumber}" search="${searchField}"/>'
+        <a href='<cst:links target="self" pageNb="${pageDTO.maxPageNumber}" search="${searchField}" field="${orderBy}" ascending="${isAscending}"/>'
            aria-label="Previous">
             <span aria-hidden="true">Last</span>
         </a>

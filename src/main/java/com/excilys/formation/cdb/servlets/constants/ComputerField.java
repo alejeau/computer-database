@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.servlets.constants;
 
-public enum ComputerFields {
+public enum ComputerField {
     COMPUTER_NAME("computerName"),
     INTRODUCED("introduced"),
     DISCONTINUED("discontinued"),
@@ -8,7 +8,7 @@ public enum ComputerFields {
 
     private final String value;
 
-    ComputerFields(final String newValue) {
+    ComputerField(final String newValue) {
         value = newValue;
     }
 

@@ -59,12 +59,12 @@
                                         </a>
                         </span>
                 </th>
-                <th><a href="<cst:links target="self" field="computerName" ascending="true" />">Computer name</a></th>
-                <th><a href="<cst:links target="self" field="introduced" ascending="true" />">Introduced date</a></th>
+                <th><a href="<cst:links target="self" field="computerName" ascending="${isAscending}" changeAscending="${true}"/>">Computer name</a></th>
+                <th><a href="<cst:links target="self" field="introduced" ascending="${isAscending}" changeAscending="${true}"/>">Introduced date</a></th>
                 <!-- Table header for Discontinued Date -->
-                <th><a href="<cst:links target="self" field="discontinued" ascending="true" />">Discontinued date</a></th>
+                <th><a href="<cst:links target="self" field="discontinued" ascending="${isAscending}" changeAscending="${true}"/>">Discontinued date</a></th>
                 <!-- Table header for Company -->
-                <th><a href="<cst:links target="self" field="companyName" ascending="true" />">Company</a></th>
+                <th><a href="<cst:links target="self" field="companyName" ascending="${isAscending}" changeAscending="${true}"/>">Company</a></th>
             </tr>
             </thead>
             <!-- Browse attribute computers -->

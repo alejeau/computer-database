@@ -23,6 +23,8 @@
         <!-- checkstyle -->
         <checkstyle.version>3.0.0</checkstyle.version>
 
+        <common-lang.version>3.7</common-lang.version>
+
         <!-- test -->
         <junit.version>4.12</junit.version>
 
@@ -142,6 +144,12 @@
             <artifactId>maven-checkstyle-plugin</artifactId>
             <version>${checkstyle.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${common-lang.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.zaxxer</groupId>
