@@ -59,12 +59,12 @@
                                         </a>
                         </span>
                 </th>
-                <th>Computer name</th>
-                <th>Introduced date</th>
+                <th><a href="<cst:links target="self" field="computerName" ascending="true" />">Computer name</a></th>
+                <th><a href="<cst:links target="self" field="introduced" ascending="true" />">Introduced date</a></th>
                 <!-- Table header for Discontinued Date -->
-                <th>Discontinued date</th>
+                <th><a href="<cst:links target="self" field="discontinued" ascending="true" />">Discontinued date</a></th>
                 <!-- Table header for Company -->
-                <th>Company</th>
+                <th><a href="<cst:links target="self" field="companyName" ascending="true" />">Company</a></th>
             </tr>
             </thead>
             <!-- Browse attribute computers -->

@@ -7,6 +7,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.persistence.dao.impl.ComputerDAOImpl;
 import com.excilys.formation.cdb.service.ComputerService;
@@ -61,9 +62,20 @@ public enum ComputerServiceImpl implements ComputerService {
             return computerDAO.getComputer(name, index, limit);
         } catch (DAOException e) {
             LOG.error("{}", e);
-            throw new ServiceException("Couldn't retrieve the number of computers WITH NAME LIKE \"" + name + "\"!", e);
+            throw new ServiceException("Couldn't retrieve the computers WITH NAME LIKE \"" + name + "\"!", e);
         }
     }
+
+    @Override
+    public List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException {
+        try {
+            return computerDAO.getComputerOrderedBy(name, index, limit, computerField, ascending);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't retrieve the computers WITH NAME LIKE \"" + name + "\"!", e);
+        }
+    }
+
 
     @Override
     public List<Computer> getComputers(long index, Long limit) throws ServiceException {
@@ -74,6 +86,17 @@ public enum ComputerServiceImpl implements ComputerService {
             throw new ServiceException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
         }
     }
+
+    @Override
+    public List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException {
+        try {
+            return computerDAO.getComputersOrderedBy(index, limit, computerField, ascending);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
+        }
+    }
+
 
     @Override
     public Long persistComputer(Computer c) throws ValidationException, ServiceException {

@@ -6,6 +6,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.persistence.DatabaseField;
 
 import java.util.List;
 
@@ -19,7 +20,11 @@ public interface ComputerService {
 
     List<Computer> getComputer(String name, long index, Long limit) throws ServiceException;
 
+    List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException;
+
     List<Computer> getComputers(long index, Long limit) throws ServiceException;
+
+    List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException;
 
     void updateComputer(Computer c) throws ValidationException, ServiceException;
 

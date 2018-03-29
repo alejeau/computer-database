@@ -79,9 +79,17 @@
 <c:if test="${ not empty search }" >
     <c:set var="tmpSearch" value="${ emptyText.concat('&search=').concat(search) }"/>
 </c:if>
+<c:if test="${ not empty field }" >
+    <c:set var="tmpField" value="${ emptyText.concat('&field=').concat(field) }"/>
+</c:if>
+<c:if test="${ not empty ascending }" >
+    <c:set var="tmpAsc" value="${ emptyText.concat('&ascending=').concat(ascending) }"/>
+</c:if>
 
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpPageNb) }"/>
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpDisplayBy) }"/>
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpSearch) }"/>
+<c:set var="tmpPath" value="${ tmpPath.concat(tmpField) }"/>
+<c:set var="tmpPath" value="${ tmpPath.concat(tmpAsc) }"/>
 
 <c:out value="${ tmpPath }" escapeXml="false"/>
