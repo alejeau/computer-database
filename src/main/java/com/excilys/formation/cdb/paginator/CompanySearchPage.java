@@ -19,13 +19,13 @@ public class CompanySearchPage extends CompanyPage {
 
     @Override
     public Long currentLastPageNumber() throws ServiceException {
-        Long numberOfComputer = CompanyServiceImpl.INSTANCE.getNumberOfCompaniesWithName(this.search);
+        Long numberOfComputer = companyService.getNumberOfCompaniesWithName(this.search);
         return numberOfComputer / this.limit.getValue();
     }
 
     @Override
     protected void refresh(long offset)throws ServiceException {
-            this.page = CompanyServiceImpl.INSTANCE.getCompany(search, offset, this.limit.getValue());
+            this.page = companyService.getCompany(search, offset, this.limit.getValue());
     }
 
     public String getSearch() {

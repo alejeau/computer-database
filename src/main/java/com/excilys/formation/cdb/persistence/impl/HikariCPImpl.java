@@ -32,7 +32,7 @@ public enum HikariCPImpl implements ConnectionManager {
         try {
             return hikariDataSource.getConnection();
         } catch (SQLException e) {
-            catcher(e);
+            LOG.error("{}", e);
             throw new ConnectionException("Couldn't obtain a connection!", e);
         }
     }
@@ -43,27 +43,22 @@ public enum HikariCPImpl implements ConnectionManager {
             try {
                 resultSet.close();
             } catch (SQLException e) {
-                catcher(e);
+                LOG.error("{}", e);
             }
         }
         if (statement != null) {
             try {
                 statement.close();
             } catch (SQLException e) {
-                catcher(e);
+                LOG.error("{}", e);
             }
         }
         if (connection != null) {
             try {
                 connection.close();
             } catch (SQLException e) {
-                catcher(e);
+                LOG.error("{}", e);
             }
         }
-    }
-
-    private static void catcher(Exception e) {
-        LOG.error("{}", e);
-        e.printStackTrace();
     }
 }

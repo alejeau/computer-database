@@ -19,11 +19,14 @@ import java.util.List;
 
 public class PageMapper {
     public static PageDTO<ComputerDTO> toPageDTO(ComputerPage computerPage, long numberOfComputers) throws ServiceException {
-        List<ComputerDTO> list = new ArrayList<>();
-        computerPage.getPage().forEach(computer -> list.add(ComputerMapper.toDTO(computer)));
+        List<ComputerDTO> computerDTOList = new ArrayList<>();
+        computerPage.getPage()
+                .stream()
+                .map(ComputerMapper::toDTO)
+                .forEach(computerDTOList::add);
 
         return new PageDTO<>(
-                list,
+                computerDTOList,
                 computerPage.getPageNumber(),
                 computerPage.currentLastPageNumber(),
                 computerPage.getLimit().getValue(),
@@ -31,11 +34,14 @@ public class PageMapper {
     }
 
     public static SearchPageDTO<ComputerDTO> toSearchPageDTO(ComputerSearchPage computerSearchPage, long numberOfComputers) throws ServiceException {
-        List<ComputerDTO> list = new ArrayList<>();
-        computerSearchPage.getPage().forEach(computer -> list.add(ComputerMapper.toDTO(computer)));
+        List<ComputerDTO> computerDTOList = new ArrayList<>();
+        computerSearchPage.getPage()
+                .stream()
+                .map(ComputerMapper::toDTO)
+                .forEach(computerDTOList::add);
 
         return new SearchPageDTO<>(
-                list,
+                computerDTOList,
                 computerSearchPage.getPageNumber(),
                 computerSearchPage.currentLastPageNumber(),
                 computerSearchPage.getLimit().getValue(),

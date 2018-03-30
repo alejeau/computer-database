@@ -112,17 +112,32 @@ public enum CLI {
             choice = sc.nextLine();
 
             if (choice.isEmpty() || choice.equals("f")) {
-                page.first().forEach(c -> System.out.println(c.shortToString()));
+                page.first()
+                        .stream()
+                        .map(Model::shortToString)
+                        .forEach(System.out::println);
             } else if (choice.equals("q")) {
                 exit = true;
             } else if (choice.equals("p")) {
-                page.previous().forEach(c -> System.out.println(c.shortToString()));
+                page.previous()
+                        .stream()
+                        .map(Model::shortToString)
+                        .forEach(System.out::println);
             } else if (choice.equals("n")) {
-                page.next().forEach(c -> System.out.println(c.shortToString()));
+                page.next()
+                        .stream()
+                        .map(Model::shortToString)
+                        .forEach(System.out::println);
             } else if (choice.equals("l")) {
-                page.last().forEach(c -> System.out.println(c.shortToString()));
+                page.last()
+                        .stream()
+                        .map(Model::shortToString)
+                        .forEach(System.out::println);
             } else if (choice.matches("[0-9]+")) {
-                page.goToPage(Long.decode(choice)).forEach(c -> System.out.println(c.shortToString()));
+                page.goToPage(Long.decode(choice))
+                        .stream()
+                        .map(Model::shortToString)
+                        .forEach(System.out::println);
             }
             System.out.println();
         }

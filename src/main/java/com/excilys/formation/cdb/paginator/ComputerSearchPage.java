@@ -23,13 +23,13 @@ public class ComputerSearchPage extends ComputerPage {
 
     @Override
     public Long currentLastPageNumber() throws ServiceException {
-        Long numberOfComputer = ComputerServiceImpl.INSTANCE.getNumberOfComputersWithName(this.search);
+        Long numberOfComputer = computerService.getNumberOfComputersWithName(this.search);
         return numberOfComputer / this.limit.getValue();
     }
 
     @Override
     protected void refresh(long offset) throws ServiceException {
-        this.page = ComputerServiceImpl.INSTANCE.getComputer(search, offset, this.limit.getValue());
+        this.page = computerService.getComputer(search, offset, this.limit.getValue());
     }
 
     public String getSearch() {

@@ -8,6 +8,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
+import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
     private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
+    private static SimpleDAO simpleDAO = SimpleDAOImpl.INSTANCE;
 
     private static final String ORDER_FIELD = "{orderField}";
     private static final String DIRECTION = "{direction}";
@@ -54,14 +56,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public Long getNumberOfComputers() throws DAOException {
         LOG.debug("getNumberOfComputers");
-        return SimpleDAOImpl.INSTANCE.count(NUMBER_OF_COMPUTERS);
+        return simpleDAO.count(NUMBER_OF_COMPUTERS);
     }
 
     @Override
     public Long getNumberOfComputersWithName(String name) throws DAOException {
         LOG.debug("getNumberOfComputersWithName");
-        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
-        return simpleDao.countWithStringParameters(NUMBER_OF_COMPUTERS_WITH_NAME_OR_COMPANY_NAME, Arrays.asList(name, name));
+        return simpleDAO.countWithStringParameters(NUMBER_OF_COMPUTERS_WITH_NAME_OR_COMPANY_NAME, Arrays.asList(name, name));
     }
 
     @Override

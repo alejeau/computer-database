@@ -27,7 +27,9 @@ public enum LimitValue {
      */
     public static List<Long> toLongList() {
         List<Long> longList = new ArrayList<>(LimitValue.values().length);
-        Arrays.stream(LimitValue.values()).forEach(l -> longList.add(l.getValue()));
+        Arrays.stream(LimitValue.values())
+                .map(LimitValue::getValue)
+                .forEach(longList::add);
         Collections.sort(longList);
         return longList;
     }

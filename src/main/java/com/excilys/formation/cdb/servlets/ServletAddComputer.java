@@ -10,6 +10,8 @@ import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.core.Page;
+import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
@@ -30,6 +32,8 @@ import java.util.Objects;
 
 public class ServletAddComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletAddComputer.class);
+    private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
+    private static CompanyService companyService = CompanyServiceImpl.INSTANCE;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
@@ -37,7 +41,7 @@ public class ServletAddComputer extends HttpServlet {
             request = setRequest(request, null, false);
         } catch (ServiceException e) {
             LOG.error("{}", e);
-            throw new ServletException(e.getMessage(), e);
+            throw new ServletException(e);
         }
         this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
     }
@@ -47,11 +51,8 @@ public class ServletAddComputer extends HttpServlet {
         List<Error> errorList;
 
         String computerName = request.getParameter("computerName");
-        LOG.debug("retrieved computerName: " + computerName);
         String introduced = request.getParameter("introduced");
-        LOG.debug("retrieved introduced: " + introduced);
         String discontinued = request.getParameter("discontinued");
-        LOG.debug("retrieved discontinued: " + discontinued);
 
         boolean displaySuccessMessage = false;
         errorList = ComputerValidator.INSTANCE.validate(computerName, introduced, discontinued);
@@ -60,26 +61,24 @@ public class ServletAddComputer extends HttpServlet {
             if (errorList == null) {
                 displaySuccessMessage = true;
                 Long companyId = Long.valueOf(request.getParameter("companyId"));
-                Company company = CompanyServiceImpl.INSTANCE.getCompany(companyId);
+                Company company = companyService.getCompany(companyId);
                 Computer computer = new Computer.Builder().
                         name(computerName)
                         .introduced(introduced)
                         .discontinued(discontinued)
                         .company(company)
                         .build();
-                try {
-                    ComputerServiceImpl.INSTANCE.persistComputer(computer);
-                } catch (ValidationException e) {
-                    LOG.error(e.getMessage());
-                }
+
+                computerService.persistComputer(computer);
             } else {
                 errorList.stream()
                         .filter(Objects::nonNull)
-                        .forEach(error -> LOG.error(error.toString()));
+                        .map(Error::toString)
+                        .forEach(LOG::error);
             }
 
             setRequest(request, errorList, displaySuccessMessage);
-        } catch (ServiceException e) {
+        } catch (ServiceException | ValidationException e) {
             LOG.error("{}", e);
             throw new ServletException(e.getMessage(), e);
         }
@@ -88,12 +87,10 @@ public class ServletAddComputer extends HttpServlet {
 
     private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
-        request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
-        request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
-        request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
+        request.setAttribute("currentPath", Paths.PATH_ADD_COMPUTER);
 
         request.setAttribute("displaySuccessMessage", displaySuccessMessage);
-        List<CompanyDTO> companyList = CompanyMapper.mapList(CompanyServiceImpl.INSTANCE.getCompanies());
+        List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
         request.setAttribute("companyList", companyList);
 
         HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
