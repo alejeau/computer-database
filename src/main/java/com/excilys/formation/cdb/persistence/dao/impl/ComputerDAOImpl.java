@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ConnectionManager;
@@ -77,7 +78,12 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
-            c = ComputerMapper.map(rs);
+            try {
+                c = ComputerMapper.map(rs);
+            } catch (MapperException e) {
+                LOG.error("{}", e);
+                throw new DAOException("Error while mapping the ResultSet!", e);
+            }
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get computer with ID " + id + "!", e);
@@ -114,7 +120,12 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
-            computers = ComputerMapper.mapList(rs);
+            try {
+                computers = ComputerMapper.mapList(rs);
+            } catch (MapperException e) {
+                LOG.error("{}", e);
+                throw new DAOException("Error while mapping the ResultSet!", e);
+            }
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of computers with NAME LIKE " + name + "!", e);
@@ -150,7 +161,12 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
 
-            computers = ComputerMapper.mapList(rs);
+            try {
+                computers = ComputerMapper.mapList(rs);
+            } catch (MapperException e) {
+                LOG.error("{}", e);
+                throw new DAOException("Error while mapping the ResultSet!", e);
+            }
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
@@ -277,7 +293,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public void deleteComputers(List<Long> idList, Connection connection) throws DAOException {
-        LOG.debug("deleteComputers (by list)");
+        LOG.debug("deleteComputers (by list) with connection");
 
         try (PreparedStatement prepStmt = connection.prepareStatement(DELETE_COMPUTER)) {
             for (Long id : idList) {
