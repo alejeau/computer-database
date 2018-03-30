@@ -4,7 +4,7 @@ import com.excilys.formation.cdb.dto.ModelDTO;
 
 import java.util.Objects;
 
-public class ComputerDTO extends ModelDTO {
+public class ComputerDTO implements ModelDTO {
     private long id;
     private String name;
     private String introduced;

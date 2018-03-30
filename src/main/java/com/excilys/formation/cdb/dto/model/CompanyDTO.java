@@ -2,7 +2,7 @@ package com.excilys.formation.cdb.dto.model;
 
 import com.excilys.formation.cdb.dto.ModelDTO;
 
-public class CompanyDTO extends ModelDTO {
+public class CompanyDTO implements ModelDTO {
 
     private Long id;
     private String name;
