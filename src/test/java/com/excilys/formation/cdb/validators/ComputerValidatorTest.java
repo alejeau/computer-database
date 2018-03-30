@@ -38,9 +38,9 @@ public class ComputerValidatorTest {
     @Test
     public void validateName() {
         assertNull(ComputerValidator.INSTANCE.validateName(GOOD_NAME));
-        assertEquals(ComputerValidator.INSTANCE.validateName(null), ERROR_NULL_NAME);
-        assertEquals(ComputerValidator.INSTANCE.validateName(EMPTY_NAME), ERROR_EMPTY_NAME);
-        assertEquals(ComputerValidator.INSTANCE.validateName(SPACE_NAME), ERROR_SPACE);
+        assertEquals(ERROR_NULL_NAME, ComputerValidator.INSTANCE.validateName(null));
+        assertEquals(ERROR_EMPTY_NAME, ComputerValidator.INSTANCE.validateName(EMPTY_NAME));
+        assertEquals(ERROR_SPACE, ComputerValidator.INSTANCE.validateName(SPACE_NAME));
     }
 
     @Test
@@ -54,8 +54,8 @@ public class ComputerValidatorTest {
     public void validateDate() {
         assertNull(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, GOOD_DATE1));
         assertNull(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, EMPTY_DATE));
-        assertEquals(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE1), ERROR_DATE_PATTERN);
-        assertEquals(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE2), ERROR_DATE_PATTERN);
-        assertEquals(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE3), ERROR_DATE_PATTERN);
+        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE1));
+        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE2));
+        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE3));
     }
 }

@@ -27,12 +27,6 @@ public class PageTest {
             this.list.add(new TestObject());
         }
 
-        public TestPage(LimitValue limit) {
-            super(limit);
-            this.list = new ArrayList<>();
-            this.list.add(new TestObject());
-        }
-
         @Override
         protected Long currentLastPageNumber() {
             return LAST_PAGE_NUMBER;
@@ -48,7 +42,7 @@ public class PageTest {
         TestPage testPage = new TestPage();
         final long EXPECTED = testPage.getPageNumber() + 1;
         testPage.next();
-        assertEquals(testPage.getPageNumber().longValue(), EXPECTED);
+        assertEquals(EXPECTED, testPage.getPageNumber().longValue());
     }
 
     @Test
@@ -56,7 +50,7 @@ public class PageTest {
         TestPage testPage = new TestPage();
         testPage.goToPage(LAST_PAGE_NUMBER);
         testPage.next();
-        assertEquals(testPage.getPageNumber().longValue(), LAST_PAGE_NUMBER);
+        assertEquals(LAST_PAGE_NUMBER, testPage.getPageNumber().longValue());
     }
 
     @Test
@@ -64,7 +58,7 @@ public class PageTest {
         TestPage testPage = new TestPage();
         testPage.goToPage(Page.FIRST_PAGE);
         testPage.previous();
-        assertEquals(testPage.getPageNumber(), Page.FIRST_PAGE);
+        assertEquals(Page.FIRST_PAGE, testPage.getPageNumber());
 
     }
 
@@ -74,27 +68,27 @@ public class PageTest {
         final Long EXPECTED = LAST_PAGE_NUMBER - 1;
         testPage.goToPage(LAST_PAGE_NUMBER);
         testPage.previous();
-        assertEquals(testPage.getPageNumber(), EXPECTED);
+        assertEquals(EXPECTED, testPage.getPageNumber());
     }
 
     @Test
     public void goToLastPage() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(LAST_PAGE_NUMBER);
-        assertEquals(testPage.getPageNumber().longValue(), LAST_PAGE_NUMBER);
+        assertEquals(LAST_PAGE_NUMBER, testPage.getPageNumber().longValue());
     }
 
     @Test
     public void goToBeyondLastPage() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(LAST_PAGE_NUMBER + 1);
-        assertEquals(testPage.getPageNumber().longValue(), LAST_PAGE_NUMBER);
+        assertEquals(LAST_PAGE_NUMBER, testPage.getPageNumber().longValue());
     }
 
     @Test
     public void goToBeyondFirstPage() throws ServiceException {
         TestPage testPage = new TestPage();
         testPage.goToPage(Page.FIRST_PAGE - 1);
-        assertEquals(testPage.getPageNumber(), Page.FIRST_PAGE);
+        assertEquals(Page.FIRST_PAGE, testPage.getPageNumber());
     }
 }
