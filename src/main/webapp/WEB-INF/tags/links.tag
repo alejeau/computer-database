@@ -8,6 +8,7 @@
 <%@attribute name="displayBy" required="false" %>
 <%@attribute name="field" required="false" %>
 <%@attribute name="ascending" required="false" %>
+<%@attribute name="changeAscending" required="false" %>
 <%@attribute name="computerId" required="false" %>
 
 <c:set var="pathDash" value="/computer-database/access"/>
@@ -18,11 +19,11 @@
 
 <c:set var="emptyText" value=""/>
 <c:set var="tmpPath" value=""/>
-<c:set var="tmpSearchMode" value="${ false }"/>
 
 
 <c:set var="whichPageNb" value="${ not empty targetPageNumber ? targetPageNumber : pageDTO.currentPageNumber }"/>
 <c:set var="tmpPageNb" value="${ emptyText.concat('?pageNb=').concat(whichPageNb) }"/>
+
 <c:set var="whichDisplayBy" value="${ not empty targetDisplayBy ? targetDisplayBy : pageDTO.objectsPerPage }"/>
 <c:set var="tmpDisplayBy" value="${ emptyText.concat('&displayBy=').concat(whichDisplayBy) }"/>
 
@@ -76,8 +77,25 @@
 <c:if test="${ not empty displayBy and displayBy.matches('[0-9]+') }">
     <c:set var="tmpDisplayBy" value="${ emptyText.concat('&displayBy=').concat(displayBy) }"/>
 </c:if>
+<c:if test="${ not empty search }">
+    <c:set var="tmpSearch" value="${ emptyText.concat('&search=').concat(search) }"/>
+</c:if>
+<c:if test="${ not empty field }">
+    <c:set var="tmpField" value="${ emptyText.concat('&field=').concat(field) }"/>
+    <c:if test="${field.equals(orderBy)}">
+        <c:if test="${not empty changeAscending}">
+            <c:set var="ascending" value="${!ascending}"/>
+        </c:if>
+    </c:if>
+</c:if>
+<c:if test="${ not empty ascending }">
+    <c:set var="tmpAsc" value="${ emptyText.concat('&ascending=').concat(ascending) }"/>
+</c:if>
 
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpPageNb) }"/>
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpDisplayBy) }"/>
+<c:set var="tmpPath" value="${ tmpPath.concat(tmpSearch) }"/>
+<c:set var="tmpPath" value="${ tmpPath.concat(tmpField) }"/>
+<c:set var="tmpPath" value="${ tmpPath.concat(tmpAsc) }"/>
 
 <c:out value="${ tmpPath }" escapeXml="false"/>

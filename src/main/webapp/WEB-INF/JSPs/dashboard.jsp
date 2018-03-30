@@ -26,7 +26,7 @@
         </h1>
         <div id="actions" class="form-horizontal">
             <div class="pull-left">
-                <form id="searchForm" action="#" method="GET" class="form-inline">
+                <form id="searchForm" action="<cst:links target="search" search="${searchField}"/>" method="GET" class="form-inline">
 
                     <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
                     <input type="submit" id="searchsubmit" value="Filter by name"
@@ -59,12 +59,12 @@
                                         </a>
                         </span>
                 </th>
-                <th>Computer name</th>
-                <th>Introduced date</th>
+                <th><a href="<cst:links target="self" field="computerName" ascending="${isAscending}" changeAscending="${true}"/>">Computer name</a></th>
+                <th><a href="<cst:links target="self" field="introduced" ascending="${isAscending}" changeAscending="${true}"/>">Introduced date</a></th>
                 <!-- Table header for Discontinued Date -->
-                <th>Discontinued date</th>
+                <th><a href="<cst:links target="self" field="discontinued" ascending="${isAscending}" changeAscending="${true}"/>">Discontinued date</a></th>
                 <!-- Table header for Company -->
-                <th>Company</th>
+                <th><a href="<cst:links target="self" field="companyName" ascending="${isAscending}" changeAscending="${true}"/>">Company</a></th>
             </tr>
             </thead>
             <!-- Browse attribute computers -->

@@ -5,7 +5,7 @@ import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
-import com.excilys.formation.cdb.paginator.ComputerPage;
+import com.excilys.formation.cdb.paginator.ComputerSortedPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
@@ -30,9 +30,8 @@ public class ServletDashboard extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         try {
-            ComputerPage computerPage = DashboardRequestMapper.mapDoGet(request);
-            PageDTO<ComputerDTO> computerPageDTO = PageMapper.toPageDTO(computerPage, computerService.getNumberOfComputers());
-            request = setRequest(request, computerPageDTO);
+            ComputerSortedPage computerSortedPage = DashboardRequestMapper.mapDoGet(request);
+            request = setRequest(request, computerSortedPage);
         } catch (ServiceException e) {
             LOG.error("{}", e);
             throw new ServletException(e);
@@ -52,7 +51,6 @@ public class ServletDashboard extends HttpServlet {
                     .filter(s -> s.matches("[0-9]+"))
                     .map(Long::valueOf)
                     .forEach(idList::add);
-
             try {
                 computerService.deleteComputers(idList);
             } catch (ServiceException e) {
@@ -63,12 +61,18 @@ public class ServletDashboard extends HttpServlet {
         this.doGet(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, PageDTO<ComputerDTO> computerPageDTO) {
+    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedPage computerSortedPage) throws ServiceException{
         LOG.debug("setRequest");
         // Setting the paths
         request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
         request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
+        request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
+
+        PageDTO<ComputerDTO> computerPageDTO = PageMapper.toPageDTO(computerSortedPage, computerService.getNumberOfComputers());
         request.setAttribute("pageDTO", computerPageDTO);
+        request.setAttribute("orderBy", computerSortedPage.getOrderBy().getValue());
+        request.setAttribute("isAscending", computerSortedPage.isAscending());
+
         // Setting the vars
         request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
         request.setAttribute("limitValues", LimitValue.toLongList());

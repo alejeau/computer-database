@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.persistence.dao;
 
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.persistence.DatabaseField;
 
 import java.util.List;
 
@@ -15,7 +16,11 @@ public interface ComputerDAO {
 
     List<Computer> getComputer(String name, long index, Long limit) throws DAOException;
 
+    List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException;
+
     List<Computer> getComputers(long index, Long limit) throws DAOException;
+
+    List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException;
 
     void updateComputer(Computer c) throws DAOException;
 
