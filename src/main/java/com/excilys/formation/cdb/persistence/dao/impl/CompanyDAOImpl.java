@@ -176,9 +176,11 @@ public enum CompanyDAOImpl implements CompanyDAO {
         try {
             connection.setAutoCommit(false);
             computerDAO.deleteComputers(idList, connection);
+
             prepStmt = connection.prepareStatement(DELETE_COMPANY_WITH_ID);
             prepStmt.setLong(1, id);
-            prepStmt.executeQuery();
+            prepStmt.executeUpdate();
+
             connection.commit();
         } catch (SQLException e1) {
             try {
@@ -193,9 +195,6 @@ public enum CompanyDAOImpl implements CompanyDAO {
         } finally {
             ConnectionManagerImpl.closeElements(connection, null, null);
         }
-
-
-        throw new NotImplementedException();
     }
 
     List<Long> getComputerIDsWithCompanyID(Long id) throws DAOException {

@@ -22,7 +22,9 @@ public interface CompanyService {
 
     List<Company> getCompanies(Long index, Long limit) throws ServiceException;
 
-    public CompanyPage getCompanyPage(LimitValue limit);
+    void deleteCompany(Long id) throws ServiceException;
 
-    public CompanySearchPage getCompanySearchPage(String name, LimitValue limit);
+    CompanyPage getCompanyPage(LimitValue limit);
+
+    CompanySearchPage getCompanySearchPage(String name, LimitValue limit);
 }

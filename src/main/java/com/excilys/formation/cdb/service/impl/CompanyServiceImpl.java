@@ -6,6 +6,7 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.paginator.CompanyPage;
 import com.excilys.formation.cdb.paginator.CompanySearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.excilys.formation.cdb.persistence.dao.impl.CompanyDAOImpl;
 import com.excilys.formation.cdb.service.CompanyService;
 import org.slf4j.Logger;
@@ -16,11 +17,12 @@ import java.util.List;
 public enum CompanyServiceImpl implements CompanyService {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
+    private static CompanyDAO companyDAO = CompanyDAOImpl.INSTANCE;
 
     @Override
     public Long getNumberOfCompanies() throws ServiceException {
         try {
-            return CompanyDAOImpl.INSTANCE.getNumberOfCompanies();
+            return companyDAO.getNumberOfCompanies();
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the number of companies!", e);
@@ -30,7 +32,7 @@ public enum CompanyServiceImpl implements CompanyService {
     @Override
     public Long getNumberOfCompaniesWithName(String name) throws ServiceException {
         try {
-            return CompanyDAOImpl.INSTANCE.getNumberOfCompaniesWithName(name);
+            return companyDAO.getNumberOfCompaniesWithName(name);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the number of companies WITH NAME LIKE \"" + name + "\"!", e);
@@ -40,7 +42,7 @@ public enum CompanyServiceImpl implements CompanyService {
     @Override
     public Company getCompany(Long id) throws ServiceException {
         try {
-            return CompanyDAOImpl.INSTANCE.getCompany(id);
+            return companyDAO.getCompany(id);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the the company with the \"" + id + "\"!", e);
@@ -50,7 +52,7 @@ public enum CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getCompany(String name, Long index, Long limit) throws ServiceException {
         try {
-            return CompanyDAOImpl.INSTANCE.getCompany(name, index, limit);
+            return companyDAO.getCompany(name, index, limit);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the number of companies WITH NAME LIKE \"" + name + "\"!", e);
@@ -60,7 +62,7 @@ public enum CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getCompanies() throws ServiceException {
         try {
-            return CompanyDAOImpl.INSTANCE.getCompanies();
+            return companyDAO.getCompanies();
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the complete list of companies!", e);
@@ -70,12 +72,23 @@ public enum CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getCompanies(Long index, Long limit) throws ServiceException {
         try {
-            return CompanyDAOImpl.INSTANCE.getCompanies(index, limit);
+            return companyDAO.getCompanies(index, limit);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't get list of companies from " + index + " to " + limit + "!", e);
         }
     }
+
+    @Override
+    public void deleteCompany(Long id) throws ServiceException {
+        try {
+            companyDAO.deleteCompany(id);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't the company with ID " + id + "!", e);
+        }
+    }
+
 
     public CompanyPage getCompanyPage(LimitValue limit) {
         return new CompanyPage(limit);

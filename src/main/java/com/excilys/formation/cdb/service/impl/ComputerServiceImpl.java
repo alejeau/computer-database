@@ -141,12 +141,12 @@ public enum ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public ComputerPage getComputers(LimitValue limit) throws ServiceException {
+    public ComputerPage getComputers(LimitValue limit) {
         return new ComputerPage(limit);
     }
 
     @Override
-    public ComputerSearchPage getComputer(String name, LimitValue limit) throws ServiceException {
+    public ComputerSearchPage getComputer(String name, LimitValue limit) {
         return new ComputerSearchPage(name, limit);
     }
 

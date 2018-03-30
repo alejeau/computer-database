@@ -11,10 +11,13 @@ import com.excilys.formation.cdb.paginator.ComputerPage;
 import com.excilys.formation.cdb.paginator.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
+import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -22,8 +25,10 @@ import java.util.Scanner;
 public enum CLI {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
-
     private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
+
+    private static CompanyService companyService = CompanyServiceImpl.INSTANCE;
+    private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
 
     private Scanner sc = new Scanner(System.in);
 
@@ -40,6 +45,7 @@ public enum CLI {
         System.out.println(CliActions.ADD_COMPUTER.getValue());
         System.out.println(CliActions.UPDATE_COMPUTER.getValue());
         System.out.println(CliActions.DELETE_COMPUTER.getValue());
+        System.out.println(CliActions.DELETE_COMPANY.getValue());
         System.out.println(CliActions.EXIT.getValue());
 
         System.out.println("Enter your choice: ");
@@ -61,17 +67,17 @@ public enum CLI {
             }
             System.out.println();
         }
-        while (code != 8);
+        while (code != CliActions.values().length);
     }
 
     private void executeChoice(CliActions choice) throws ServiceException {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
-                ComputerPage computerPage = ComputerServiceImpl.INSTANCE.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
+                ComputerPage computerPage = computerService.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(computerPage);
                 break;
             case VIEW_COMPANY_LIST:
-                CompanyPage companyPage = CompanyServiceImpl.INSTANCE.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+                CompanyPage companyPage = companyService.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(companyPage);
                 break;
             case CHECK_COMPUTER_BY_ID:
@@ -89,6 +95,8 @@ public enum CLI {
             case DELETE_COMPUTER:
                 deleteComputer();
                 break;
+            case DELETE_COMPANY:
+                deleteCompany();
             default:
                 break;
         }
@@ -121,14 +129,10 @@ public enum CLI {
     }
 
     private void checkComputerById() throws ServiceException {
-        Long id;
         Computer c;
+        Long id = getLong("Please enter the computer's ID: ");
 
-        System.out.println("Please enter the computer's ID: ");
-        id = sc.nextLong();
-        sc.nextLine();
-
-        c = ComputerServiceImpl.INSTANCE.getComputer(id);
+        c = computerService.getComputer(id);
 
         if (c != null) {
             System.out.println(c);
@@ -141,8 +145,7 @@ public enum CLI {
         String name;
 
         System.out.println("Please enter the computer's name: ");
-        name = sc.next();
-        sc.nextLine();
+        name = sc.nextLine();
 
         ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
         viewPage(computerSearchPage);
@@ -168,10 +171,10 @@ public enum CLI {
 
         try {
             if (c.getId() == null) {
-                Long id = ComputerServiceImpl.INSTANCE.persistComputer(c);
+                Long id = computerService.persistComputer(c);
                 System.out.println("The computer has the ID: " + id);
             } else {
-                ComputerServiceImpl.INSTANCE.updateComputer(c);
+                computerService.updateComputer(c);
             }
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
@@ -179,10 +182,9 @@ public enum CLI {
     }
 
     private void updateComputer() throws ServiceException {
-        System.out.println("Which computer would you like to update (ID)?");
-        Long id = sc.nextLong();
-        sc.nextLine();
-        Computer c = ComputerServiceImpl.INSTANCE.getComputer(id);
+        Long id = getLong("Which computer would you like to update (ID)?");
+
+        Computer c = computerService.getComputer(id);
         editComputer(c);
     }
 
@@ -214,28 +216,42 @@ public enum CLI {
         Company c = null;
 
         while (c == null) {
-            System.out.println("Please enter the computer's manufacturer ID:");
-            Long companyId = sc.nextLong();
-            sc.nextLine();
-            c = CompanyServiceImpl.INSTANCE.getCompany(companyId);
+            System.out.println();
+            Long companyId = getLong("Please enter the computer's manufacturer ID:");
+            c = companyService.getCompany(companyId);
         }
 
         return c;
     }
 
     private void deleteComputer() throws ServiceException {
-        Long id;
+        Long id = getLong("Please enter the computer's ID you wish to delete: ");
 
-        System.out.println("Please enter the computer's ID you wish to delete: ");
-        id = sc.nextLong();
-        sc.nextLine();
-
-        Computer c = ComputerServiceImpl.INSTANCE.getComputer(id);
+        Computer c = computerService.getComputer(id);
         if (c != null) {
-            ComputerServiceImpl.INSTANCE.deleteComputer(id);
+            computerService.deleteComputer(id);
         } else {
             System.out.println("There is no computer with the ID: " + id + "\n");
         }
+    }
+
+    private void deleteCompany() throws ServiceException {
+        Long id = getLong("Please enter the company's ID you wish to delete: ");
+
+        Company c = companyService.getCompany(id);
+        if (c != null) {
+            companyService.deleteCompany(id);
+        } else {
+            System.out.println("There is no company with the ID: " + id + "\n");
+        }
+    }
+
+    private Long getLong(final String message) {
+        Long id;
+        System.out.println(message);
+        id = sc.nextLong();
+        sc.nextLine();
+        return id;
     }
 
     public static void main(String[] args) {

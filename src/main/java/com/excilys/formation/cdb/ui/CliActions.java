@@ -8,7 +8,8 @@ public enum CliActions {
     ADD_COMPUTER("5) Add a computer to the list"),
     UPDATE_COMPUTER("6) Update a computer in the list (by id)"),
     DELETE_COMPUTER("7) Delete a computer in the list (by id)"),
-    EXIT("8) Exit this program");
+    DELETE_COMPANY("8) Delete a company in the list (by id)"),
+    EXIT("9) Exit this program");
 
     private final String value;
 
@@ -19,35 +20,28 @@ public enum CliActions {
     public String getValue() {
         return value;
     }
+
     public static CliActions map(int choice) {
-        CliActions action = EXIT;
         switch (choice) {
             case 1:
-                action = VIEW_COMPUTER_LIST;
-                break;
+                return VIEW_COMPUTER_LIST;
             case 2:
-                action = VIEW_COMPANY_LIST;
-                break;
+                return VIEW_COMPANY_LIST;
             case 3:
-                action = CHECK_COMPUTER_BY_ID;
-                break;
+                return CHECK_COMPUTER_BY_ID;
             case 4:
-                action = CHECK_COMPUTERS_BY_NAME;
-                break;
+                return CHECK_COMPUTERS_BY_NAME;
             case 5:
-                action = ADD_COMPUTER;
-                break;
+                return ADD_COMPUTER;
             case 6:
-                action = UPDATE_COMPUTER;
-                break;
+                return UPDATE_COMPUTER;
             case 7:
-                action = DELETE_COMPUTER;
-                break;
+                return DELETE_COMPUTER;
+            case 8:
+                return DELETE_COMPANY;
             default:
-                break;
+                return EXIT;
         }
-
-        return action;
     }
 }
 
