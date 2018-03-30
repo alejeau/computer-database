@@ -7,20 +7,21 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 public enum HikariCPImpl implements ConnectionManager {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(HikariCPImpl.class);
-    private static HikariConfig hikariConfig;
-    private static HikariDataSource hikariDataSource;
+    private static final String PROPERTIES_FILE = "/properties/db.properties";
+    private HikariDataSource hikariDataSource;
 
-    static {
-        hikariConfig = new HikariConfig("properties/db.properties");
-        hikariDataSource = new HikariDataSource(hikariConfig);
+    {
+        hikariDataSource = new HikariDataSource(new HikariConfig(PROPERTIES_FILE));
     }
 
     HikariCPImpl() {
@@ -31,32 +32,38 @@ public enum HikariCPImpl implements ConnectionManager {
         try {
             return hikariDataSource.getConnection();
         } catch (SQLException e) {
-            LOG.error("{}", e);
+            catcher(e);
             throw new ConnectionException("Couldn't obtain a connection!", e);
         }
     }
 
-    public static void closeElements(Connection conn, Statement stmt, ResultSet rs) {
-        if (rs != null) {
+    @Override
+    public void closeElements(Connection connection, Statement statement, ResultSet resultSet) {
+        if (resultSet != null) {
             try {
-                rs.close();
+                resultSet.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                catcher(e);
             }
         }
-        if (stmt != null) {
+        if (statement != null) {
             try {
-                stmt.close();
+                statement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                catcher(e);
             }
         }
-        if (conn != null) {
+        if (connection != null) {
             try {
-                conn.close();
+                connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                catcher(e);
             }
         }
+    }
+
+    private static void catcher(Exception e) {
+        LOG.error("{}", e);
+        e.printStackTrace();
     }
 }

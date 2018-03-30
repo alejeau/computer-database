@@ -5,9 +5,11 @@ import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
+import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
-import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
+import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
+import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +29,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
-    private static ConnectionManagerImpl connectionManager = ConnectionManagerImpl.INSTANCE;
+    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
+    private static SimpleDAO simpleDao = SimpleDAOImpl.INSTANCE;
 
     private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(company_id) FROM company;";
     private static final String NUMBER_OF_COMPANIES_WITH_NAME = "SELECT COUNT(company_id) FROM company WHERE company_name LIKE ?;";
@@ -46,14 +49,12 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public Long getNumberOfCompanies() throws DAOException {
         LOG.debug("getNumberOfCompanies");
-        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.count(NUMBER_OF_COMPANIES);
     }
 
     @Override
     public Long getNumberOfCompaniesWithName(String name) throws DAOException {
         LOG.debug("getNumberOfCompaniesWithName");
-        SimpleDAOImpl simpleDao = SimpleDAOImpl.INSTANCE;
         return simpleDao.countElementsWithName(NUMBER_OF_COMPANIES_WITH_NAME, name);
     }
 
@@ -81,7 +82,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get company with ID " + id + "!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning " + company);
@@ -114,7 +115,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of companies with NAME LIKE " + name + "!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + companies.size());
@@ -144,7 +145,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get the list of companies!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + companies.size());
@@ -176,7 +177,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of companies from " + index + " to " + limit + "!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + companies.size());
@@ -211,7 +212,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e1);
             throw new DAOException("Couldn't delete the supplied list of computers.", e1);
         } finally {
-            ConnectionManagerImpl.closeElements(connection, prepStmt, null);
+            connectionManager.closeElements(connection, prepStmt, null);
         }
     }
 
@@ -239,7 +240,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Error (PreparedStatement) while fetching computer id list with company id " + id + "!");
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + idList.size());

@@ -8,7 +8,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
-import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
+import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     INSTANCE;
 
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
-    private static ConnectionManager connectionManager = ConnectionManagerImpl.INSTANCE;
+    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
 
     private static final String ORDER_FIELD = "{orderField}";
     private static final String DIRECTION = "{direction}";
@@ -88,7 +88,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get computer with ID " + id + "!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning " + c);
@@ -130,7 +130,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of computers with NAME LIKE " + name + "!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + computers.size());
@@ -171,7 +171,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size " + computers.size());
@@ -217,7 +217,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't persist the computer " + computer.shortToString() + ".", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning id " + createdId);
@@ -257,7 +257,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't update the computer with ID " + computer.getId() + ".", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, null);
+            connectionManager.closeElements(conn, prepStmt, null);
         }
     }
 
@@ -287,7 +287,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e1);
             throw new DAOException("Couldn't delete the supplied list of computers.", e1);
         } finally {
-            ConnectionManagerImpl.closeElements(connection, null, null);
+            connectionManager.closeElements(connection, null, null);
         }
     }
 

@@ -2,8 +2,9 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
+import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
-import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
+import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ import java.util.List;
 public enum SimpleDAOImpl implements SimpleDAO {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(SimpleDAOImpl.class);
-    private static ConnectionManagerImpl connectionManager = ConnectionManagerImpl.INSTANCE;
+    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
 
     SimpleDAOImpl() {
 
@@ -45,7 +46,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't execute the requested COUNT query!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, stmt, rs);
+            connectionManager.closeElements(conn, stmt, rs);
         }
 
         LOG.debug("Returning " + l);
@@ -75,7 +76,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't execute the requested COUNT LIKE query!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning " + numberOfElements);
@@ -106,7 +107,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't execute the requested COUNT LIKE query!", e);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+            connectionManager.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning " + numberOfElements);
