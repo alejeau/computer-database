@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageMapper {
+
+    private PageMapper() {
+    }
+
     public static PageDTO<ComputerDTO> toPageDTO(ComputerPage computerPage, long numberOfComputers) throws ServiceException {
         List<ComputerDTO> computerDTOList = new ArrayList<>();
         computerPage.getPage()

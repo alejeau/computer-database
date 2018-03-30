@@ -5,12 +5,8 @@ import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.SearchRequestMapper;
-import com.excilys.formation.cdb.mapper.request.UrlFields;
-import com.excilys.formation.cdb.mapper.request.UrlMapper;
-import com.excilys.formation.cdb.paginator.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
@@ -25,15 +21,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.CURRENT_PATH;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.IS_ASCENDING;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.LIMIT_VALUES;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ORDER_BY;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE_DTO;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SEARCH;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SEARCH_FIELD;
+
 public class ServletSearch extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletSearch.class);
     private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
-
-        String search = request.getParameter("search");
-        LOG.debug("Search: {}", search);
+        String search = request.getParameter(SEARCH);
 
         if (!StringUtils.isBlank(search)) {
             try {
@@ -50,15 +52,15 @@ public class ServletSearch extends HttpServlet {
     private static HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedSearchPage cssp) throws ServiceException {
         LOG.debug("setRequest");
         // Setting the paths
-        request.setAttribute("currentPath", Paths.PATH_SEARCH_COMPUTER);
+        request.setAttribute(CURRENT_PATH, Paths.PATH_SEARCH_COMPUTER);
 
         SearchPageDTO<ComputerDTO> computerSearchPageDTO = PageMapper
                 .toSearchPageDTO(cssp, computerService.getNumberOfComputersWithName(cssp.getSearch()));
-        request.setAttribute("pageDTO", computerSearchPageDTO);
-        request.setAttribute("orderBy", cssp.getOrderBy().getValue());
-        request.setAttribute("isAscending", cssp.isAscending());
-        request.setAttribute("searchField", cssp.getSearch());
-        request.setAttribute("limitValues", LimitValue.toLongList());
+        request.setAttribute(PAGE_DTO, computerSearchPageDTO);
+        request.setAttribute(ORDER_BY, cssp.getOrderBy().getValue());
+        request.setAttribute(IS_ASCENDING, cssp.isAscending());
+        request.setAttribute(SEARCH_FIELD, cssp.getSearch());
+        request.setAttribute(LIMIT_VALUES, LimitValue.toLongList());
 
         return request;
     }

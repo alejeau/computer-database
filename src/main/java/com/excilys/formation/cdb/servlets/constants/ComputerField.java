@@ -1,10 +1,10 @@
 package com.excilys.formation.cdb.servlets.constants;
 
 public enum ComputerField {
-    COMPUTER_NAME("computerName"),
-    INTRODUCED("introduced"),
-    DISCONTINUED("discontinued"),
-    COMPANY_NAME("companyName");
+    COMPUTER_NAME(ServletParameter.COMPUTER_NAME),
+    INTRODUCED(ServletParameter.INTRODUCED),
+    DISCONTINUED(ServletParameter.DISCONTINUED),
+    COMPANY_NAME(ServletParameter.COMPANY_NAME);
 
     private final String value;
 

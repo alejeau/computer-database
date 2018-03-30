@@ -5,6 +5,9 @@ import com.excilys.formation.cdb.servlets.constants.ComputerField;
 
 public class DatabaseFieldsMapper {
 
+    private DatabaseFieldsMapper() {
+    }
+
     public static DatabaseField toDatabaseField(ComputerField computerField) {
         switch (computerField) {
             case COMPUTER_NAME:

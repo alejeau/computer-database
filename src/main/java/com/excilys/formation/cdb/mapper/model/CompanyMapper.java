@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.mapper.model;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.model.Company;
+import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,11 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum CompanyMapper {
-    INSTANCE;
+public class CompanyMapper {
     private static final Logger LOG = LoggerFactory.getLogger(CompanyMapper.class);
 
-    CompanyMapper() {
+    private CompanyMapper() {
     }
 
     public static CompanyDTO toDTO(Company company) {
@@ -30,8 +30,8 @@ public enum CompanyMapper {
         Company c = new Company();
         try {
             while (rs.next()) {
-                c.setId(rs.getLong("company_id"));
-                c.setName(rs.getString("company_name"));
+                c.setId(rs.getLong(DbFields.COMPANY_ID));
+                c.setName(rs.getString(DbFields.COMPANY_NAME));
             }
         } catch (SQLException e) {
             LOG.error("{}", e);
@@ -42,8 +42,8 @@ public enum CompanyMapper {
 
     public static Company mapFromComputer(ResultSet rs) throws SQLException {
         Company c = new Company();
-        c.setId(rs.getLong("company_id"));
-        c.setName(rs.getString("company_name"));
+        c.setId(rs.getLong(DbFields.COMPANY_ID));
+        c.setName(rs.getString(DbFields.COMPANY_NAME));
         return c;
     }
 
@@ -52,8 +52,8 @@ public enum CompanyMapper {
         try {
             while (rs.next()) {
                 Company c = new Company();
-                c.setId(rs.getLong("company_id"));
-                c.setName(rs.getString("company_name"));
+                c.setId(rs.getLong(DbFields.COMPANY_ID));
+                c.setName(rs.getString(DbFields.COMPANY_NAME));
                 companies.add(c);
             }
         } catch (SQLException e) {
@@ -70,6 +70,4 @@ public enum CompanyMapper {
                 .forEach(companyDTOList::add);
         return companyDTOList;
     }
-
-
 }

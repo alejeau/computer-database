@@ -23,6 +23,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.CURRENT_PATH;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.IS_ASCENDING;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.LIMIT_VALUES;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ORDER_BY;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE_DTO;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELECTION;
+
 public class ServletDashboard extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletDashboard.class);
     private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
@@ -41,8 +48,7 @@ public class ServletDashboard extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doPost");
-        String selection = request.getParameter("selection");
-        LOG.debug("selection: " + selection);
+        String selection = request.getParameter(SELECTION);
 
         if (selection != null && !selection.isEmpty()) {
             String[] stringToDelete = selection.split(",");
@@ -61,16 +67,16 @@ public class ServletDashboard extends HttpServlet {
         this.doGet(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedPage computerSortedPage) throws ServiceException{
+    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedPage computerSortedPage) throws ServiceException {
         LOG.debug("setRequest");
         // Setting the paths
-        request.setAttribute("currentPath", Paths.PATH_DASHBOARD);
+        request.setAttribute(CURRENT_PATH, Paths.PATH_DASHBOARD);
 
         PageDTO<ComputerDTO> computerPageDTO = PageMapper.toPageDTO(computerSortedPage, computerService.getNumberOfComputers());
-        request.setAttribute("pageDTO", computerPageDTO);
-        request.setAttribute("orderBy", computerSortedPage.getOrderBy().getValue());
-        request.setAttribute("isAscending", computerSortedPage.isAscending());
-        request.setAttribute("limitValues", LimitValue.toLongList());
+        request.setAttribute(PAGE_DTO, computerPageDTO);
+        request.setAttribute(ORDER_BY, computerSortedPage.getOrderBy().getValue());
+        request.setAttribute(IS_ASCENDING, computerSortedPage.isAscending());
+        request.setAttribute(LIMIT_VALUES, LimitValue.toLongList());
 
         return request;
     }

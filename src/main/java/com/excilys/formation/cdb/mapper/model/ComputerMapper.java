@@ -19,6 +19,9 @@ import java.util.List;
 public class ComputerMapper {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerMapper.class);
 
+    private ComputerMapper() {
+    }
+
     /**
      * Maps a Computer to ComputerDTO object
      *

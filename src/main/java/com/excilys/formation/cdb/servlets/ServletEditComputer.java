@@ -6,17 +6,18 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
-import com.excilys.formation.cdb.mapper.request.UrlFields;
 import com.excilys.formation.cdb.mapper.request.UrlMapper;
 import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
+import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import com.excilys.formation.cdb.servlets.constants.Views;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 import com.excilys.formation.cdb.validators.core.Error;
@@ -33,6 +34,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPANY_ID;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPANY_LIST;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPUTER_DTO;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPUTER_NAME;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.DISCONTINUED;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.DISPLAY_SUCCESS_MESSAGE;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ERROR_MAP;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.INTRODUCED;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_DISPLAY_BY;
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_PAGE_NUMBER;
+
 public class ServletEditComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletEditComputer.class);
     private static final Long NO_COMPUTER = -1L;
@@ -41,7 +53,7 @@ public class ServletEditComputer extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
-        Long computerId = UrlMapper.mapLongNumber(request, UrlFields.COMPUTER_ID, NO_COMPUTER);
+        Long computerId = UrlMapper.mapLongNumber(request, ServletParameter.COMPUTER_ID, NO_COMPUTER);
         try {
             if (!computerId.equals(NO_COMPUTER) && computerService.getComputer(computerId) != null) {
                 ComputerDTO computerDTO = ComputerMapper.toDTO(computerService.getComputer(computerId));
@@ -61,19 +73,19 @@ public class ServletEditComputer extends HttpServlet {
         LOG.debug("doPost");
         List<Error> errorList;
 
-        String computerName = request.getParameter("computerName");
-        String introduced = request.getParameter("introduced");
-        String discontinued = request.getParameter("discontinued");
+        String computerName = request.getParameter(COMPUTER_NAME);
+        String introduced = request.getParameter(INTRODUCED);
+        String discontinued = request.getParameter(DISCONTINUED);
 
         Computer computer = null;
         boolean displaySuccessMessage = false;
         errorList = ComputerValidator.INSTANCE.validate(computerName, introduced, discontinued);
         try {
             if (errorList == null) {
-                Long computerId = UrlMapper.mapLongNumber(request, UrlFields.COMPUTER_ID, NO_COMPUTER);
+                Long computerId = UrlMapper.mapLongNumber(request, ServletParameter.COMPUTER_ID, NO_COMPUTER);
                 if (!computerId.equals(NO_COMPUTER) && computerService.getComputer(computerId) != null) {
                     displaySuccessMessage = true;
-                    Long companyId = Long.valueOf(request.getParameter("companyId"));
+                    Long companyId = Long.valueOf(request.getParameter(COMPANY_ID));
                     Company company = companyService.getCompany(companyId);
                     computer = new Computer.Builder()
                             .id(computerId)
@@ -108,22 +120,20 @@ public class ServletEditComputer extends HttpServlet {
 
     private static HttpServletRequest setRequest(HttpServletRequest request, ComputerDTO computerDTO, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
-        request.setAttribute("pathDashboard", Paths.PATH_DASHBOARD);
-        request.setAttribute("pathAddComputer", Paths.PATH_ADD_COMPUTER);
-        request.setAttribute("currentPath", Paths.PATH_EDIT_COMPUTER);
+        request.setAttribute(ServletParameter.CURRENT_PATH, Paths.PATH_EDIT_COMPUTER);
 
         // URL attributes
-        request.setAttribute("targetPageNumber", UrlMapper.mapLongNumber(request, UrlFields.PAGE_NB, Page.FIRST_PAGE));
-        request.setAttribute("targetDisplayBy", UrlMapper.mapDisplayBy(request).getValue());
+        request.setAttribute(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(request, ServletParameter.PAGE_NB, Page.FIRST_PAGE));
+        request.setAttribute(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(request, LimitValue.TEN).getValue());
 
-        request.setAttribute("displaySuccessMessage", displaySuccessMessage);
-        request.setAttribute("computerDTO", computerDTO);
+        request.setAttribute(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
+        request.setAttribute(COMPUTER_DTO, computerDTO);
 
         List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
-        request.setAttribute("companyList", companyList);
+        request.setAttribute(COMPANY_LIST, companyList);
 
         HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
-        request.setAttribute("errorMap", hashMap);
+        request.setAttribute(ERROR_MAP, hashMap);
 
 
         return request;
