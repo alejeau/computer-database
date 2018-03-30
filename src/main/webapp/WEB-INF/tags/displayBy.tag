@@ -5,7 +5,7 @@
 
 <div class="btn-group btn-group-sm pull-right" role="group">
     <c:forEach items="${ limitValues }" var="limit">
-        <a href='<cst:links target="self" displayBy="${limit}" />'>
+        <a href='<cst:links target="self" displayBy="${limit}" search="${searchField}" field="computerName" ascending="${isAscending}"/>'>
             <button type="button" class="btn btn-default">${limit}</button>
         </a>
     </c:forEach>

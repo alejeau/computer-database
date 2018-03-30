@@ -5,8 +5,11 @@ import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 
 public class ComputerSearchPage extends ComputerPage {
-
     protected String search;
+
+    public ComputerSearchPage() {
+        super();
+    }
 
     public ComputerSearchPage(String search) {
         super();
