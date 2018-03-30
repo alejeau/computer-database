@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_AND_COMPANY_STAR;
@@ -65,13 +66,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public Computer getComputer(Long id) throws DAOException {
         LOG.debug("getComputer");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Computer c;
@@ -103,13 +98,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
         LOG.debug("getComputerOrderedBy");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers;
@@ -145,13 +134,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
         LOG.debug("getComputers");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers;
@@ -183,13 +166,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public Long persistComputer(Computer computer) throws DAOException {
         LOG.debug("persistComputer");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long createdId = null;
@@ -235,13 +212,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
     public void updateComputer(Computer computer) throws DAOException {
         LOG.debug("updateComputer");
         LOG.debug("Computer: {}", computer);
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
 
         try {
@@ -277,53 +248,21 @@ public enum ComputerDAOImpl implements ComputerDAO {
     @Override
     public void deleteComputer(Long id) throws DAOException {
         LOG.debug("deleteComputer");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
-        PreparedStatement prepStmt = null;
-
-        try {
-            prepStmt = conn.prepareStatement(DELETE_COMPUTER);
-            prepStmt.setLong(1, id);
-
-            LOG.debug("Executing query \"" + prepStmt + "\"");
-            prepStmt.executeUpdate();
-        } catch (SQLException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't delete the computer with ID " + id + ".", e);
-        } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, null);
-        }
+        this.deleteComputers(Collections.singletonList(id));
     }
 
     @Override
     public void deleteComputers(List<Long> idList) throws DAOException {
-        LOG.debug("deleteComputers (by list");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
-        PreparedStatement prepStmt = null;
+        LOG.debug("deleteComputers (by list)");
+        Connection connection = this.getConnection();
 
         try {
-            conn.setAutoCommit(false);
-            prepStmt = conn.prepareStatement(DELETE_COMPUTER);
-            for (Long id : idList) {
-                prepStmt.setLong(1, id);
-                LOG.debug("Executing query \"" + prepStmt + "\"");
-                prepStmt.executeUpdate();
-            }
-            conn.commit();
+            connection.setAutoCommit(false);
+            deleteComputers(idList, connection);
+            connection.commit();
         } catch (SQLException e1) {
             try {
-                conn.rollback();
+                connection.rollback();
             } catch (SQLException e2) {
                 LOG.error("{}", e2);
                 throw new DAOException("An error occurred while rolling back the changes!");
@@ -332,7 +271,35 @@ public enum ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e1);
             throw new DAOException("Couldn't delete the supplied list of computers.", e1);
         } finally {
-            ConnectionManagerImpl.closeElements(conn, prepStmt, null);
+            ConnectionManagerImpl.closeElements(connection, null, null);
         }
+    }
+
+    @Override
+    public void deleteComputers(List<Long> idList, Connection connection) throws DAOException {
+        LOG.debug("deleteComputers (by list)");
+
+        try (PreparedStatement prepStmt = connection.prepareStatement(DELETE_COMPUTER)) {
+            for (Long id : idList) {
+                prepStmt.setLong(1, id);
+                LOG.debug("Executing query \"" + prepStmt + "\"");
+                prepStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't delete the supplied list of computers.", e);
+        }
+    }
+
+
+    private Connection getConnection() throws DAOException {
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
+        return conn;
     }
 }

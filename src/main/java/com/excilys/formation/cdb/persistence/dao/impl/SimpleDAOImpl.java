@@ -26,13 +26,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
     @Override
     public Long count(String query) throws DAOException {
         LOG.debug("count:");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         Statement stmt = null;
         ResultSet rs = null;
         Long l = null;
@@ -61,13 +55,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
     @Override
     public Long countElementsWithName(String query, String name) throws DAOException {
         LOG.debug("countElementsWithName");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long numberOfElements = null;
@@ -96,13 +84,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     public Long countWithStringParameters(String query, List<String> params) throws DAOException {
         LOG.debug("countWithStringParameters");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long numberOfElements = null;
@@ -129,5 +111,16 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
         LOG.debug("Returning " + numberOfElements);
         return numberOfElements;
+    }
+
+    private Connection getConnection() throws DAOException {
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
+        return conn;
     }
 }

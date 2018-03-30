@@ -5,17 +5,25 @@ import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
+import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
+import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_STAR;
+import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_COMPANY_ID;
+import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_ID;
 
 public enum CompanyDAOImpl implements CompanyDAO {
     INSTANCE;
@@ -29,6 +37,10 @@ public enum CompanyDAOImpl implements CompanyDAO {
     private static final String COMPANY_BY_NAME = "SELECT " + COMPANY_STAR + " FROM company WHERE company_name LIKE ? ORDER BY company_name LIMIT ?, ?;";
     private static final String ALL_COMPANIES = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name;";
     private static final String ALL_COMPANIES_WITH_LIMIT = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name LIMIT ?, ?;";
+
+    private static final String DELETE_COMPANY_WITH_ID = "DELETE from company WHERE company_id = ?;";
+    private static final String COMPUTER_IDS_WITH_COMPANY_ID = "SELECT " + COMPUTER_ID + " FROM computer LEFT JOIN company ON " + COMPUTER_COMPANY_ID + "=" + COMPANY_ID + " WHERE " + COMPANY_ID + "=?;";
+
 
     CompanyDAOImpl() {
     }
@@ -50,13 +62,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public Company getCompany(Long id) throws DAOException {
         LOG.debug("getCompanyName (with id)");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Company company;
@@ -82,13 +88,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompany(String name, Long index, Long limit) throws DAOException {
         LOG.debug("getCompanyName (with name)");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -116,13 +116,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompanies() throws DAOException {
         LOG.debug("getCompanies");
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -147,13 +141,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompanies(Long index, Long limit) throws DAOException {
         LOG.debug("getCompanies, index" + index, ", limit: " + limit);
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
+        Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -175,5 +163,80 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
         LOG.debug("Returning list of size " + companies.size());
         return companies;
+    }
+
+    @Override
+    public void deleteCompany(Long id) throws DAOException {
+        LOG.debug("deleteCompany");
+        ComputerDAO computerDAO = ComputerDAOImpl.INSTANCE;
+        List<Long> idList = this.getComputerIDsWithCompanyID(id);
+        Connection connection = this.getConnection();
+        PreparedStatement prepStmt;
+
+        try {
+            connection.setAutoCommit(false);
+            computerDAO.deleteComputers(idList, connection);
+            prepStmt = connection.prepareStatement(DELETE_COMPANY_WITH_ID);
+            prepStmt.setLong(1, id);
+            prepStmt.executeQuery();
+            connection.commit();
+        } catch (SQLException e1) {
+            try {
+                connection.rollback();
+            } catch (SQLException e2) {
+                LOG.error("{}", e2);
+                throw new DAOException("An error occurred while rolling back the changes!");
+            }
+
+            LOG.error("{}", e1);
+            throw new DAOException("Couldn't delete the supplied list of computers.", e1);
+        } finally {
+            ConnectionManagerImpl.closeElements(connection, null, null);
+        }
+
+
+        throw new NotImplementedException();
+    }
+
+    List<Long> getComputerIDsWithCompanyID(Long id) throws DAOException {
+        LOG.debug("getComputerIDsWithCompanyID");
+        Connection conn = this.getConnection();
+
+        List<Long> idList = new ArrayList<>();
+        PreparedStatement prepStmt = null;
+        ResultSet rs = null;
+
+        try {
+            prepStmt = conn.prepareStatement(COMPUTER_IDS_WITH_COMPANY_ID);
+            prepStmt.setLong(1, id);
+
+            LOG.debug("Executing query \"" + prepStmt + "\"");
+            rs = prepStmt.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                while (rs.next()) {
+                    idList.add(rs.getLong(1));
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Error (PreparedStatement) while fetching computer id list with company id " + id + "!");
+        } finally {
+            ConnectionManagerImpl.closeElements(conn, prepStmt, rs);
+        }
+
+        LOG.debug("Returning list of size " + idList.size());
+        return idList;
+    }
+
+    private Connection getConnection() throws DAOException {
+        Connection conn;
+        try {
+            conn = connectionManager.getConnection();
+        } catch (ConnectionException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't obtain a connection!", e);
+        }
+        return conn;
     }
 }
