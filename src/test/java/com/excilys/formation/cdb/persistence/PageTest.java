@@ -23,14 +23,14 @@ public class PageTest {
 
     private class TestPage extends Page<TestObject> {
         TestPage() {
-            this.page = new ArrayList<>();
-            this.page.add(new TestObject());
+            this.list = new ArrayList<>();
+            this.list.add(new TestObject());
         }
 
         public TestPage(LimitValue limit) {
             super(limit);
-            this.page = new ArrayList<>();
-            this.page.add(new TestObject());
+            this.list = new ArrayList<>();
+            this.list.add(new TestObject());
         }
 
         @Override

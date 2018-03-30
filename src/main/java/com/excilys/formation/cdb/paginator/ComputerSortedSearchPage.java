@@ -2,7 +2,6 @@ package com.excilys.formation.cdb.paginator;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.DatabaseFieldsMapper;
-import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
@@ -33,15 +32,9 @@ public class ComputerSortedSearchPage extends ComputerSearchPage {
         this.ascending = ascending;
     }
 
-
-    @Override
-    public Long currentLastPageNumber() throws ServiceException {
-        return super.currentLastPageNumber();
-    }
-
     @Override
     protected void refresh(long offset) throws ServiceException {
-        this.page = computerService
+        this.list = computerService
                 .getComputerOrderedBy(search, offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
     }
 

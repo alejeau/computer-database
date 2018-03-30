@@ -17,7 +17,6 @@ import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -107,7 +106,7 @@ public enum CLI {
         String choice;
 
         while (!exit) {
-            System.out.println("Which page would you like to view (current page: " + page.getPageNumber() + ")?");
+            System.out.println("Which list would you like to view (current list: " + page.getPageNumber() + ")?");
             System.out.println("n for next, p for previous, f for first, l for last and q to quit");
             choice = sc.nextLine();
 
@@ -168,7 +167,8 @@ public enum CLI {
 
     private void editComputer(Computer c) throws ServiceException {
         String name;
-        LocalDate introduced, discontinued;
+        LocalDate introduced;
+        LocalDate discontinued;
         Company company;
 
         System.out.println("Please enter the computer's name:");

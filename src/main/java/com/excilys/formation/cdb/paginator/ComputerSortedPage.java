@@ -27,13 +27,8 @@ public class ComputerSortedPage extends ComputerPage {
     }
 
     @Override
-    public Long currentLastPageNumber() throws ServiceException {
-        return super.currentLastPageNumber();
-    }
-
-    @Override
     protected void refresh(long offset) throws ServiceException {
-        this.page = computerService
+        this.list = computerService
                 .getComputersOrderedBy(offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
     }
 

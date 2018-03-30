@@ -33,7 +33,8 @@ public interface ComputerDAO {
 
     /**
      * Must not commit any changes.
-     * @param idList the list of IDs to delete
+     *
+     * @param idList     the list of IDs to delete
      * @param connection the connection to work on.
      * @throws DAOException if something goes wrong
      */

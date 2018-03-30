@@ -6,7 +6,7 @@
 <c:set var="range" scope="page" value="${ pageDTO.maxPageNumber < pagerRange ? pageDTO.maxPageNumber : pagerRange }"/>
 
 <c:set var="half" scope="page" value="${ range / 2 }"/>
-<%-- without the following line, 6 page number are displayed instead of five --%>
+<%-- without the following line, 6 list number are displayed instead of five --%>
 <%-- indeed, the numbers in JSPs are Double by default, so %1 removes the digits after the comma --%>
 <c:set var="half" scope="page" value="${ half - (half % 1) }"/>
 
@@ -38,7 +38,7 @@
         </a>
     </li>
 
-    <%-- the current page is not displayed as a link--%>
+    <%-- the current list is not displayed as a link--%>
     <c:forEach var="i" begin="${ start }" end="${ stop }" step="1">
         <c:choose>
             <c:when test="${ i == pageDTO.currentPageNumber }">

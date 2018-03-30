@@ -2,9 +2,9 @@ package com.excilys.formation.cdb.mapper.request;
 
 import com.excilys.formation.cdb.exceptions.UnauthorizedLimitValueException;
 import com.excilys.formation.cdb.mapper.LimitValueMapper;
-import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
+import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class UrlMapper {
         if ((stringLong != null) && !stringLong.isEmpty() && stringLong.matches("[0-9]+")) {
             value = Long.parseLong(stringLong);
         } else {
-            LOG.error("Can't parse '" + stringLong + "' as a Long!");
+            LOG.error("Can't parse '{}' as a Long!", stringLong);
         }
 
         return value;
@@ -61,7 +61,8 @@ public class UrlMapper {
 
     /**
      * Maps a HttpServletRequest to a {@link LimitValue}
-     * @param request the servlet request containing the parameter {@link ServletParameter}.DISPLAY_BY
+     *
+     * @param request      the servlet request containing the parameter {@link ServletParameter}.DISPLAY_BY
      * @param defaultValue the default {@link LimitValue} to return if an error occurs
      * @return the mapped {@link LimitValue} of the defaultValue
      */

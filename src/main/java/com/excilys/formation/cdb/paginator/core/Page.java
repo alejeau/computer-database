@@ -16,7 +16,7 @@ public abstract class Page<T extends Model> {
 
     private Long pageNumber;
 
-    protected List<T> page = null;
+    protected List<T> list = null;
     protected LimitValue limit;
 
     protected Page() {
@@ -33,8 +33,8 @@ public abstract class Page<T extends Model> {
 
     protected abstract void refresh(long offset) throws ServiceException;
 
-    public List<T> getPage() {
-        return page;
+    public List<T> getList() {
+        return list;
     }
 
     public Long getPageNumber() {
@@ -49,38 +49,38 @@ public abstract class Page<T extends Model> {
         this.limit = limit;
     }
 
-    public List<T> goToPage(Long pageNumber)throws ServiceException {
+    public List<T> goToPage(Long pageNumber) throws ServiceException {
         this.checkValidPageNumber(pageNumber, currentLastPageNumber());
         long start = this.pageNumber * this.limit.getValue();
         this.refresh(start);
-        return this.page;
+        return this.list;
     }
 
-    public List<T> previous()throws ServiceException {
+    public List<T> previous() throws ServiceException {
         this.checkPreviousPageNumber();
         long offset = this.pageNumber * this.limit.getValue();
         this.refresh(offset);
-        return this.page;
+        return this.list;
     }
 
-    public List<T> next()throws ServiceException {
+    public List<T> next() throws ServiceException {
         this.checkNextPageNumber(this.currentLastPageNumber());
         long offset = this.pageNumber * this.limit.getValue();
         this.refresh(offset);
-        return this.page;
+        return this.list;
     }
 
-    public List<T> first()throws ServiceException {
+    public List<T> first() throws ServiceException {
         this.pageNumber = FIRST_PAGE;
         this.refresh(FIRST_PAGE);
-        return this.page;
+        return this.list;
     }
 
-    public List<T> last()throws ServiceException {
+    public List<T> last() throws ServiceException {
         this.pageNumber = currentLastPageNumber();
         long offset = this.pageNumber * this.limit.getValue();
         this.refresh(offset);
-        return this.page;
+        return this.list;
     }
 
     private void checkValidPageNumber(Long requestedPage, Long lastPageNumber) {

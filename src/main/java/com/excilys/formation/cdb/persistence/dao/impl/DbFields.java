@@ -1,6 +1,9 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
 public class DbFields {
+    private DbFields() {
+    }
+
     public static final String COMPUTER_ID = "computer_id";
     public static final String COMPUTER_NAME = "computer_name";
     public static final String COMPUTER_INTRODUCED = "computer_introduced";

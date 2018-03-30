@@ -2,7 +2,6 @@ package com.excilys.formation.cdb.paginator;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 
 public class CompanySearchPage extends CompanyPage {
     protected String search;
@@ -24,8 +23,8 @@ public class CompanySearchPage extends CompanyPage {
     }
 
     @Override
-    protected void refresh(long offset)throws ServiceException {
-            this.page = companyService.getCompany(search, offset, this.limit.getValue());
+    protected void refresh(long offset) throws ServiceException {
+        this.list = companyService.getCompany(search, offset, this.limit.getValue());
     }
 
     public String getSearch() {

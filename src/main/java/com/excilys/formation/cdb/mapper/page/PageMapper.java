@@ -24,7 +24,7 @@ public class PageMapper {
 
     public static PageDTO<ComputerDTO> toPageDTO(ComputerPage computerPage, long numberOfComputers) throws ServiceException {
         List<ComputerDTO> computerDTOList = new ArrayList<>();
-        computerPage.getPage()
+        computerPage.getList()
                 .stream()
                 .map(ComputerMapper::toDTO)
                 .forEach(computerDTOList::add);
@@ -39,7 +39,7 @@ public class PageMapper {
 
     public static SearchPageDTO<ComputerDTO> toSearchPageDTO(ComputerSearchPage computerSearchPage, long numberOfComputers) throws ServiceException {
         List<ComputerDTO> computerDTOList = new ArrayList<>();
-        computerSearchPage.getPage()
+        computerSearchPage.getList()
                 .stream()
                 .map(ComputerMapper::toDTO)
                 .forEach(computerDTOList::add);

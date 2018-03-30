@@ -7,22 +7,16 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
 public enum HikariCPImpl implements ConnectionManager {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(HikariCPImpl.class);
     private static final String PROPERTIES_FILE = "/properties/db.properties";
-    private HikariDataSource hikariDataSource;
-
-    {
-        hikariDataSource = new HikariDataSource(new HikariConfig(PROPERTIES_FILE));
-    }
+    private HikariDataSource hikariDataSource = new HikariDataSource(new HikariConfig(PROPERTIES_FILE));
 
     HikariCPImpl() {
     }

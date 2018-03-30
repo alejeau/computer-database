@@ -23,6 +23,7 @@ public enum LimitValue {
 
     /**
      * Returns a sorted List of the values of the Enums.
+     *
      * @return a sorted List
      */
     public static List<Long> toLongList() {

@@ -19,13 +19,13 @@ public class ComputerPage extends Page<Computer> {
     }
 
     @Override
-    public Long currentLastPageNumber()throws ServiceException {
+    public Long currentLastPageNumber() throws ServiceException {
         Long numberOfComputer = computerService.getNumberOfComputers();
         return numberOfComputer / this.limit.getValue();
     }
 
     @Override
-    protected void refresh(long offset)throws ServiceException {
-        this.page = computerService.getComputers(offset, limit.getValue());
+    protected void refresh(long offset) throws ServiceException {
+        this.list = computerService.getComputers(offset, limit.getValue());
     }
 }

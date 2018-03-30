@@ -1,6 +1,9 @@
 package com.excilys.formation.cdb.servlets.constants;
 
 public class ServletParameter {
+    private ServletParameter() {
+    }
+
     // Computer fields
     public static final String COMPUTER_ID = "computerId";
     public static final String COMPUTER_NAME = "computerName";

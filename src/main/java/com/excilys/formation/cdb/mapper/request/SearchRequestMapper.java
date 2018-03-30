@@ -1,11 +1,11 @@
 package com.excilys.formation.cdb.mapper.request;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
-import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import com.excilys.formation.cdb.paginator.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
+import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

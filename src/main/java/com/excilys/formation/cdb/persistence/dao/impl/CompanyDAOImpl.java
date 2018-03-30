@@ -70,7 +70,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prepStmt = conn.prepareStatement(COMPANY_BY_ID);
             prepStmt.setLong(1, id);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             try {
                 company = CompanyMapper.map(rs);
@@ -85,7 +85,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning " + company);
+        LOG.debug("Returning {}", company);
         return company;
     }
 
@@ -103,7 +103,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prepStmt.setLong(2, index);
             prepStmt.setLong(3, limit);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             try {
                 companies = CompanyMapper.mapList(rs);
@@ -118,7 +118,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning list of size " + companies.size());
+        LOG.debug("Returning list of size {}", companies.size());
         return companies;
     }
 
@@ -133,7 +133,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
         try {
             prepStmt = conn.prepareStatement(ALL_COMPANIES);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             try {
                 companies = CompanyMapper.mapList(rs);
@@ -148,7 +148,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning list of size " + companies.size());
+        LOG.debug("Returning list of size {}", companies.size());
         return companies;
     }
 
@@ -165,7 +165,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prepStmt.setLong(1, index);
             prepStmt.setLong(2, limit);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             try {
                 companies = CompanyMapper.mapList(rs);
@@ -180,7 +180,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning list of size " + companies.size());
+        LOG.debug("Returning list of size {}", companies.size());
         return companies;
     }
 
@@ -228,7 +228,8 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prepStmt = conn.prepareStatement(COMPUTER_IDS_WITH_COMPANY_ID);
             prepStmt.setLong(1, id);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
+            
             rs = prepStmt.executeQuery();
 
             if (rs.isBeforeFirst()) {
@@ -243,7 +244,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning list of size " + idList.size());
+        LOG.debug("Returning list of size {}", idList.size());
         return idList;
     }
 

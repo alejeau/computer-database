@@ -3,6 +3,9 @@ package com.excilys.formation.cdb.validators.core;
 import com.excilys.formation.cdb.model.DatePattern;
 
 public class ErrorMessage {
+    private ErrorMessage() {
+    }
+
     public static final String CANT_BE_NULL = "can't be null!";
     public static final String CANT_BE_EMPTY = "can't be empty!";
     public static final String CANT_START_WITH_SPACE = "can't start with space (' ') char !";

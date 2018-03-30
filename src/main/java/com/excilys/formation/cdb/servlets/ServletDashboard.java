@@ -34,6 +34,7 @@ public class ServletDashboard extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletDashboard.class);
     private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         try {
@@ -46,6 +47,7 @@ public class ServletDashboard extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.DASHBOARD).forward(request, response);
     }
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doPost");
         String selection = request.getParameter(SELECTION);

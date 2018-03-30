@@ -30,8 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPANY_ID;
@@ -51,6 +51,7 @@ public class ServletEditComputer extends HttpServlet {
     private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
     private static CompanyService companyService = CompanyServiceImpl.INSTANCE;
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         Long computerId = UrlMapper.mapLongNumber(request, ServletParameter.COMPUTER_ID, NO_COMPUTER);
@@ -69,6 +70,7 @@ public class ServletEditComputer extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.EDIT_COMPUTER).forward(request, response);
     }
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doPost");
         List<Error> errorList;
@@ -132,7 +134,7 @@ public class ServletEditComputer extends HttpServlet {
         List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
         request.setAttribute(COMPANY_LIST, companyList);
 
-        HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
+        Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
         request.setAttribute(ERROR_MAP, hashMap);
 
 

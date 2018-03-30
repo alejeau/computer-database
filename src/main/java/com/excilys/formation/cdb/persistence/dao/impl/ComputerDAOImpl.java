@@ -75,7 +75,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prepStmt = conn.prepareStatement(SELECT_COMPUTER_BY_ID);
             prepStmt.setLong(1, id);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             try {
                 c = ComputerMapper.map(rs);
@@ -90,7 +90,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning " + c);
+        LOG.debug("Returning {}", c);
         return c;
     }
 
@@ -117,7 +117,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prepStmt.setLong(3, index);
             prepStmt.setLong(4, limit);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             try {
                 computers = ComputerMapper.mapList(rs);
@@ -132,7 +132,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning list of size " + computers.size());
+        LOG.debug("Returning list of size {}", computers.size());
         return computers;
     }
 
@@ -157,7 +157,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             prepStmt.setLong(1, index);
             prepStmt.setLong(2, limit);
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
 
             try {
@@ -173,7 +173,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning list of size " + computers.size());
+        LOG.debug("Returning list of size {}", computers.size());
         return computers;
     }
 
@@ -207,7 +207,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             }
             prepStmt.executeUpdate();
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.getGeneratedKeys();
             if (rs.next()) {
                 createdId = rs.getLong(1);
@@ -219,7 +219,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning id " + createdId);
+        LOG.debug("Returning id {}", createdId);
         return createdId;
     }
 
@@ -250,7 +250,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
             }
             prepStmt.setLong(5, computer.getId());
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             prepStmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("{}", e);
@@ -297,7 +297,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
         try (PreparedStatement prepStmt = connection.prepareStatement(DELETE_COMPUTER)) {
             for (Long id : idList) {
                 prepStmt.setLong(1, id);
-                LOG.debug("Executing query \"" + prepStmt + "\"");
+                LOG.debug("Executing query \"{}\"", prepStmt);
                 prepStmt.executeUpdate();
             }
         } catch (SQLException e) {

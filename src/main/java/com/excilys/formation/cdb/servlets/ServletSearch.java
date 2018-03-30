@@ -33,6 +33,7 @@ public class ServletSearch extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletSearch.class);
     private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         String search = request.getParameter(SEARCH);

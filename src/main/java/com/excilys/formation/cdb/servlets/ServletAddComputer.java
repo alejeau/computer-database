@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPANY_ID;
@@ -47,6 +47,7 @@ public class ServletAddComputer extends HttpServlet {
     private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
     private static CompanyService companyService = CompanyServiceImpl.INSTANCE;
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         try {
@@ -58,6 +59,7 @@ public class ServletAddComputer extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
     }
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doPost");
         List<Error> errorList;
@@ -105,7 +107,7 @@ public class ServletAddComputer extends HttpServlet {
         List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
         request.setAttribute(COMPANY_LIST, companyList);
 
-        HashMap<String, String> hashMap = ErrorMapper.toHashMap(errorList);
+        Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
         request.setAttribute(ERROR_MAP, hashMap);
 
         request.setAttribute(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(request, PAGE_NB, Page.FIRST_PAGE));

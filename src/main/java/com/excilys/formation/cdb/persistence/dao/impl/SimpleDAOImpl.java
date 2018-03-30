@@ -35,7 +35,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
         try {
             stmt = conn.createStatement();
 
-            LOG.debug("Executing query \"" + query + "\"");
+            LOG.debug("Executing query \"{}\"", query);
             rs = stmt.executeQuery(query);
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -49,7 +49,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             connectionManager.closeElements(conn, stmt, rs);
         }
 
-        LOG.debug("Returning " + l);
+        LOG.debug("Returning {}", l);
         return l;
     }
 
@@ -65,7 +65,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             prepStmt = conn.prepareStatement(query);
             prepStmt.setString(1, "%" + name + "%");
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -79,7 +79,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning " + numberOfElements);
+        LOG.debug("Returning {}", numberOfElements);
         return numberOfElements;
     }
 
@@ -96,7 +96,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
                 prepStmt.setString(i + 1, "%" + params.get(i) + "%");
             }
 
-            LOG.debug("Executing query \"" + prepStmt + "\"");
+            LOG.debug("Executing query \"{}\"", prepStmt);
             rs = prepStmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -110,7 +110,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             connectionManager.closeElements(conn, prepStmt, rs);
         }
 
-        LOG.debug("Returning " + numberOfElements);
+        LOG.debug("Returning {}", numberOfElements);
         return numberOfElements;
     }
 
