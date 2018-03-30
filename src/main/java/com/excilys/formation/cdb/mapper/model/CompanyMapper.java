@@ -1,7 +1,10 @@
 package com.excilys.formation.cdb.mapper.model;
 
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.model.Company;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,9 +13,9 @@ import java.util.List;
 
 public enum CompanyMapper {
     INSTANCE;
+    private static final Logger LOG = LoggerFactory.getLogger(CompanyMapper.class);
 
     CompanyMapper() {
-
     }
 
     public static CompanyDTO toDTO(Company company) {
@@ -23,7 +26,7 @@ public enum CompanyMapper {
         return new Company(companyDTO.getId(), companyDTO.getName());
     }
 
-    public static Company map(ResultSet rs) {
+    public static Company map(ResultSet rs) throws MapperException {
         Company c = new Company();
         try {
             while (rs.next()) {
@@ -31,7 +34,8 @@ public enum CompanyMapper {
                 c.setName(rs.getString("company_name"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new MapperException("Couldn't map the ResultSet to a Company!", e);
         }
         return c;
     }
@@ -43,7 +47,7 @@ public enum CompanyMapper {
         return c;
     }
 
-    public static List<Company> mapList(ResultSet rs) {
+    public static List<Company> mapList(ResultSet rs) throws MapperException {
         List<Company> companies = new ArrayList<>();
         try {
             while (rs.next()) {
@@ -53,14 +57,17 @@ public enum CompanyMapper {
                 companies.add(c);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("{}", e);
+            throw new MapperException("Couldn't map the ResultSet to a list of Company!", e);
         }
         return companies;
     }
 
     public static List<CompanyDTO> mapList(List<Company> companyList) {
         List<CompanyDTO> companyDTOList = new ArrayList<>();
-        companyList.forEach(company -> companyDTOList.add(CompanyMapper.toDTO(company)));
+        companyList.stream()
+                .map(CompanyMapper::toDTO)
+                .forEach(companyDTOList::add);
         return companyDTOList;
     }
 

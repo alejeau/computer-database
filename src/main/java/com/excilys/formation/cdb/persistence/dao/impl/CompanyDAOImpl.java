@@ -2,16 +2,14 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.persistence.impl.ConnectionManagerImpl;
-import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -73,7 +71,12 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
-            company = CompanyMapper.map(rs);
+            try {
+                company = CompanyMapper.map(rs);
+            } catch (MapperException e) {
+                LOG.error("{}", e);
+                throw new DAOException("Error while mapping the ResultSet!", e);
+            }
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get company with ID " + id + "!", e);
@@ -101,7 +104,12 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
-            companies = CompanyMapper.mapList(rs);
+            try {
+                companies = CompanyMapper.mapList(rs);
+            } catch (MapperException e) {
+                LOG.error("{}", e);
+                throw new DAOException("Error while mapping the ResultSet!", e);
+            }
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of companies with NAME LIKE " + name + "!", e);
@@ -126,7 +134,12 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
-            companies = CompanyMapper.mapList(rs);
+            try {
+                companies = CompanyMapper.mapList(rs);
+            } catch (MapperException e) {
+                LOG.error("{}", e);
+                throw new DAOException("Error while mapping the ResultSet!", e);
+            }
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get the list of companies!", e);
@@ -153,7 +166,12 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
             LOG.debug("Executing query \"" + prepStmt + "\"");
             rs = prepStmt.executeQuery();
-            companies = CompanyMapper.mapList(rs);
+            try {
+                companies = CompanyMapper.mapList(rs);
+            } catch (MapperException e) {
+                LOG.error("{}", e);
+                throw new DAOException("Error while mapping the ResultSet!", e);
+            }
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of companies from " + index + " to " + limit + "!", e);
@@ -171,7 +189,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
         ComputerDAO computerDAO = ComputerDAOImpl.INSTANCE;
         List<Long> idList = this.getComputerIDsWithCompanyID(id);
         Connection connection = this.getConnection();
-        PreparedStatement prepStmt;
+        PreparedStatement prepStmt = null;
 
         try {
             connection.setAutoCommit(false);
@@ -193,7 +211,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e1);
             throw new DAOException("Couldn't delete the supplied list of computers.", e1);
         } finally {
-            ConnectionManagerImpl.closeElements(connection, null, null);
+            ConnectionManagerImpl.closeElements(connection, prepStmt, null);
         }
     }
 
