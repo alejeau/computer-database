@@ -21,8 +21,12 @@ import static org.junit.Assert.assertNull;
 
 public class CompanyDAOImplTest {
     private CompanyDAO companyDAO = CompanyDAOImpl.INSTANCE;
+    private static final Long INDEX = 0L;
+    private static final Long LIMIT = LimitValue.TEN.getValue();
     private static final Long NUMBER_OF_COMPANIES = 3L;
     private static final Long NUMBER_OF_COMPANIES_WITH_NAME_COMPANY = 3L;
+
+    private static final String NAME = "Company";
 
     private static final Company COMPANY_1 = new Company(1L, "Company 1");
     private static final Company COMPANY_2 = new Company(2L, "Company 2");
@@ -47,7 +51,7 @@ public class CompanyDAOImplTest {
 
     @Test
     public void getNumberOfCompaniesWithName() throws DAOException {
-        assertEquals(NUMBER_OF_COMPANIES_WITH_NAME_COMPANY, companyDAO.getNumberOfCompaniesWithName("Company"));
+        assertEquals(NUMBER_OF_COMPANIES_WITH_NAME_COMPANY, companyDAO.getNumberOfCompaniesWithName(NAME));
     }
 
     @Test
@@ -57,7 +61,7 @@ public class CompanyDAOImplTest {
 
     @Test
     public void getCompanyWithName() throws DAOException {
-        assertEquals(COMPANY_LIST, companyDAO.getCompaniesWithName("Company", 0L, LimitValue.TEN.getValue()));
+        assertEquals(COMPANY_LIST, companyDAO.getCompaniesWithName(NAME, INDEX, LIMIT));
     }
 
     @Test
@@ -67,7 +71,7 @@ public class CompanyDAOImplTest {
 
     @Test
     public void getCompaniesFromTo() throws DAOException {
-        assertEquals(COMPANY_LIST, companyDAO.getCompanies(0L, LimitValue.TEN.getValue()));
+        assertEquals(COMPANY_LIST, companyDAO.getCompanies(INDEX, LIMIT));
     }
 
     @Test
