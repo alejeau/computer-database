@@ -9,6 +9,9 @@ import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_C
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_ID;
 
 class CompanyDAORequest {
+    private CompanyDAORequest() {
+    }
+
     static final String NUMBER_OF_COMPANIES = String.format("SELECT COUNT(%s) FROM %s;", DbFields.COMPANY_ID, COMPANY);
     static final String NUMBER_OF_COMPANIES_WITH_NAME = String.format("SELECT COUNT(%s) FROM %s WHERE %s LIKE ?;", COMPANY_ID, COMPANY, COMPANY_NAME);
     static final String COMPANY_BY_ID = String.format("SELECT %s FROM %s WHERE %s=?;", COMPANY_STAR, COMPANY, COMPANY_ID);

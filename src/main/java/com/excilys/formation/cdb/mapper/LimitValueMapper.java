@@ -4,6 +4,10 @@ import com.excilys.formation.cdb.exceptions.UnauthorizedLimitValueException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 
 public class LimitValueMapper {
+
+    private LimitValueMapper() {
+    }
+
     public static LimitValue toLimitValue(Long value) throws UnauthorizedLimitValueException {
         for (LimitValue val : LimitValue.values()) {
             if (value.equals(val.getValue())) {

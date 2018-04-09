@@ -12,6 +12,9 @@ import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_I
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_NAME;
 
 class ComputerDAORequest {
+    private ComputerDAORequest() {
+    }
+
     static final String ORDER_FIELD = "{orderField}";
     static final String DIRECTION = "{direction}";
 

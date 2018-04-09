@@ -147,7 +147,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public List<Company> getCompanies(Long index, Long limit) throws DAOException {
-        LOG.debug("getCompanies, index" + index, ", limit: " + limit);
+        LOG.debug("getCompanies, index: {}, limit: {}", index, limit);
         Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
