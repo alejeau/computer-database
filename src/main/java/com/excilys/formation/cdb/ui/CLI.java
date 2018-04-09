@@ -96,6 +96,7 @@ public enum CLI {
                 break;
             case DELETE_COMPANY:
                 deleteCompany();
+                break;
             default:
                 break;
         }
