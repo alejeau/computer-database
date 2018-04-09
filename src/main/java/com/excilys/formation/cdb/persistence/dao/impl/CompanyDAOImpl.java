@@ -20,10 +20,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_ID;
-import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_STAR;
-import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_COMPANY_ID;
-import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_ID;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.ALL_COMPANIES;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.ALL_COMPANIES_WITH_LIMIT;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.COMPANY_BY_ID;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.COMPANY_BY_NAME;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.COMPUTER_IDS_WITH_COMPANY_ID;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.DELETE_COMPANY_WITH_ID;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES_WITH_NAME;
 
 public enum CompanyDAOImpl implements CompanyDAO {
     INSTANCE;
@@ -31,17 +35,6 @@ public enum CompanyDAOImpl implements CompanyDAO {
 
     private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
     private static SimpleDAO simpleDao = SimpleDAOImpl.INSTANCE;
-
-    private static final String NUMBER_OF_COMPANIES = "SELECT COUNT(company_id) FROM company;";
-    private static final String NUMBER_OF_COMPANIES_WITH_NAME = "SELECT COUNT(company_id) FROM company WHERE company_name LIKE ?;";
-    private static final String COMPANY_BY_ID = "SELECT " + COMPANY_STAR + " FROM company WHERE company_id=?;";
-    private static final String COMPANY_BY_NAME = "SELECT " + COMPANY_STAR + " FROM company WHERE company_name LIKE ? ORDER BY company_name LIMIT ?, ?;";
-    private static final String ALL_COMPANIES = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name;";
-    private static final String ALL_COMPANIES_WITH_LIMIT = "SELECT " + COMPANY_STAR + " FROM company ORDER BY company_name LIMIT ?, ?;";
-
-    private static final String DELETE_COMPANY_WITH_ID = "DELETE from company WHERE company_id = ?;";
-    private static final String COMPUTER_IDS_WITH_COMPANY_ID = "SELECT " + COMPUTER_ID + " FROM computer LEFT JOIN company ON " + COMPUTER_COMPANY_ID + "=" + COMPANY_ID + " WHERE " + COMPANY_ID + "=?;";
-
 
     CompanyDAOImpl() {
     }
@@ -229,7 +222,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
             prepStmt.setLong(1, id);
 
             LOG.debug("Executing query \"{}\"", prepStmt);
-            
+
             rs = prepStmt.executeQuery();
 
             if (rs.isBeforeFirst()) {

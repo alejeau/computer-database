@@ -24,7 +24,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPUTER_AND_COMPANY_STAR;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.DELETE_COMPUTER;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.DIRECTION;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.INSERT_COMPUTER;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.NUMBER_OF_COMPUTERS;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.NUMBER_OF_COMPUTERS_WITH_NAME_OR_COMPANY_NAME;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.ORDER_FIELD;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.SELECT_ALL_COMPUTERS_ORDERED_BY;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.SELECT_COMPUTER_BY_ID;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.SELECT_COMPUTER_BY_NAME_OR_COMPANY_NAME_ORDERED_BY;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.UPDATE_COMPUTER;
 
 public enum ComputerDAOImpl implements ComputerDAO {
     INSTANCE;
@@ -33,19 +42,8 @@ public enum ComputerDAOImpl implements ComputerDAO {
     private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
     private static SimpleDAO simpleDAO = SimpleDAOImpl.INSTANCE;
 
-    private static final String ORDER_FIELD = "{orderField}";
-    private static final String DIRECTION = "{direction}";
     private static final String ASCENDING = "ASC";
     private static final String DESCENDING = "DESC";
-
-    private static final String NUMBER_OF_COMPUTERS = "SELECT COUNT(computer_id) FROM computer;";
-    private static final String NUMBER_OF_COMPUTERS_WITH_NAME_OR_COMPANY_NAME = "SELECT COUNT(computer_id) FROM computer LEFT JOIN company ON computer_company_id=company.company_id WHERE computer_name LIKE ? OR company.company_name LIKE ?;";
-    private static final String SELECT_COMPUTER_BY_ID = "SELECT " + COMPUTER_AND_COMPANY_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company.company_id WHERE computer_id=?;";
-    private static final String SELECT_COMPUTER_BY_NAME_OR_COMPANY_NAME_ORDERED_BY = "SELECT " + COMPUTER_AND_COMPANY_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company.company_id WHERE computer_name LIKE ? OR company.company_name LIKE ? ORDER BY " + ORDER_FIELD + " " + DIRECTION + " LIMIT ?, ?;";
-    private static final String SELECT_ALL_COMPUTERS_ORDERED_BY = "SELECT " + COMPUTER_AND_COMPANY_STAR + " FROM computer LEFT JOIN company ON computer_company_id=company.company_id ORDER BY " + ORDER_FIELD + " " + DIRECTION + " LIMIT ?, ?;";
-    private static final String INSERT_COMPUTER = "INSERT INTO computer (computer_name, computer_introduced, computer_discontinued, computer_company_id) values (?, ?, ?, ?);";
-    private static final String UPDATE_COMPUTER = "UPDATE computer SET computer_name = ?, computer_introduced = ?, computer_discontinued = ?, computer_company_id = ? WHERE computer_id = ?;";
-    private static final String DELETE_COMPUTER = "DELETE from computer WHERE computer_id = ?;";
 
     ComputerDAOImpl() {
 
