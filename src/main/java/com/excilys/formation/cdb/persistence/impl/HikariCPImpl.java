@@ -31,6 +31,10 @@ public enum HikariCPImpl implements ConnectionManager {
         }
     }
 
+    public void changeDatabaseConfig(final String CONFIG_FILE) {
+        hikariDataSource = new HikariDataSource(new HikariConfig(CONFIG_FILE));
+    }
+
     @Override
     public void closeElements(Connection connection, Statement statement, ResultSet resultSet) {
         if (resultSet != null) {

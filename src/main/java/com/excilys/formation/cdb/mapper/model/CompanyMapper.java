@@ -27,11 +27,14 @@ public class CompanyMapper {
     }
 
     public static Company map(ResultSet rs) throws MapperException {
-        Company c = new Company();
+        Company c = null;
         try {
-            while (rs.next()) {
-                c.setId(rs.getLong(DbFields.COMPANY_ID));
-                c.setName(rs.getString(DbFields.COMPANY_NAME));
+            if (rs.isBeforeFirst()) {
+                c = new Company();
+                while (rs.next()) {
+                    c.setId(rs.getLong(DbFields.COMPANY_ID));
+                    c.setName(rs.getString(DbFields.COMPANY_NAME));
+                }
             }
         } catch (SQLException e) {
             LOG.error("{}", e);

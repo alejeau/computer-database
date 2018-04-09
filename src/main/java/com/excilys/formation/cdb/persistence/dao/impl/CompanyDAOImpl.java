@@ -83,7 +83,7 @@ public enum CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public List<Company> getCompany(String name, Long index, Long limit) throws DAOException {
+    public List<Company> getCompaniesWithName(String name, Long index, Long limit) throws DAOException {
         LOG.debug("getCompanyName (with name)");
         Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;

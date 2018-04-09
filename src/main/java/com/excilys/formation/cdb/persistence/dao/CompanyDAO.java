@@ -13,7 +13,7 @@ public interface CompanyDAO {
 
     Company getCompany(Long id) throws DAOException;
 
-    List<Company> getCompany(String name, Long index, Long limit) throws DAOException;
+    List<Company> getCompaniesWithName(String name, Long index, Long limit) throws DAOException;
 
     List<Company> getCompanies() throws DAOException;
 
