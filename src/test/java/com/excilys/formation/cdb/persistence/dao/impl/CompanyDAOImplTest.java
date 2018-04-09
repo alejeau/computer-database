@@ -16,10 +16,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class CompanyDAOImplTest {
-
     private CompanyDAO companyDAO = CompanyDAOImpl.INSTANCE;
     private static final Long NUMBER_OF_COMPANIES = 3L;
     private static final Long NUMBER_OF_COMPANIES_WITH_NAME_COMPANY = 3L;

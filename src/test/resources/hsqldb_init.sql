@@ -26,4 +26,4 @@ VALUES (1, 'Computer 1', '0001-01-01', '0001-01-02', 1);
 INSERT INTO computer (computer_id, computer_name, computer_introduced, computer_discontinued, computer_company_id)
 VALUES (2, 'Computer 2', NULL, NULL, NULL);
 INSERT INTO computer (computer_id, computer_name, computer_introduced, computer_discontinued, computer_company_id)
-VALUES (3, 'Computer 3', NULL, '1994-09-12', 3);
+VALUES (3, 'Computer 3', '1992-04-13', NULL, 3);

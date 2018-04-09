@@ -15,13 +15,13 @@ public interface ComputerDAO {
 
     Computer getComputer(Long id) throws DAOException;
 
-    List<Computer> getComputer(String name, long index, Long limit) throws DAOException;
+    List<Computer> getComputersWithName(String name, long index, Long limit) throws DAOException;
 
-    List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException;
+    List<Computer> getComputersWithNameOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException;
 
-    List<Computer> getComputers(long index, Long limit) throws DAOException;
+    List<Computer> getComputerList(long index, Long limit) throws DAOException;
 
-    List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException;
+    List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException;
 
     void updateComputer(Computer c) throws DAOException;
 

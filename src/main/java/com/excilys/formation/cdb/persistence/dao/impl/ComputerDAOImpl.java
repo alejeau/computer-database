@@ -63,7 +63,7 @@ public enum ComputerDAOImpl implements ComputerDAO {
 
     @Override
     public Computer getComputer(Long id) throws DAOException {
-        LOG.debug("getComputer");
+        LOG.debug("getComputersWithName");
         Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -93,14 +93,14 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> getComputer(String name, long index, Long limit) throws DAOException {
-        LOG.debug("getComputer");
-        return getComputerOrderedBy(name, index, limit, DatabaseField.COMPUTER_NAME, true);
+    public List<Computer> getComputersWithName(String name, long index, Long limit) throws DAOException {
+        LOG.debug("getComputersWithName");
+        return getComputersWithNameOrderedBy(name, index, limit, DatabaseField.COMPUTER_NAME, true);
     }
 
     @Override
-    public List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
-        LOG.debug("getComputerOrderedBy");
+    public List<Computer> getComputersWithNameOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
+        LOG.debug("getComputersWithNameOrderedBy");
         Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
@@ -135,13 +135,13 @@ public enum ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> getComputers(long index, Long limit) throws DAOException {
-        return getComputersOrderedBy(index, limit, DatabaseField.COMPUTER_NAME, true);
+    public List<Computer> getComputerList(long index, Long limit) throws DAOException {
+        return getComputerListOrderedBy(index, limit, DatabaseField.COMPUTER_NAME, true);
     }
 
     @Override
-    public List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
-        LOG.debug("getComputers");
+    public List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
+        LOG.debug("getComputerList");
         Connection conn = this.getConnection();
         PreparedStatement prepStmt = null;
         ResultSet rs = null;

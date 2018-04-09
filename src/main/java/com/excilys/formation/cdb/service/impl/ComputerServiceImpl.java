@@ -59,7 +59,7 @@ public enum ComputerServiceImpl implements ComputerService {
     @Override
     public List<Computer> getComputer(String name, long index, Long limit) throws ServiceException {
         try {
-            return computerDAO.getComputer(name, index, limit);
+            return computerDAO.getComputersWithName(name, index, limit);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the computers WITH NAME LIKE \"" + name + "\"!", e);
@@ -69,7 +69,7 @@ public enum ComputerServiceImpl implements ComputerService {
     @Override
     public List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException {
         try {
-            return computerDAO.getComputerOrderedBy(name, index, limit, computerField, ascending);
+            return computerDAO.getComputersWithNameOrderedBy(name, index, limit, computerField, ascending);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the computers WITH NAME LIKE \"" + name + "\"!", e);
@@ -80,7 +80,7 @@ public enum ComputerServiceImpl implements ComputerService {
     @Override
     public List<Computer> getComputers(long index, Long limit) throws ServiceException {
         try {
-            return computerDAO.getComputers(index, limit);
+            return computerDAO.getComputerList(index, limit);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
@@ -90,7 +90,7 @@ public enum ComputerServiceImpl implements ComputerService {
     @Override
     public List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException {
         try {
-            return computerDAO.getComputersOrderedBy(index, limit, computerField, ascending);
+            return computerDAO.getComputerListOrderedBy(index, limit, computerField, ascending);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't get list of computers from " + index + " to " + limit + "!", e);

@@ -79,8 +79,9 @@ public class ComputerMapper {
         Computer computer = null;
         try {
             if (resultSet.isBeforeFirst()) {
-                resultSet.first();
-                computer = mapResulSet(resultSet);
+                while (resultSet.next()) {
+                    computer = mapResulSet(resultSet);
+                }
             }
         } catch (SQLException e) {
             LOG.error("{}", e);
