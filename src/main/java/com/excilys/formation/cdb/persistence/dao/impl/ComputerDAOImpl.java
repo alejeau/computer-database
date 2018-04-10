@@ -12,6 +12,8 @@ import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -35,18 +37,22 @@ import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.SELECT_COMPUTER_BY_NAME_OR_COMPANY_NAME_ORDERED_BY;
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.UPDATE_COMPUTER;
 
-public enum ComputerDAOImpl implements ComputerDAO {
-    INSTANCE;
-
+@Repository("ComputerDAO")
+public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
-    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
-    private static SimpleDAO simpleDAO = SimpleDAOImpl.INSTANCE;
 
+    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
     private static final String ASCENDING = "ASC";
     private static final String DESCENDING = "DESC";
 
-    ComputerDAOImpl() {
+    private SimpleDAO simpleDAO;
 
+    ComputerDAOImpl() {
+    }
+
+    @Autowired
+    public ComputerDAOImpl(SimpleDAO simpleDAO) {
+        this.simpleDAO = simpleDAO;
     }
 
     @Override

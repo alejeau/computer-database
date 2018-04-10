@@ -12,15 +12,17 @@ import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
 import com.excilys.formation.cdb.servlets.constants.Views;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 import com.excilys.formation.cdb.validators.core.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,10 +44,27 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_DISPLAY_BY;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_PAGE_NUMBER;
 
+@Component
 public class ServletAddComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletAddComputer.class);
-    private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
-    private static CompanyService companyService = CompanyServiceImpl.INSTANCE;
+
+    private ComputerService computerService;
+    private CompanyService companyService;
+
+    public ServletAddComputer() {
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
+
+    @Autowired
+    public ServletAddComputer(ComputerService computerService, CompanyService companyService) {
+        this.computerService = computerService;
+        this.companyService = companyService;
+    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,7 +88,7 @@ public class ServletAddComputer extends HttpServlet {
         String discontinued = request.getParameter(DISCONTINUED);
 
         boolean displaySuccessMessage = false;
-        errorList = ComputerValidator.INSTANCE.validate(computerName, introduced, discontinued);
+        errorList = ComputerValidator.validate(computerName, introduced, discontinued);
 
         try {
             if (errorList == null) {
@@ -99,7 +118,7 @@ public class ServletAddComputer extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
+    private HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
         request.setAttribute(CURRENT_PATH, Paths.PATH_ADD_COMPUTER);
 

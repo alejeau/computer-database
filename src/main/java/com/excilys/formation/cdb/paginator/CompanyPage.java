@@ -5,13 +5,21 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CompanyPage extends Page<Company> {
-    protected static CompanyService companyService = CompanyServiceImpl.INSTANCE;
+    protected CompanyService companyService;
 
     public CompanyPage() {
         super();
+    }
+
+    @Autowired
+    public CompanyPage(CompanyService companyService) {
+        super();
+        this.companyService = companyService;
     }
 
     public CompanyPage(LimitValue limit) {

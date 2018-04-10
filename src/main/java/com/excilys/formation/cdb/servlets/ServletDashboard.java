@@ -8,12 +8,15 @@ import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
 import com.excilys.formation.cdb.paginator.ComputerSortedPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
 import com.excilys.formation.cdb.servlets.constants.Views;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,9 +33,25 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ORDE
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE_DTO;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELECTION;
 
+@Component
 public class ServletDashboard extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletDashboard.class);
-    private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
+
+    private ComputerService computerService;
+
+    public ServletDashboard() {
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
+
+    @Autowired
+    public ServletDashboard(ComputerService computerService) {
+        this.computerService = computerService;
+    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,7 +88,7 @@ public class ServletDashboard extends HttpServlet {
         this.doGet(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedPage computerSortedPage) throws ServiceException {
+    private HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedPage computerSortedPage) throws ServiceException {
         LOG.debug("setRequest");
         // Setting the paths
         request.setAttribute(CURRENT_PATH, Paths.PATH_DASHBOARD);

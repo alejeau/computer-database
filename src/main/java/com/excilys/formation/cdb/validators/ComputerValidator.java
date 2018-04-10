@@ -14,20 +14,17 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum ComputerValidator {
-    INSTANCE;
-
-    ComputerValidator() {
-
+public class ComputerValidator {
+    private ComputerValidator() {
     }
 
-    public void validate(Computer c) throws ValidationException {
+    public static void validate(Computer c) throws ValidationException {
         if (c.getIntroduced() != null && c.getDiscontinued() != null && c.getIntroduced().isAfter(c.getDiscontinued())) {
             throw new DateException("The date of introduction cannot be after the discontinuation date.");
         }
     }
 
-    public List<Error> validate(String name, String introduced, String discontinued) {
+    public static List<Error> validate(String name, String introduced, String discontinued) {
         List<Error> errorList = addToList(null, validateName(name));
         errorList = addToList(errorList, validateDates(introduced, discontinued));
         return errorList;
@@ -39,7 +36,7 @@ public enum ComputerValidator {
      * @param name the computer's name
      * @return An Error in there is one, null otherwise
      */
-    public Error validateName(String name) {
+    public static Error validateName(String name) {
         if (name == null) {
             return new Error(FieldName.COMPUTER_NAME, ErrorMessage.CANT_BE_NULL);
         } else if (StringUtils.isBlank(name)) {
@@ -58,7 +55,7 @@ public enum ComputerValidator {
      * @param discontinued the discontinuation date
      * @return null if no errors, a list of Error otherwise
      */
-    public List<Error> validateDates(String introduced, String discontinued) {
+    public static List<Error> validateDates(String introduced, String discontinued) {
         Error e1;
         Error e2;
 
@@ -89,7 +86,7 @@ public enum ComputerValidator {
      * @param date      the String to evaluate
      * @return null if valid date, an Error otherwise
      */
-    public Error validateDate(FieldName fieldName, String date) {
+    public static Error validateDate(FieldName fieldName, String date) {
         if (!StringUtils.isBlank(date)) {
             // If the date ain't correctly formatted
             try {
@@ -103,7 +100,7 @@ public enum ComputerValidator {
         return null;
     }
 
-    protected List<Error> addToList(List<Error> list, Error p) {
+    public static List<Error> addToList(List<Error> list, Error p) {
         if (p != null) {
             if (list == null) {
                 list = new ArrayList<>();
@@ -113,7 +110,7 @@ public enum ComputerValidator {
         return list;
     }
 
-    protected List<Error> addToList(List<Error> list, List<Error> listToAdd) {
+    public static List<Error> addToList(List<Error> list, List<Error> listToAdd) {
         if (listToAdd != null) {
             if (list == null) {
                 list = new ArrayList<>();

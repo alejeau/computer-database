@@ -7,6 +7,7 @@ import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,13 +16,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public enum SimpleDAOImpl implements SimpleDAO {
-    INSTANCE;
+@Repository("SimpleDAO")
+public class SimpleDAOImpl implements SimpleDAO {
     private static final Logger LOG = LoggerFactory.getLogger(SimpleDAOImpl.class);
-    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
+    private ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
 
     SimpleDAOImpl() {
-
     }
 
     @Override

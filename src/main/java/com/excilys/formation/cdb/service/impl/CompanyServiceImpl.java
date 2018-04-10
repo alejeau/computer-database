@@ -7,17 +7,24 @@ import com.excilys.formation.cdb.paginator.CompanyPage;
 import com.excilys.formation.cdb.paginator.CompanySearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
-import com.excilys.formation.cdb.persistence.dao.impl.CompanyDAOImpl;
 import com.excilys.formation.cdb.service.CompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public enum CompanyServiceImpl implements CompanyService {
-    INSTANCE;
+@Service("CompanyService")
+public class CompanyServiceImpl implements CompanyService {
     private static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
-    private static CompanyDAO companyDAO = CompanyDAOImpl.INSTANCE;
+
+    private CompanyDAO companyDAO;
+
+    @Autowired
+    public CompanyServiceImpl(CompanyDAO companyDAO) {
+        this.companyDAO = companyDAO;
+    }
 
     @Override
     public Long getNumberOfCompanies() throws ServiceException {

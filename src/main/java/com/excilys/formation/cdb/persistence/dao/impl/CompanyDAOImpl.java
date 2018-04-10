@@ -12,6 +12,8 @@ import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,14 +31,22 @@ import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.D
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES_WITH_NAME;
 
-public enum CompanyDAOImpl implements CompanyDAO {
-    INSTANCE;
+@Repository("CompanyDAO")
+public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
     private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
-    private static SimpleDAO simpleDao = SimpleDAOImpl.INSTANCE;
+
+    private SimpleDAO simpleDao;
+    private ComputerDAO computerDAO;
 
     CompanyDAOImpl() {
+    }
+
+    @Autowired
+    public CompanyDAOImpl(SimpleDAO simpleDao, ComputerDAO computerDAO) {
+        this.simpleDao = simpleDao;
+        this.computerDAO = computerDAO;
     }
 
     @Override
@@ -180,7 +190,6 @@ public enum CompanyDAOImpl implements CompanyDAO {
     @Override
     public void deleteCompany(Long id) throws DAOException {
         LOG.debug("deleteCompany");
-        ComputerDAO computerDAO = ComputerDAOImpl.INSTANCE;
         List<Long> idList = this.getComputerIDsWithCompanyID(id);
         Connection connection = this.getConnection();
         PreparedStatement prepStmt = null;

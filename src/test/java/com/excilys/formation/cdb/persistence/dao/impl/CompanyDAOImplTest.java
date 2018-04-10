@@ -9,6 +9,8 @@ import com.excilys.formation.cdb.utils.HSQLDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,8 +21,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+@Component
 public class CompanyDAOImplTest {
-    private CompanyDAO companyDAO = CompanyDAOImpl.INSTANCE;
+    @Autowired
+    private CompanyDAO companyDAO;
+
     private static final Long INDEX = 0L;
     private static final Long LIMIT = LimitValue.TEN.getValue();
     private static final Long NUMBER_OF_COMPANIES = 3L;
@@ -89,7 +94,7 @@ public class CompanyDAOImplTest {
         final Long ID = 1L;
         final List<Long> EXPECTED_LIST = Collections.singletonList(ID);
 
-        List<Long> result = CompanyDAOImpl.INSTANCE.getComputerIDsWithCompanyID(ID);
+        List<Long> result = new CompanyDAOImpl().getComputerIDsWithCompanyID(ID);
 
         assertEquals(EXPECTED_LIST, result);
 

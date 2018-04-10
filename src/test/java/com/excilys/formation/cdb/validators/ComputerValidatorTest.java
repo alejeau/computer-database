@@ -28,34 +28,34 @@ public class ComputerValidatorTest {
 
     @Test
     public void validate() {
-        assertNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, GOOD_DATE1, GOOD_DATE2));
-        assertNotNull(ComputerValidator.INSTANCE.validate(EMPTY_NAME, GOOD_DATE1, GOOD_DATE2));
-        assertNotNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, BAD_DATE1, GOOD_DATE2));
-        assertNotNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, GOOD_DATE1, BAD_DATE2));
-        assertNotNull(ComputerValidator.INSTANCE.validate(GOOD_NAME, GOOD_DATE2, GOOD_DATE1));
+        assertNull(ComputerValidator.validate(GOOD_NAME, GOOD_DATE1, GOOD_DATE2));
+        assertNotNull(ComputerValidator.validate(EMPTY_NAME, GOOD_DATE1, GOOD_DATE2));
+        assertNotNull(ComputerValidator.validate(GOOD_NAME, BAD_DATE1, GOOD_DATE2));
+        assertNotNull(ComputerValidator.validate(GOOD_NAME, GOOD_DATE1, BAD_DATE2));
+        assertNotNull(ComputerValidator.validate(GOOD_NAME, GOOD_DATE2, GOOD_DATE1));
     }
 
     @Test
     public void validateName() {
-        assertNull(ComputerValidator.INSTANCE.validateName(GOOD_NAME));
-        assertEquals(ERROR_NULL_NAME, ComputerValidator.INSTANCE.validateName(null));
-        assertEquals(ERROR_EMPTY_NAME, ComputerValidator.INSTANCE.validateName(EMPTY_NAME));
-        assertEquals(ERROR_SPACE, ComputerValidator.INSTANCE.validateName(SPACE_NAME));
+        assertNull(ComputerValidator.validateName(GOOD_NAME));
+        assertEquals(ERROR_NULL_NAME, ComputerValidator.validateName(null));
+        assertEquals(ERROR_EMPTY_NAME, ComputerValidator.validateName(EMPTY_NAME));
+        assertEquals(ERROR_SPACE, ComputerValidator.validateName(SPACE_NAME));
     }
 
     @Test
     public void validateDates() {
-        assertNull(ComputerValidator.INSTANCE.validateDates(GOOD_DATE1, GOOD_DATE2));
-        assertNotNull(ComputerValidator.INSTANCE.validateDates(GOOD_DATE1, BAD_DATE1));
-        assertNotNull(ComputerValidator.INSTANCE.validateDates(GOOD_DATE2, GOOD_DATE1));
+        assertNull(ComputerValidator.validateDates(GOOD_DATE1, GOOD_DATE2));
+        assertNotNull(ComputerValidator.validateDates(GOOD_DATE1, BAD_DATE1));
+        assertNotNull(ComputerValidator.validateDates(GOOD_DATE2, GOOD_DATE1));
     }
 
     @Test
     public void validateDate() {
-        assertNull(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, GOOD_DATE1));
-        assertNull(ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, EMPTY_DATE));
-        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE1));
-        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE2));
-        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.INSTANCE.validateDate(FieldName.COMPUTER_DATES, BAD_DATE3));
+        assertNull(ComputerValidator.validateDate(FieldName.COMPUTER_DATES, GOOD_DATE1));
+        assertNull(ComputerValidator.validateDate(FieldName.COMPUTER_DATES, EMPTY_DATE));
+        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.validateDate(FieldName.COMPUTER_DATES, BAD_DATE1));
+        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.validateDate(FieldName.COMPUTER_DATES, BAD_DATE2));
+        assertEquals(ERROR_DATE_PATTERN, ComputerValidator.validateDate(FieldName.COMPUTER_DATES, BAD_DATE3));
     }
 }
