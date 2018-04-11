@@ -16,14 +16,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context.xml"})
+@ContextConfiguration(locations = {"/contexts/test-context.xml"})
 public class CompanyDAOTest {
     @Autowired
     private CompanyDAO companyDAO;

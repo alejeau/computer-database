@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @Component
-@ContextConfiguration(locations = {"/application-context.xml"})
+@ContextConfiguration(locations = {"/contexts/test-context.xml"})
 public class HSQLDatabase {
     private DataSource dataSource;
 

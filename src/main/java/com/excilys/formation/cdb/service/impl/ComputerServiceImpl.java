@@ -145,12 +145,16 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Override
     public ComputerPage getComputers(LimitValue limit) {
-        return new ComputerPage(limit);
+        ComputerPage computerPage = new ComputerPage(limit);
+        computerPage.setComputerService(this);
+        return computerPage;
     }
 
     @Override
     public ComputerSearchPage getComputer(String name, LimitValue limit) {
-        return new ComputerSearchPage(name, limit);
+        ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, limit);
+        computerSearchPage.setComputerService(this);
+        return computerSearchPage;
     }
 
 

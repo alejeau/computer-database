@@ -1,23 +1,17 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
-import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.excilys.formation.cdb.utils.HSQLDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context.xml"})
+@ContextConfiguration(locations = {"/contexts/test-context.xml"})
 public class CompanyDAOImplTest {
 
     @Autowired

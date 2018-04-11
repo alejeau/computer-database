@@ -276,9 +276,9 @@ public class CLI {
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/contexts/cli-context.xml");
         CLI cli = context.getBean(CLI.class);
         cli.mainLoop();
-        ((ClassPathXmlApplicationContext) context).close();
+        context.close();
     }
 }

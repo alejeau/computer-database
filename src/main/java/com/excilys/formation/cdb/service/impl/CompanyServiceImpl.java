@@ -98,10 +98,14 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     public CompanyPage getCompanyPage(LimitValue limit) {
-        return new CompanyPage(limit);
+        CompanyPage companyPage = new CompanyPage(limit);
+        companyPage.setCompanyService(this);
+        return companyPage;
     }
 
     public CompanySearchPage getCompanySearchPage(String name, LimitValue limit) {
-        return new CompanySearchPage(name, limit);
+        CompanySearchPage companySearchPage = new CompanySearchPage(name, limit);
+        companySearchPage.setCompanyService(this);
+        return companySearchPage;
     }
 }
