@@ -82,10 +82,13 @@
 </c:if>
 <c:if test="${ not empty field }">
     <c:set var="tmpField" value="${ emptyText.concat('&field=').concat(field) }"/>
-    <c:if test="${field.equals(orderBy)}">
+    <c:if test="${ field.matches(orderBy) }">
         <c:if test="${not empty changeAscending}">
-            <c:set var="ascending" value="${!ascending}"/>
+            <c:set var="ascending" value="${ !ascending }"/>
         </c:if>
+    </c:if>
+    <c:if test="${ !field.matches(orderBy) }">
+        <c:set var="ascending" value="${true}"/>
     </c:if>
 </c:if>
 <c:if test="${ not empty ascending }">
