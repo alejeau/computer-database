@@ -20,5 +20,5 @@ class CompanyDAORequest {
     static final String ALL_COMPANIES_WITH_LIMIT = String.format("SELECT %s FROM %s ORDER BY %s LIMIT ?, ?;", COMPANY_STAR, COMPANY, COMPANY_NAME);
 
     static final String DELETE_COMPANY_WITH_ID = String.format("DELETE FROM %s WHERE %s = ?;", COMPANY, COMPANY_ID);
-    static final String COMPUTER_IDS_WITH_COMPANY_ID = String.format("SELECT %s FROM %s LEFT JOIN %s ON %s=%s WHERE %s=?;", COMPUTER_ID, COMPUTER, COMPANY, COMPUTER_COMPANY_ID, COMPANY_ID, COMPANY_ID);
+    static final String DELETE_COMPUTER_WITH_COMPANY_ID = String.format("DELETE FROM %s WHERE %s=?", COMPUTER, COMPANY_ID);
 }

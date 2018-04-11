@@ -11,21 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.ALL_COMPANIES;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.ALL_COMPANIES_WITH_LIMIT;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.COMPANY_BY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.COMPANY_BY_NAME;
-import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.COMPUTER_IDS_WITH_COMPANY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.DELETE_COMPANY_WITH_ID;
+import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.DELETE_COMPUTER_WITH_COMPANY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES_WITH_NAME;
 
@@ -35,15 +35,13 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     private DataSource dataSource;
     private SimpleDAO simpleDao;
-    private ComputerDAO computerDAO;
 
     CompanyDAOImpl() {
     }
 
     @Autowired
-    public CompanyDAOImpl(SimpleDAO simpleDao, ComputerDAO computerDAO, DataSource dataSource) {
+    public CompanyDAOImpl(SimpleDAO simpleDao, DataSource dataSource) {
         this.simpleDao = simpleDao;
-        this.computerDAO = computerDAO;
         this.dataSource = dataSource;
     }
 
@@ -186,66 +184,24 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
+    @Transactional
     public void deleteCompany(Long id) throws DAOException {
         LOG.debug("deleteCompany");
-        List<Long> idList = this.getComputerIDsWithCompanyID(id);
         Connection connection = this.getConnection();
         PreparedStatement prepStmt = null;
-
+        final String[] QUERIES = {DELETE_COMPUTER_WITH_COMPANY_ID, DELETE_COMPANY_WITH_ID};
         try {
-            connection.setAutoCommit(false);
-            computerDAO.deleteComputers(idList, connection);
-
-            prepStmt = connection.prepareStatement(DELETE_COMPANY_WITH_ID);
-            prepStmt.setLong(1, id);
-            prepStmt.executeUpdate();
-
-            connection.commit();
-        } catch (SQLException e1) {
-            try {
-                connection.rollback();
-            } catch (SQLException e2) {
-                LOG.error("{}", e2);
-                throw new DAOException("An error occurred while rolling back the changes!");
+            for (String QUERY : QUERIES) {
+                prepStmt = connection.prepareStatement(QUERY);
+                prepStmt.setLong(1, id);
+                prepStmt.executeUpdate();
             }
-
+        } catch (SQLException e1) {
             LOG.error("{}", e1);
-            throw new DAOException("Couldn't delete the supplied list of computers.", e1);
+            throw new DAOException("Couldn't delete the company and it's associated list of computers.", e1);
         } finally {
             DAOUtils.closeElements(connection, prepStmt, null);
         }
-    }
-
-    List<Long> getComputerIDsWithCompanyID(Long id) throws DAOException {
-        LOG.debug("getComputerIDsWithCompanyID");
-        Connection conn = this.getConnection();
-
-        List<Long> idList = new ArrayList<>();
-        PreparedStatement prepStmt = null;
-        ResultSet rs = null;
-
-        try {
-            prepStmt = conn.prepareStatement(COMPUTER_IDS_WITH_COMPANY_ID);
-            prepStmt.setLong(1, id);
-
-            LOG.debug("Executing query \"{}\"", prepStmt);
-
-            rs = prepStmt.executeQuery();
-
-            if (rs.isBeforeFirst()) {
-                while (rs.next()) {
-                    idList.add(rs.getLong(1));
-                }
-            }
-        } catch (SQLException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Error (PreparedStatement) while fetching computer id list with company id " + id + "!");
-        } finally {
-            DAOUtils.closeElements(conn, prepStmt, rs);
-        }
-
-        LOG.debug("Returning list of size {}", idList.size());
-        return idList;
     }
 
     private Connection getConnection() throws DAOException {

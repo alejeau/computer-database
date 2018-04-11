@@ -7,7 +7,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:/application-context.xml</param-value>
+        <param-value>classpath:/contexts/webapp-context.xml</param-value>
     </context-param>
 
     <listener>
@@ -53,19 +53,19 @@
         <url-pattern>/access/search</url-pattern>
     </servlet-mapping>
 
-    <!--<error-page>-->
-        <!--&lt;!&ndash; Forbidden directory listing &ndash;&gt;-->
-        <!--<error-code>403</error-code>-->
-        <!--<location>/WEB-INF/JSPs/403.jsp</location>-->
-    <!--</error-page>-->
-    <!--<error-page>-->
-        <!--&lt;!&ndash; Missing resource &ndash;&gt;-->
-        <!--<error-code>404</error-code>-->
-        <!--<location>/WEB-INF/JSPs/404.jsp</location>-->
-    <!--</error-page>-->
-    <!--<error-page>-->
-        <!--&lt;!&ndash; Uncaught exception &ndash;&gt;-->
-        <!--<error-code>500</error-code>-->
-        <!--<location>/WEB-INF/JSPs/500.jsp</location>-->
-    <!--</error-page>-->
+    <error-page>
+        <!-- Forbidden directory listing -->
+        <error-code>403</error-code>
+        <location>/WEB-INF/JSPs/403.jsp</location>
+    </error-page>
+    <error-page>
+        <!-- Missing resource -->
+        <error-code>404</error-code>
+        <location>/WEB-INF/JSPs/404.jsp</location>
+    </error-page>
+    <error-page>
+        <!-- Uncaught exception -->
+        <error-code>500</error-code>
+        <location>/WEB-INF/JSPs/500.jsp</location>
+    </error-page>
 </web-app>

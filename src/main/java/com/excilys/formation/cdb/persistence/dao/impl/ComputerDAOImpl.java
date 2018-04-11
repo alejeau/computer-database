@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -113,6 +114,7 @@ public class ComputerDAOImpl implements ComputerDAO {
         final String QUERY = SELECT_COMPUTER_BY_NAME_OR_COMPANY_NAME_ORDERED_BY
                 .replace(ORDER_FIELD, computerField.getValue())
                 .replace(DIRECTION, ascending ? ASCENDING : DESCENDING);
+        LOG.debug("Query = {}", QUERY);
         try {
             prepStmt = conn.prepareStatement(QUERY);
             prepStmt.setString(1, "%" + name + "%");
@@ -264,38 +266,17 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
+    @Transactional
     public void deleteComputer(Long id) throws DAOException {
         LOG.debug("deleteComputer");
         this.deleteComputers(Collections.singletonList(id));
     }
 
     @Override
+    @Transactional
     public void deleteComputers(List<Long> idList) throws DAOException {
         LOG.debug("deleteComputers (by list)");
         Connection connection = this.getConnection();
-
-        try {
-            connection.setAutoCommit(false);
-            deleteComputers(idList, connection);
-            connection.commit();
-        } catch (SQLException e1) {
-            try {
-                connection.rollback();
-            } catch (SQLException e2) {
-                LOG.error("{}", e2);
-                throw new DAOException("An error occurred while rolling back the changes!");
-            }
-
-            LOG.error("{}", e1);
-            throw new DAOException("Couldn't delete the supplied list of computers.", e1);
-        } finally {
-            DAOUtils.closeElements(connection, null, null);
-        }
-    }
-
-    @Override
-    public void deleteComputers(List<Long> idList, Connection connection) throws DAOException {
-        LOG.debug("deleteComputers (by list) with connection");
 
         try (PreparedStatement prepStmt = connection.prepareStatement(DELETE_COMPUTER)) {
             for (Long id : idList) {
@@ -306,9 +287,10 @@ public class ComputerDAOImpl implements ComputerDAO {
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't delete the supplied list of computers.", e);
+        } finally {
+            DAOUtils.closeElements(connection, null, null);
         }
     }
-
 
     private Connection getConnection() throws DAOException {
         Connection conn;

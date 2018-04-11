@@ -38,8 +38,6 @@
         </encoder>
     </appender>
 
-    <logger name="com.base22" level="INFO"/>
-
     <root level="debug">
         <appender-ref ref="FIX_WINDOW_BASED_FILE" />
         <appender-ref ref="FILE" />
