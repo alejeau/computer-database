@@ -5,12 +5,12 @@ import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
-import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -30,6 +30,7 @@ import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.N
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES_WITH_NAME;
 
 @Repository
+@EnableTransactionManagement
 public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
@@ -196,9 +197,9 @@ public class CompanyDAOImpl implements CompanyDAO {
                 prepStmt.setLong(1, id);
                 prepStmt.executeUpdate();
             }
-        } catch (SQLException e1) {
-            LOG.error("{}", e1);
-            throw new DAOException("Couldn't delete the company and it's associated list of computers.", e1);
+        } catch (SQLException e) {
+            LOG.error("{}", e);
+            throw new DAOException("Couldn't delete the company and it's associated list of computers.", e);
         } finally {
             DAOUtils.closeElements(connection, prepStmt, null);
         }

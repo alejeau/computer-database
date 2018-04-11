@@ -4,7 +4,7 @@
     <appender name="FIX_WINDOW_BASED_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/computer-database.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>/tmp/computer-database-logs/computer-database-%i.log</fileNamePattern>
+            <fileNamePattern>/tmp/computer-database-logs/test-computer-database-%i.log</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>10</maxIndex>
         </rollingPolicy>
@@ -19,7 +19,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>/tmp/computer-database-logs/main-cdb.log</file>
+        <file>/tmp/computer-database-logs/test-main-cdb.log</file>
         <append>false</append>
         <!-- set immediateFlush to false for much higher logging throughput -->
         <immediateFlush>true</immediateFlush>

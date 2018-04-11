@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.servlets;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.PageDTO;
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
@@ -65,21 +66,10 @@ public class ServletDashboard extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doPost");
-        String selection = request.getParameter(SELECTION);
-
-        if (selection != null && !selection.isEmpty()) {
-            String[] stringToDelete = selection.split(",");
-            List<Long> idList = new ArrayList<>(stringToDelete.length);
-            Arrays.stream(stringToDelete)
-                    .filter(s -> s.matches("[0-9]+"))
-                    .map(Long::valueOf)
-                    .forEach(idList::add);
-            try {
-                computerService.deleteComputers(idList);
-            } catch (ServiceException e) {
-                LOG.error("{}", e);
-                throw new ServletException(e);
-            }
+        try {
+            DashboardRequestMapper.mapDoPost(request, computerService);
+        } catch (MapperException e) {
+            throw new ServletException(e);
         }
         this.doGet(request, response);
     }

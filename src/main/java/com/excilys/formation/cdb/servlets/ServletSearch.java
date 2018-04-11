@@ -2,8 +2,10 @@ package com.excilys.formation.cdb.servlets;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
+import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
 import com.excilys.formation.cdb.mapper.request.SearchRequestMapper;
 import com.excilys.formation.cdb.paginator.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
@@ -63,6 +65,17 @@ public class ServletSearch extends HttpServlet {
             }
         }
         this.getServletContext().getRequestDispatcher(Views.DASHBOARD).forward(request, response);
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug("doPost");
+        try {
+            DashboardRequestMapper.mapDoPost(request, computerService);
+        } catch (MapperException e) {
+            throw new ServletException(e);
+        }
+        this.doGet(request, response);
     }
 
     private HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedSearchPage cssp) throws ServiceException {

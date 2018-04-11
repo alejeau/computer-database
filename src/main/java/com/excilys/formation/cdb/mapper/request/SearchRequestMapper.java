@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.mapper.request;
 
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
@@ -10,7 +11,13 @@ import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELECTION;
 
 public class SearchRequestMapper {
     private static final Logger LOG = LoggerFactory.getLogger(SearchRequestMapper.class);

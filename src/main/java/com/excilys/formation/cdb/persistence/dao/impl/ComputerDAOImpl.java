@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -37,6 +38,7 @@ import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.UPDATE_COMPUTER;
 
 @Repository
+@EnableTransactionManagement
 public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
@@ -277,8 +279,9 @@ public class ComputerDAOImpl implements ComputerDAO {
     public void deleteComputers(List<Long> idList) throws DAOException {
         LOG.debug("deleteComputers (by list)");
         Connection connection = this.getConnection();
-
-        try (PreparedStatement prepStmt = connection.prepareStatement(DELETE_COMPUTER)) {
+        PreparedStatement prepStmt = null;
+        try {
+            prepStmt = connection.prepareStatement(DELETE_COMPUTER);
             for (Long id : idList) {
                 prepStmt.setLong(1, id);
                 LOG.debug("Executing query \"{}\"", prepStmt);
@@ -288,7 +291,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't delete the supplied list of computers.", e);
         } finally {
-            DAOUtils.closeElements(connection, null, null);
+            DAOUtils.closeElements(connection, prepStmt, null);
         }
     }
 
