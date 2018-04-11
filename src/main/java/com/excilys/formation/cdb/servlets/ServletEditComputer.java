@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletConfig;
@@ -47,7 +48,7 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.INTR
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_DISPLAY_BY;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_PAGE_NUMBER;
 
-@Component
+@Controller
 public class ServletEditComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletEditComputer.class);
     private static final Long NO_COMPUTER = -1L;

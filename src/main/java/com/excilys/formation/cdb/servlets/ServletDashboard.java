@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletConfig;
@@ -33,7 +34,7 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ORDE
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE_DTO;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELECTION;
 
-@Component
+@Controller
 public class ServletDashboard extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletDashboard.class);
 
