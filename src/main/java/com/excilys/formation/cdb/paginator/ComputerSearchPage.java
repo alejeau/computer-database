@@ -2,7 +2,6 @@ package com.excilys.formation.cdb.paginator;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import org.springframework.stereotype.Component;
 
 public class ComputerSearchPage extends ComputerPage {
     protected String search;

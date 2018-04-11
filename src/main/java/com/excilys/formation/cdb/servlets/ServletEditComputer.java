@@ -52,7 +52,10 @@ public class ServletEditComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletEditComputer.class);
     private static final Long NO_COMPUTER = -1L;
 
+    @Autowired
     private ComputerService computerService;
+
+    @Autowired
     private CompanyService companyService;
 
     public ServletEditComputer() {
@@ -60,14 +63,8 @@ public class ServletEditComputer extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        super.init();
+        super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
-
-    @Autowired
-    public ServletEditComputer(ComputerService computerService, CompanyService companyService) {
-        this.computerService = computerService;
-        this.companyService = companyService;
     }
 
     @Override

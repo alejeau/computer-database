@@ -9,8 +9,11 @@ import com.excilys.formation.cdb.utils.HSQLDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,72 +24,24 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-@Component
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/application-context.xml"})
 public class CompanyDAOImplTest {
+
     @Autowired
-    private CompanyDAO companyDAO;
+    private HSQLDatabase hsqlDatabase;
 
-    private static final Long INDEX = 0L;
-    private static final Long LIMIT = LimitValue.TEN.getValue();
-    private static final Long NUMBER_OF_COMPANIES = 3L;
-    private static final Long NUMBER_OF_COMPANIES_WITH_NAME_COMPANY = 3L;
-
-    private static final String NAME = "Company";
-
-    private static final Company COMPANY_1 = new Company(1L, "Company 1");
-    private static final Company COMPANY_2 = new Company(2L, "Company 2");
-    private static final Company COMPANY_3 = new Company(3L, "Company 3");
-
-    private static final List<Company> COMPANY_LIST = Arrays.asList(COMPANY_1, COMPANY_2, COMPANY_3);
+    @Autowired
+    private CompanyDAOImpl companyDAOImpl;
 
     @Before
-    public void setUp() throws SQLException, IOException, ConnectionException {
-        HSQLDatabase.initDatabase();
+    public void setUp() throws SQLException, IOException {
+        hsqlDatabase.initDatabase();
     }
 
     @After
-    public void cleanUp() throws SQLException, ConnectionException {
-        HSQLDatabase.destroy();
-    }
-
-    @Test
-    public void getNumberOfCompanies() throws DAOException {
-        assertEquals(NUMBER_OF_COMPANIES, companyDAO.getNumberOfCompanies());
-    }
-
-    @Test
-    public void getNumberOfCompaniesWithName() throws DAOException {
-        assertEquals(NUMBER_OF_COMPANIES_WITH_NAME_COMPANY, companyDAO.getNumberOfCompaniesWithName(NAME));
-    }
-
-    @Test
-    public void getCompany() throws DAOException {
-        assertEquals(COMPANY_1, companyDAO.getCompany(1L));
-    }
-
-    @Test
-    public void getCompanyWithName() throws DAOException {
-        assertEquals(COMPANY_LIST, companyDAO.getCompaniesWithName(NAME, INDEX, LIMIT));
-    }
-
-    @Test
-    public void getCompanies() throws DAOException {
-        assertEquals(COMPANY_LIST, companyDAO.getCompanies());
-    }
-
-    @Test
-    public void getCompaniesFromTo() throws DAOException {
-        assertEquals(COMPANY_LIST, companyDAO.getCompanies(INDEX, LIMIT));
-    }
-
-    @Test
-    public void deleteCompany() throws DAOException {
-        final Long ID = 2L;
-        final Long EXPECTED_LENGTH = 2L;
-        companyDAO.deleteCompany(ID);
-
-        assertNull(companyDAO.getCompany(ID));
-        assertEquals(EXPECTED_LENGTH, companyDAO.getNumberOfCompanies());
+    public void cleanUp() throws SQLException {
+        hsqlDatabase.destroy();
     }
 
     @Test
@@ -94,7 +49,7 @@ public class CompanyDAOImplTest {
         final Long ID = 1L;
         final List<Long> EXPECTED_LIST = Collections.singletonList(ID);
 
-        List<Long> result = new CompanyDAOImpl().getComputerIDsWithCompanyID(ID);
+        List<Long> result = companyDAOImpl.getComputerIDsWithCompanyID(ID);
 
         assertEquals(EXPECTED_LIST, result);
 

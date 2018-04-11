@@ -11,8 +11,11 @@ import com.excilys.formation.cdb.utils.HSQLDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -23,10 +26,15 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-@Component
-public class ComputerDAOImplTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/application-context.xml"})
+public class ComputerDAOTest {
     @Autowired
     private ComputerDAO computerDAO;
+
+    @Autowired
+    private HSQLDatabase hsqlDatabase;
+
     private static final Long INDEX = 0L;
     private static final Long LIMIT = LimitValue.TEN.getValue();
     private static final Long NUMBER_OF_COMPUTERS = 3L;
@@ -61,12 +69,12 @@ public class ComputerDAOImplTest {
 
     @Before
     public void setUp() throws SQLException, IOException, ConnectionException {
-        HSQLDatabase.initDatabase();
+        hsqlDatabase.initDatabase();
     }
 
     @After
     public void cleanUp() throws SQLException, ConnectionException {
-        HSQLDatabase.destroy();
+        hsqlDatabase.destroy();
     }
 
     @Test

@@ -5,13 +5,9 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.ComputerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ComputerPage extends Page<Computer> {
-    @Autowired
-    protected ComputerService computerService;
+    ComputerService computerService;
 
     public ComputerPage() {
         super();
@@ -30,10 +26,6 @@ public class ComputerPage extends Page<Computer> {
     @Override
     protected void refresh(long offset) throws ServiceException {
         this.list = computerService.getComputers(offset, limit.getValue());
-    }
-
-    public ComputerService getComputerService() {
-        return computerService;
     }
 
     public void setComputerService(ComputerService computerService) {

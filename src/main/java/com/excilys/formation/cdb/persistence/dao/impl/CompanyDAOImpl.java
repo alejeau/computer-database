@@ -1,20 +1,18 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
-import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,12 +29,11 @@ import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.D
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES_WITH_NAME;
 
-@Repository("CompanyDAO")
+@Repository
 public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
-    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
-
+    private DataSource dataSource;
     private SimpleDAO simpleDao;
     private ComputerDAO computerDAO;
 
@@ -44,9 +41,10 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     @Autowired
-    public CompanyDAOImpl(SimpleDAO simpleDao, ComputerDAO computerDAO) {
+    public CompanyDAOImpl(SimpleDAO simpleDao, ComputerDAO computerDAO, DataSource dataSource) {
         this.simpleDao = simpleDao;
         this.computerDAO = computerDAO;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get company with ID " + id + "!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning {}", company);
@@ -118,7 +116,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of companies with NAME LIKE " + name + "!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size {}", companies.size());
@@ -148,7 +146,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get the list of companies!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size {}", companies.size());
@@ -180,7 +178,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of companies from " + index + " to " + limit + "!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size {}", companies.size());
@@ -214,7 +212,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e1);
             throw new DAOException("Couldn't delete the supplied list of computers.", e1);
         } finally {
-            connectionManager.closeElements(connection, prepStmt, null);
+            DAOUtils.closeElements(connection, prepStmt, null);
         }
     }
 
@@ -243,7 +241,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             LOG.error("{}", e);
             throw new DAOException("Error (PreparedStatement) while fetching computer id list with company id " + id + "!");
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size {}", idList.size());
@@ -253,8 +251,8 @@ public class CompanyDAOImpl implements CompanyDAO {
     private Connection getConnection() throws DAOException {
         Connection conn;
         try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't obtain a connection!", e);
         }

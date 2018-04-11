@@ -4,6 +4,7 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.ComputerSortedPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
+import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
 import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ public class DashboardRequestMapper {
     private DashboardRequestMapper() {
     }
 
-    public static ComputerSortedPage mapDoGet(HttpServletRequest request) throws ServiceException {
+    public static ComputerSortedPage mapDoGet(HttpServletRequest request, ComputerService computerService) throws ServiceException {
         LOG.debug("mapDoGet");
 
         ComputerSortedPage computerSortedPage;
@@ -28,6 +29,7 @@ public class DashboardRequestMapper {
         boolean ascending = UrlMapper.mapToBoolean(request, ServletParameter.ASCENDING, true);
 
         computerSortedPage = new ComputerSortedPage(displayBy, computerField, ascending);
+        computerSortedPage.setComputerService(computerService);
         computerSortedPage.goToPage(pageNb);
 
         return computerSortedPage;

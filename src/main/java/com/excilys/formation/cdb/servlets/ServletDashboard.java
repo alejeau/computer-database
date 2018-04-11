@@ -37,6 +37,7 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELE
 public class ServletDashboard extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletDashboard.class);
 
+    @Autowired
     private ComputerService computerService;
 
     public ServletDashboard() {
@@ -44,20 +45,15 @@ public class ServletDashboard extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        super.init();
+        super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
-
-    @Autowired
-    public ServletDashboard(ComputerService computerService) {
-        this.computerService = computerService;
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         try {
-            ComputerSortedPage computerSortedPage = DashboardRequestMapper.mapDoGet(request);
+            ComputerSortedPage computerSortedPage = DashboardRequestMapper.mapDoGet(request, computerService);
             request = setRequest(request, computerSortedPage);
         } catch (ServiceException e) {
             LOG.error("{}", e);

@@ -1,20 +1,18 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
-import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -37,22 +35,23 @@ import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.SELECT_COMPUTER_BY_NAME_OR_COMPANY_NAME_ORDERED_BY;
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.UPDATE_COMPUTER;
 
-@Repository("ComputerDAO")
+@Repository
 public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
-    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
     private static final String ASCENDING = "ASC";
     private static final String DESCENDING = "DESC";
 
+    private DataSource dataSource;
     private SimpleDAO simpleDAO;
 
     ComputerDAOImpl() {
     }
 
     @Autowired
-    public ComputerDAOImpl(SimpleDAO simpleDAO) {
+    public ComputerDAOImpl(SimpleDAO simpleDAO, DataSource dataSource) {
         this.simpleDAO = simpleDAO;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -91,7 +90,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get computer with ID " + id + "!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning {}", c);
@@ -133,7 +132,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of computers with NAME LIKE " + name + "!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size {}", computers.size());
@@ -174,7 +173,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning list of size {}", computers.size());
@@ -220,7 +219,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't persist the computer " + computer.shortToString() + ".", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning id {}", createdId);
@@ -260,7 +259,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't update the computer with ID " + computer.getId() + ".", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, null);
+            DAOUtils.closeElements(conn, prepStmt, null);
         }
     }
 
@@ -290,7 +289,7 @@ public class ComputerDAOImpl implements ComputerDAO {
             LOG.error("{}", e1);
             throw new DAOException("Couldn't delete the supplied list of computers.", e1);
         } finally {
-            connectionManager.closeElements(connection, null, null);
+            DAOUtils.closeElements(connection, null, null);
         }
     }
 
@@ -314,8 +313,8 @@ public class ComputerDAOImpl implements ComputerDAO {
     private Connection getConnection() throws DAOException {
         Connection conn;
         try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't obtain a connection!", e);
         }

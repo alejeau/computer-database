@@ -36,6 +36,7 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SEAR
 public class ServletSearch extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletSearch.class);
 
+    @Autowired
     private ComputerService computerService;
 
     public ServletSearch() {
@@ -43,13 +44,8 @@ public class ServletSearch extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        super.init();
+        super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
-
-    @Autowired
-    public ServletSearch(ComputerService computerService) {
-        this.computerService = computerService;
     }
 
     @Override
@@ -59,7 +55,7 @@ public class ServletSearch extends HttpServlet {
 
         if (!StringUtils.isBlank(search)) {
             try {
-                ComputerSortedSearchPage computerSortedSearchPage = SearchRequestMapper.mapDoGet(request);
+                ComputerSortedSearchPage computerSortedSearchPage = SearchRequestMapper.mapDoGet(request, computerService);
                 request = setRequest(request, computerSortedSearchPage);
             } catch (ServiceException e) {
                 LOG.error("{}", e);

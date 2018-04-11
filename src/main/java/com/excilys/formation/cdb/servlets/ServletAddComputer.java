@@ -48,7 +48,10 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARG
 public class ServletAddComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletAddComputer.class);
 
+    @Autowired
     private ComputerService computerService;
+
+    @Autowired
     private CompanyService companyService;
 
     public ServletAddComputer() {
@@ -56,14 +59,8 @@ public class ServletAddComputer extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        super.init();
+        super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
-
-    @Autowired
-    public ServletAddComputer(ComputerService computerService, CompanyService companyService) {
-        this.computerService = computerService;
-        this.companyService = companyService;
     }
 
     @Override
@@ -95,8 +92,8 @@ public class ServletAddComputer extends HttpServlet {
                 displaySuccessMessage = true;
                 Long companyId = Long.valueOf(request.getParameter(COMPANY_ID));
                 Company company = companyService.getCompany(companyId);
-                Computer computer = new Computer.Builder().
-                        name(computerName)
+                Computer computer = new Computer.Builder()
+                        .name(computerName)
                         .introduced(introduced)
                         .discontinued(discontinued)
                         .company(company)
