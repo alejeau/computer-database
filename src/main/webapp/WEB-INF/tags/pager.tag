@@ -15,10 +15,10 @@
 
 <c:if test="${start <= 0}" >
     <c:set var="start" scope="page" value="${0}"/>
-    <c:set var="stop" scope="page" value="${(start+pagerRange-1 < pageDTO.maxPageNumber) ? start+pagerRange-1 : pageDTO.maxPageNumber}"/>
+    <c:set var="stop" scope="page" value="${(pagerRange < pageDTO.maxPageNumber) ? pagerRange : pageDTO.maxPageNumber}"/>
 </c:if>
 <c:if test="${stop >= pageDTO.maxPageNumber}" >
-    <c:set var="start" scope="page" value="${stop-pagerRange+1 < 0 ? 0 : pageDTO.maxPageNumber-pagerRange+1}"/>
+    <c:set var="start" scope="page" value="${stop-pagerRange < 0 ? 0 : pageDTO.maxPageNumber-pagerRange}"/>
     <c:set var="stop" scope="page" value="${pageDTO.maxPageNumber}"/>
 </c:if>
 

@@ -2,8 +2,11 @@ package com.excilys.formation.cdb.paginator;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ComputerSearchPage extends ComputerPage {
+    private static final Logger LOG = LoggerFactory.getLogger(ComputerSearchPage.class);
     protected String search;
 
     public ComputerSearchPage() {
@@ -23,7 +26,8 @@ public class ComputerSearchPage extends ComputerPage {
     @Override
     public Long currentLastPageNumber() throws ServiceException {
         Long numberOfComputer = computerService.getNumberOfComputersWithName(this.search);
-        return numberOfComputer / this.limit.getValue();
+        Long lastPageNumber = numberOfComputer / this.limit.getValue();
+        return numberOfComputer % 10 == 0 ? lastPageNumber - 1L : lastPageNumber;
     }
 
     @Override

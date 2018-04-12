@@ -20,7 +20,8 @@ public class CompanyPage extends Page<Company> {
     @Override
     public Long currentLastPageNumber() throws ServiceException {
         Long numberOfCompany = companyService.getNumberOfCompanies();
-        return numberOfCompany / this.limit.getValue();
+        Long lastPageNumber = numberOfCompany / this.limit.getValue();
+        return numberOfCompany % 10 == 0 ? lastPageNumber - 1L : lastPageNumber;
     }
 
     @Override
