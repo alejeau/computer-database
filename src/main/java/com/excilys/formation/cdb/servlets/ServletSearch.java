@@ -2,19 +2,24 @@ package com.excilys.formation.cdb.servlets;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
+import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
 import com.excilys.formation.cdb.mapper.request.SearchRequestMapper;
 import com.excilys.formation.cdb.paginator.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
 import com.excilys.formation.cdb.servlets.constants.Views;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,9 +34,21 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SEARCH;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SEARCH_FIELD;
 
+@Controller
 public class ServletSearch extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletSearch.class);
-    private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
+
+    @Autowired
+    private ComputerService computerService;
+
+    public ServletSearch() {
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,7 +57,7 @@ public class ServletSearch extends HttpServlet {
 
         if (!StringUtils.isBlank(search)) {
             try {
-                ComputerSortedSearchPage computerSortedSearchPage = SearchRequestMapper.mapDoGet(request);
+                ComputerSortedSearchPage computerSortedSearchPage = SearchRequestMapper.mapDoGet(request, computerService);
                 request = setRequest(request, computerSortedSearchPage);
             } catch (ServiceException e) {
                 LOG.error("{}", e);
@@ -50,7 +67,18 @@ public class ServletSearch extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.DASHBOARD).forward(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedSearchPage cssp) throws ServiceException {
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug("doPost");
+        try {
+            DashboardRequestMapper.mapDoPost(request, computerService);
+        } catch (MapperException e) {
+            throw new ServletException(e);
+        }
+        this.doGet(request, response);
+    }
+
+    private HttpServletRequest setRequest(HttpServletRequest request, ComputerSortedSearchPage cssp) throws ServiceException {
         LOG.debug("setRequest");
         // Setting the paths
         request.setAttribute(CURRENT_PATH, Paths.PATH_SEARCH_COMPUTER);

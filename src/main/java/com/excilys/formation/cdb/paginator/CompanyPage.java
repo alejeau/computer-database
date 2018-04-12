@@ -5,10 +5,9 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
 
 public class CompanyPage extends Page<Company> {
-    protected static CompanyService companyService = CompanyServiceImpl.INSTANCE;
+    CompanyService companyService;
 
     public CompanyPage() {
         super();
@@ -27,5 +26,9 @@ public class CompanyPage extends Page<Company> {
     @Override
     protected void refresh(long offset) throws ServiceException {
         this.list = companyService.getCompanies(offset, this.limit.getValue());
+    }
+
+    public void setCompanyService(CompanyService companyService) {
+        this.companyService = companyService;
     }
 }

@@ -8,6 +8,10 @@ public class MapperException extends Exception {
         super(message);
     }
 
+    public MapperException(Throwable cause) {
+        super(cause);
+    }
+
     public MapperException(String message, Throwable cause) {
         super(message, cause);
     }

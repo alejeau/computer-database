@@ -13,25 +13,30 @@ import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public enum CLI {
-    INSTANCE;
+@Controller
+public class CLI {
     private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
     private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
 
-    private static CompanyService companyService = CompanyServiceImpl.INSTANCE;
-    private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
+    private CompanyService companyService;
+    private ComputerService computerService;
 
     private Scanner sc = new Scanner(System.in);
 
-    CLI() {
+    @Autowired
+    CLI(CompanyService companyService, ComputerService computerService) {
+        this.companyService = companyService;
+        this.computerService = computerService;
     }
 
     private int mainMenu() {
@@ -271,6 +276,9 @@ public enum CLI {
     }
 
     public static void main(String[] args) {
-        CLI.INSTANCE.mainLoop();
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/contexts/cli-context.xml");
+        CLI cli = context.getBean(CLI.class);
+        cli.mainLoop();
+        context.close();
     }
 }

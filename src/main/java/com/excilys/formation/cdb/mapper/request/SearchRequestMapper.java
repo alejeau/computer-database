@@ -1,15 +1,23 @@
 package com.excilys.formation.cdb.mapper.request;
 
+import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
+import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
 import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELECTION;
 
 public class SearchRequestMapper {
     private static final Logger LOG = LoggerFactory.getLogger(SearchRequestMapper.class);
@@ -17,7 +25,7 @@ public class SearchRequestMapper {
     private SearchRequestMapper() {
     }
 
-    public static ComputerSortedSearchPage mapDoGet(HttpServletRequest request) throws ServiceException {
+    public static ComputerSortedSearchPage mapDoGet(HttpServletRequest request, ComputerService computerService) throws ServiceException {
         LOG.debug("mapDoGet");
         ComputerSortedSearchPage computerSortedSearchPage;
 
@@ -28,6 +36,7 @@ public class SearchRequestMapper {
         boolean ascending = UrlMapper.mapToBoolean(request, ServletParameter.ASCENDING, true);
 
         computerSortedSearchPage = new ComputerSortedSearchPage(search, displayBy, computerField, ascending);
+        computerSortedSearchPage.setComputerService(computerService);
         computerSortedSearchPage.goToPage(pageNb);
 
         return computerSortedSearchPage;

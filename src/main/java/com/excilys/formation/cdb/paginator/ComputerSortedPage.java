@@ -3,12 +3,9 @@ package com.excilys.formation.cdb.paginator;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.DatabaseFieldsMapper;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
 
 public class ComputerSortedPage extends ComputerPage {
-    private ComputerService computerService = ComputerServiceImpl.INSTANCE;
     private ComputerField orderBy = ComputerField.COMPUTER_NAME;
     private boolean ascending = true;
 

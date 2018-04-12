@@ -1,13 +1,14 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
-import com.excilys.formation.cdb.persistence.ConnectionManager;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
-import com.excilys.formation.cdb.persistence.impl.HikariCPImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,19 +16,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public enum SimpleDAOImpl implements SimpleDAO {
-    INSTANCE;
+@Repository
+public class SimpleDAOImpl implements SimpleDAO {
     private static final Logger LOG = LoggerFactory.getLogger(SimpleDAOImpl.class);
-    private static ConnectionManager connectionManager = HikariCPImpl.INSTANCE;
+
+    private DataSource dataSource;
 
     SimpleDAOImpl() {
+    }
 
+    @Autowired
+    public SimpleDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
     public Long count(String query) throws DAOException {
         LOG.debug("count:");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         Statement stmt = null;
         ResultSet rs = null;
         Long l = null;
@@ -46,7 +52,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't execute the requested COUNT query!", e);
         } finally {
-            connectionManager.closeElements(conn, stmt, rs);
+            DAOUtils.closeElements(conn, stmt, rs);
         }
 
         LOG.debug("Returning {}", l);
@@ -56,7 +62,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
     @Override
     public Long countElementsWithName(String query, String name) throws DAOException {
         LOG.debug("countElementsWithName");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long numberOfElements = null;
@@ -76,7 +82,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't execute the requested COUNT LIKE query!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning {}", numberOfElements);
@@ -85,7 +91,7 @@ public enum SimpleDAOImpl implements SimpleDAO {
 
     public Long countWithStringParameters(String query, List<String> params) throws DAOException {
         LOG.debug("countWithStringParameters");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long numberOfElements = null;
@@ -107,21 +113,10 @@ public enum SimpleDAOImpl implements SimpleDAO {
             LOG.error("{}", e);
             throw new DAOException("Couldn't execute the requested COUNT LIKE query!", e);
         } finally {
-            connectionManager.closeElements(conn, prepStmt, rs);
+            DAOUtils.closeElements(conn, prepStmt, rs);
         }
 
         LOG.debug("Returning {}", numberOfElements);
         return numberOfElements;
-    }
-
-    private Connection getConnection() throws DAOException {
-        Connection conn;
-        try {
-            conn = connectionManager.getConnection();
-        } catch (ConnectionException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
-        return conn;
     }
 }

@@ -14,8 +14,6 @@ import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.formation.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.formation.cdb.servlets.constants.Paths;
 import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import com.excilys.formation.cdb.servlets.constants.Views;
@@ -23,7 +21,11 @@ import com.excilys.formation.cdb.validators.ComputerValidator;
 import com.excilys.formation.cdb.validators.core.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,11 +47,25 @@ import static com.excilys.formation.cdb.servlets.constants.ServletParameter.INTR
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_DISPLAY_BY;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_PAGE_NUMBER;
 
+@Controller
 public class ServletEditComputer extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ServletEditComputer.class);
     private static final Long NO_COMPUTER = -1L;
-    private static ComputerService computerService = ComputerServiceImpl.INSTANCE;
-    private static CompanyService companyService = CompanyServiceImpl.INSTANCE;
+
+    @Autowired
+    private ComputerService computerService;
+
+    @Autowired
+    private CompanyService companyService;
+
+    public ServletEditComputer() {
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -81,7 +97,7 @@ public class ServletEditComputer extends HttpServlet {
 
         Computer computer = null;
         boolean displaySuccessMessage = false;
-        errorList = ComputerValidator.INSTANCE.validate(computerName, introduced, discontinued);
+        errorList = ComputerValidator.validate(computerName, introduced, discontinued);
         try {
             if (errorList == null) {
                 Long computerId = UrlMapper.mapLongNumber(request, ServletParameter.COMPUTER_ID, NO_COMPUTER);
@@ -120,7 +136,7 @@ public class ServletEditComputer extends HttpServlet {
         this.getServletContext().getRequestDispatcher(Views.EDIT_COMPUTER).forward(request, response);
     }
 
-    private static HttpServletRequest setRequest(HttpServletRequest request, ComputerDTO computerDTO, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
+    private HttpServletRequest setRequest(HttpServletRequest request, ComputerDTO computerDTO, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
         request.setAttribute(ServletParameter.CURRENT_PATH, Paths.PATH_EDIT_COMPUTER);
 

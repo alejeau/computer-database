@@ -9,21 +9,27 @@ import com.excilys.formation.cdb.paginator.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
-import com.excilys.formation.cdb.persistence.dao.impl.ComputerDAOImpl;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public enum ComputerServiceImpl implements ComputerService {
-    INSTANCE;
+@Service("ComputerService")
+@EnableTransactionManagement
+public class ComputerServiceImpl implements ComputerService {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerServiceImpl.class);
-    private static ComputerDAO computerDAO = ComputerDAOImpl.INSTANCE;
 
-    ComputerServiceImpl() {
+    private ComputerDAO computerDAO;
 
+    @Autowired
+    public ComputerServiceImpl(ComputerDAO computerDAO) {
+        this.computerDAO = computerDAO;
     }
 
     @Override
@@ -100,7 +106,7 @@ public enum ComputerServiceImpl implements ComputerService {
 
     @Override
     public Long persistComputer(Computer c) throws ValidationException, ServiceException {
-        ComputerValidator.INSTANCE.validate(c);
+        ComputerValidator.validate(c);
         try {
             return computerDAO.persistComputer(c);
         } catch (DAOException e) {
@@ -111,7 +117,7 @@ public enum ComputerServiceImpl implements ComputerService {
 
     @Override
     public void updateComputer(Computer c) throws ValidationException, ServiceException {
-        ComputerValidator.INSTANCE.validate(c);
+        ComputerValidator.validate(c);
         try {
             computerDAO.updateComputer(c);
         } catch (DAOException e) {
@@ -121,6 +127,7 @@ public enum ComputerServiceImpl implements ComputerService {
     }
 
     @Override
+    @Transactional(rollbackFor = ServiceException.class)
     public void deleteComputer(Long id) throws ServiceException {
         try {
             computerDAO.deleteComputer(id);
@@ -131,6 +138,7 @@ public enum ComputerServiceImpl implements ComputerService {
     }
 
     @Override
+    @Transactional(rollbackFor = ServiceException.class)
     public void deleteComputers(List<Long> idList) throws ServiceException {
         try {
             computerDAO.deleteComputers(idList);
@@ -142,12 +150,16 @@ public enum ComputerServiceImpl implements ComputerService {
 
     @Override
     public ComputerPage getComputers(LimitValue limit) {
-        return new ComputerPage(limit);
+        ComputerPage computerPage = new ComputerPage(limit);
+        computerPage.setComputerService(this);
+        return computerPage;
     }
 
     @Override
     public ComputerSearchPage getComputer(String name, LimitValue limit) {
-        return new ComputerSearchPage(name, limit);
+        ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, limit);
+        computerSearchPage.setComputerService(this);
+        return computerSearchPage;
     }
 
 

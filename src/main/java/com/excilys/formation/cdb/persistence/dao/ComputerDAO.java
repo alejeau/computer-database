@@ -30,13 +30,4 @@ public interface ComputerDAO {
     void deleteComputer(Long id) throws DAOException;
 
     void deleteComputers(List<Long> idList) throws DAOException;
-
-    /**
-     * Must not commit any changes.
-     *
-     * @param idList     the list of IDs to delete
-     * @param connection the connection to work on.
-     * @throws DAOException if something goes wrong
-     */
-    void deleteComputers(List<Long> idList, Connection connection) throws DAOException;
 }
