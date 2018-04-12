@@ -15,10 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service("ComputerService")
+@EnableTransactionManagement
 public class ComputerServiceImpl implements ComputerService {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerServiceImpl.class);
 
@@ -124,6 +127,7 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
+    @Transactional(rollbackFor = ServiceException.class)
     public void deleteComputer(Long id) throws ServiceException {
         try {
             computerDAO.deleteComputer(id);
@@ -134,6 +138,7 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
+    @Transactional(rollbackFor = ServiceException.class)
     public void deleteComputers(List<Long> idList) throws ServiceException {
         try {
             computerDAO.deleteComputers(idList);

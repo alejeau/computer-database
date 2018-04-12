@@ -12,10 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service("CompanyService")
+@EnableTransactionManagement
 public class CompanyServiceImpl implements CompanyService {
     private static final Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
 
@@ -87,6 +90,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional(rollbackFor = ServiceException.class)
     public void deleteCompany(Long id) throws ServiceException {
         try {
             companyDAO.deleteCompany(id);

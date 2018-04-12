@@ -9,9 +9,8 @@ import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -30,7 +29,6 @@ import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.N
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES_WITH_NAME;
 
 @Repository
-@EnableTransactionManagement
 public class CompanyDAOImpl implements CompanyDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
@@ -61,7 +59,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Override
     public Company getCompany(Long id) throws DAOException {
         LOG.debug("getCompanyName (with id)");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Company company;
@@ -92,7 +90,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompaniesWithName(String name, Long index, Long limit) throws DAOException {
         LOG.debug("getCompanyName (with name)");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -125,7 +123,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompanies() throws DAOException {
         LOG.debug("getCompanies");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -155,7 +153,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Override
     public List<Company> getCompanies(Long index, Long limit) throws DAOException {
         LOG.debug("getCompanies, index: {}, limit: {}", index, limit);
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Company> companies;
@@ -185,10 +183,9 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    @Transactional
     public void deleteCompany(Long id) throws DAOException {
         LOG.debug("deleteCompany");
-        Connection connection = this.getConnection();
+        Connection connection = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         final String[] QUERIES = {DELETE_COMPUTER_WITH_COMPANY_ID, DELETE_COMPANY_WITH_ID};
         try {
@@ -200,19 +197,6 @@ public class CompanyDAOImpl implements CompanyDAO {
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't delete the company and it's associated list of computers.", e);
-        } finally {
-            DAOUtils.closeElements(connection, prepStmt, null);
         }
-    }
-
-    private Connection getConnection() throws DAOException {
-        Connection conn;
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
-        return conn;
     }
 }

@@ -5,6 +5,7 @@ import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -32,7 +33,7 @@ public class SimpleDAOImpl implements SimpleDAO {
     @Override
     public Long count(String query) throws DAOException {
         LOG.debug("count:");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         Statement stmt = null;
         ResultSet rs = null;
         Long l = null;
@@ -61,7 +62,7 @@ public class SimpleDAOImpl implements SimpleDAO {
     @Override
     public Long countElementsWithName(String query, String name) throws DAOException {
         LOG.debug("countElementsWithName");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long numberOfElements = null;
@@ -90,7 +91,7 @@ public class SimpleDAOImpl implements SimpleDAO {
 
     public Long countWithStringParameters(String query, List<String> params) throws DAOException {
         LOG.debug("countWithStringParameters");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long numberOfElements = null;
@@ -117,16 +118,5 @@ public class SimpleDAOImpl implements SimpleDAO {
 
         LOG.debug("Returning {}", numberOfElements);
         return numberOfElements;
-    }
-
-    private Connection getConnection() throws DAOException {
-        Connection conn;
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
-        return conn;
     }
 }

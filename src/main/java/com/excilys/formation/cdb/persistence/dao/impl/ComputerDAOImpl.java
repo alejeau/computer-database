@@ -10,8 +10,11 @@ import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -38,7 +41,6 @@ import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.UPDATE_COMPUTER;
 
 @Repository
-@EnableTransactionManagement
 public class ComputerDAOImpl implements ComputerDAO {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerDAOImpl.class);
 
@@ -72,7 +74,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public Computer getComputer(Long id) throws DAOException {
         LOG.debug("getComputersWithName");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Computer c;
@@ -109,7 +111,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public List<Computer> getComputersWithNameOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
         LOG.debug("getComputersWithNameOrderedBy");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers;
@@ -151,7 +153,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
         LOG.debug("getComputerList");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         List<Computer> computers;
@@ -188,7 +190,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Override
     public Long persistComputer(Computer computer) throws DAOException {
         LOG.debug("persistComputer");
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         Long createdId = null;
@@ -234,7 +236,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     public void updateComputer(Computer computer) throws DAOException {
         LOG.debug("updateComputer");
         LOG.debug("Computer: {}", computer);
-        Connection conn = this.getConnection();
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
 
         try {
@@ -268,17 +270,15 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    @Transactional
     public void deleteComputer(Long id) throws DAOException {
         LOG.debug("deleteComputer");
         this.deleteComputers(Collections.singletonList(id));
     }
 
     @Override
-    @Transactional
     public void deleteComputers(List<Long> idList) throws DAOException {
         LOG.debug("deleteComputers (by list)");
-        Connection connection = this.getConnection();
+        Connection connection = DataSourceUtils.getConnection(dataSource);
         PreparedStatement prepStmt = null;
         try {
             prepStmt = connection.prepareStatement(DELETE_COMPUTER);
@@ -290,19 +290,6 @@ public class ComputerDAOImpl implements ComputerDAO {
         } catch (SQLException e) {
             LOG.error("{}", e);
             throw new DAOException("Couldn't delete the supplied list of computers.", e);
-        } finally {
-            DAOUtils.closeElements(connection, prepStmt, null);
         }
-    }
-
-    private Connection getConnection() throws DAOException {
-        Connection conn;
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException e) {
-            LOG.error("{}", e);
-            throw new DAOException("Couldn't obtain a connection!", e);
-        }
-        return conn;
     }
 }
