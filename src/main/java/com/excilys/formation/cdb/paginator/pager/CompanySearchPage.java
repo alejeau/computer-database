@@ -15,7 +15,7 @@ public class CompanySearchPage extends CompanyPage {
         this.search = search;
     }
 
-    public CompanySearchPage(String search, LimitValue limit) {
+    CompanySearchPage(String search, LimitValue limit) {
         super(limit);
         this.search = search;
     }
