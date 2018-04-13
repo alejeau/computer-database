@@ -18,7 +18,7 @@
     <c:set var="stop" scope="page" value="${(pagerRange < pageDTO.maxPageNumber) ? pagerRange : pageDTO.maxPageNumber}"/>
 </c:if>
 <c:if test="${stop >= pageDTO.maxPageNumber}" >
-    <c:set var="start" scope="page" value="${stop-pagerRange < 0 ? 0 : pageDTO.maxPageNumber-pagerRange}"/>
+    <c:set var="start" scope="page" value="${pageDTO.maxPageNumber-pagerRange <= 0 ? 0 : pageDTO.maxPageNumber-pagerRange}"/>
     <c:set var="stop" scope="page" value="${pageDTO.maxPageNumber}"/>
 </c:if>
 
