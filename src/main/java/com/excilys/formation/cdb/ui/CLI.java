@@ -168,6 +168,7 @@ public class CLI {
         name = sc.nextLine();
 
         ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
+        computerSearchPage.setComputerService(computerService);
         viewPage(computerSearchPage);
     }
 
