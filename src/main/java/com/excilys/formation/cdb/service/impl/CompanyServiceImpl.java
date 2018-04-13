@@ -3,9 +3,6 @@ package com.excilys.formation.cdb.service.impl;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.paginator.CompanyPage;
-import com.excilys.formation.cdb.paginator.CompanySearchPage;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.excilys.formation.cdb.service.CompanyService;
 import org.slf4j.Logger;
@@ -98,18 +95,5 @@ public class CompanyServiceImpl implements CompanyService {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't the company with ID " + id + "!", e);
         }
-    }
-
-
-    public CompanyPage getCompanyPage(LimitValue limit) {
-        CompanyPage companyPage = new CompanyPage(limit);
-        companyPage.setCompanyService(this);
-        return companyPage;
-    }
-
-    public CompanySearchPage getCompanySearchPage(String name, LimitValue limit) {
-        CompanySearchPage companySearchPage = new CompanySearchPage(name, limit);
-        companySearchPage.setCompanyService(this);
-        return companySearchPage;
     }
 }

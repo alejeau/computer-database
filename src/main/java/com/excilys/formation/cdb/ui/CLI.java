@@ -6,17 +6,17 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
 import com.excilys.formation.cdb.model.Model;
-import com.excilys.formation.cdb.paginator.CompanyPage;
-import com.excilys.formation.cdb.paginator.ComputerPage;
-import com.excilys.formation.cdb.paginator.ComputerSearchPage;
+import com.excilys.formation.cdb.paginator.pager.CompanyPage;
+import com.excilys.formation.cdb.paginator.pager.ComputerPage;
+import com.excilys.formation.cdb.paginator.pager.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
+import com.excilys.formation.cdb.paginator.pager.PageFactory;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 
@@ -30,13 +30,15 @@ public class CLI {
 
     private CompanyService companyService;
     private ComputerService computerService;
+    private PageFactory pageFactory;
 
     private Scanner sc = new Scanner(System.in);
 
     @Autowired
-    CLI(CompanyService companyService, ComputerService computerService) {
+    public CLI(CompanyService companyService, ComputerService computerService, PageFactory pageFactory) {
         this.companyService = companyService;
         this.computerService = computerService;
+        this.pageFactory = pageFactory;
     }
 
     private int mainMenu() {
@@ -77,11 +79,11 @@ public class CLI {
     private void executeChoice(CliActions choice) throws ServiceException {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
-                ComputerPage computerPage = computerService.getComputers(NUMBER_OF_ELEMENTS_PER_PAGE);
+                ComputerPage computerPage = pageFactory.createComputerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(computerPage);
                 break;
             case VIEW_COMPANY_LIST:
-                CompanyPage companyPage = companyService.getCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+                CompanyPage companyPage = pageFactory.createCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 viewPage(companyPage);
                 break;
             case CHECK_COMPUTER_BY_ID:
@@ -167,8 +169,7 @@ public class CLI {
         System.out.println("Please enter the computer's name: ");
         name = sc.nextLine();
 
-        ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
-        computerSearchPage.setComputerService(computerService);
+        ComputerSearchPage computerSearchPage = pageFactory.createComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
         viewPage(computerSearchPage);
     }
 

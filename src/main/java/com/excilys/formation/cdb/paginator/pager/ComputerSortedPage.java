@@ -1,29 +1,24 @@
-package com.excilys.formation.cdb.paginator;
+package com.excilys.formation.cdb.paginator.pager;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.DatabaseFieldsMapper;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
 
-public class ComputerSortedSearchPage extends ComputerSearchPage {
+public class ComputerSortedPage extends ComputerPage {
     private ComputerField orderBy = ComputerField.COMPUTER_NAME;
     private boolean ascending = true;
 
-    public ComputerSortedSearchPage() {
+    ComputerSortedPage() {
         super();
     }
 
-    public ComputerSortedSearchPage(String search) {
-        super(search);
+    ComputerSortedPage(LimitValue limit) {
+        super(limit);
     }
 
-    public ComputerSortedSearchPage(String search, LimitValue limit) {
-        super(search, limit);
-    }
-
-
-    public ComputerSortedSearchPage(String search, LimitValue limit, ComputerField orderBy, boolean ascending) {
-        super(search, limit);
+    ComputerSortedPage(LimitValue limit, ComputerField orderBy, boolean ascending) {
+        super(limit);
         this.orderBy = orderBy;
         this.ascending = ascending;
     }
@@ -31,7 +26,7 @@ public class ComputerSortedSearchPage extends ComputerSearchPage {
     @Override
     protected void refresh(long offset) throws ServiceException {
         this.list = computerService
-                .getComputerOrderedBy(search, offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
+                .getComputersOrderedBy(offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
     }
 
     public ComputerField getOrderBy() {

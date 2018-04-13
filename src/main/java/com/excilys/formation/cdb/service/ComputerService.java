@@ -3,8 +3,8 @@ package com.excilys.formation.cdb.service;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.paginator.ComputerPage;
-import com.excilys.formation.cdb.paginator.ComputerSearchPage;
+import com.excilys.formation.cdb.paginator.pager.ComputerPage;
+import com.excilys.formation.cdb.paginator.pager.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 
@@ -33,8 +33,4 @@ public interface ComputerService {
     void deleteComputer(Long id) throws ServiceException;
 
     void deleteComputers(List<Long> idList) throws ServiceException;
-
-    public ComputerPage getComputers(LimitValue limit) throws ServiceException;
-
-    public ComputerSearchPage getComputer(String name, LimitValue limit) throws ServiceException;
 }

@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.paginator;
+package com.excilys.formation.cdb.paginator.pager;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Computer;
@@ -9,11 +9,11 @@ import com.excilys.formation.cdb.service.ComputerService;
 public class ComputerPage extends Page<Computer> {
     ComputerService computerService;
 
-    public ComputerPage() {
+    ComputerPage() {
         super();
     }
 
-    public ComputerPage(LimitValue limit) {
+    ComputerPage(LimitValue limit) {
         super(limit);
     }
 

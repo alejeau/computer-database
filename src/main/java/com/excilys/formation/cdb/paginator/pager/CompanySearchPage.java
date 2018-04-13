@@ -1,38 +1,35 @@
-package com.excilys.formation.cdb.paginator;
+package com.excilys.formation.cdb.paginator.pager;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class ComputerSearchPage extends ComputerPage {
-    private static final Logger LOG = LoggerFactory.getLogger(ComputerSearchPage.class);
+public class CompanySearchPage extends CompanyPage {
     protected String search;
 
-    public ComputerSearchPage() {
+    CompanySearchPage() {
         super();
     }
 
-    public ComputerSearchPage(String search) {
+    CompanySearchPage(String search) {
         super();
         this.search = search;
     }
 
-    public ComputerSearchPage(String search, LimitValue limit) {
+    public CompanySearchPage(String search, LimitValue limit) {
         super(limit);
         this.search = search;
     }
 
     @Override
     public Long currentLastPageNumber() throws ServiceException {
-        Long numberOfComputer = computerService.getNumberOfComputersWithName(this.search);
+        Long numberOfComputer = companyService.getNumberOfCompaniesWithName(this.search);
         Long lastPageNumber = numberOfComputer / this.limit.getValue();
         return numberOfComputer % 10 == 0 ? lastPageNumber - 1L : lastPageNumber;
     }
 
     @Override
     protected void refresh(long offset) throws ServiceException {
-        this.list = computerService.getComputer(search, offset, this.limit.getValue());
+        this.list = companyService.getCompany(search, offset, this.limit.getValue());
     }
 
     public String getSearch() {

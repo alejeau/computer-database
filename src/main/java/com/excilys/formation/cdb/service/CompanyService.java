@@ -2,8 +2,8 @@ package com.excilys.formation.cdb.service;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.paginator.CompanyPage;
-import com.excilys.formation.cdb.paginator.CompanySearchPage;
+import com.excilys.formation.cdb.paginator.pager.CompanyPage;
+import com.excilys.formation.cdb.paginator.pager.CompanySearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 
 import java.util.List;
@@ -23,8 +23,4 @@ public interface CompanyService {
     List<Company> getCompanies(Long index, Long limit) throws ServiceException;
 
     void deleteCompany(Long id) throws ServiceException;
-
-    CompanyPage getCompanyPage(LimitValue limit);
-
-    CompanySearchPage getCompanySearchPage(String name, LimitValue limit);
 }

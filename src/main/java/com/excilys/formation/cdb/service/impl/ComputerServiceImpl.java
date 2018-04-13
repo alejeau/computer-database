@@ -4,9 +4,6 @@ import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.paginator.ComputerPage;
-import com.excilys.formation.cdb.paginator.ComputerSearchPage;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.service.ComputerService;
@@ -147,20 +144,4 @@ public class ComputerServiceImpl implements ComputerService {
             throw new ServiceException("Couldn't delete the list of computers!", e);
         }
     }
-
-    @Override
-    public ComputerPage getComputers(LimitValue limit) {
-        ComputerPage computerPage = new ComputerPage(limit);
-        computerPage.setComputerService(this);
-        return computerPage;
-    }
-
-    @Override
-    public ComputerSearchPage getComputer(String name, LimitValue limit) {
-        ComputerSearchPage computerSearchPage = new ComputerSearchPage(name, limit);
-        computerSearchPage.setComputerService(this);
-        return computerSearchPage;
-    }
-
-
 }

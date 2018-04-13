@@ -6,7 +6,7 @@ import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
-import com.excilys.formation.cdb.paginator.ComputerSortedPage;
+import com.excilys.formation.cdb.paginator.pager.ComputerSortedPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.servlets.constants.Paths;
@@ -23,16 +23,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.CURRENT_PATH;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.IS_ASCENDING;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.LIMIT_VALUES;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ORDER_BY;
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE_DTO;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELECTION;
 
 @Controller
 public class ServletDashboard extends HttpServlet {
@@ -40,6 +36,9 @@ public class ServletDashboard extends HttpServlet {
 
     @Autowired
     private ComputerService computerService;
+    
+    @Autowired
+    private DashboardRequestMapper dashboardRequestMapper;
 
     public ServletDashboard() {
     }
@@ -54,7 +53,7 @@ public class ServletDashboard extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doGet");
         try {
-            ComputerSortedPage computerSortedPage = DashboardRequestMapper.mapDoGet(request, computerService);
+            ComputerSortedPage computerSortedPage = dashboardRequestMapper.mapDoGet(request);
             request = setRequest(request, computerSortedPage);
         } catch (ServiceException e) {
             LOG.error("{}", e);
@@ -67,7 +66,7 @@ public class ServletDashboard extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doPost");
         try {
-            DashboardRequestMapper.mapDoPost(request, computerService);
+            dashboardRequestMapper.mapDoPost(request);
         } catch (MapperException e) {
             throw new ServletException(e);
         }

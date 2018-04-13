@@ -7,7 +7,7 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
 import com.excilys.formation.cdb.mapper.request.SearchRequestMapper;
-import com.excilys.formation.cdb.paginator.ComputerSortedSearchPage;
+import com.excilys.formation.cdb.paginator.pager.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.servlets.constants.Paths;
@@ -41,6 +41,12 @@ public class ServletSearch extends HttpServlet {
     @Autowired
     private ComputerService computerService;
 
+    @Autowired
+    private SearchRequestMapper searchRequestMapper;
+
+    @Autowired
+    private DashboardRequestMapper dashboardRequestMapper;
+
     public ServletSearch() {
     }
 
@@ -57,7 +63,7 @@ public class ServletSearch extends HttpServlet {
 
         if (!StringUtils.isBlank(search)) {
             try {
-                ComputerSortedSearchPage computerSortedSearchPage = SearchRequestMapper.mapDoGet(request, computerService);
+                ComputerSortedSearchPage computerSortedSearchPage = searchRequestMapper.mapDoGet(request);
                 request = setRequest(request, computerSortedSearchPage);
             } catch (ServiceException e) {
                 LOG.error("{}", e);
@@ -71,7 +77,7 @@ public class ServletSearch extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("doPost");
         try {
-            DashboardRequestMapper.mapDoPost(request, computerService);
+            dashboardRequestMapper.mapDoPost(request);
         } catch (MapperException e) {
             throw new ServletException(e);
         }

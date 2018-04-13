@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.paginator;
+package com.excilys.formation.cdb.paginator.pager;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Company;
@@ -9,11 +9,11 @@ import com.excilys.formation.cdb.service.CompanyService;
 public class CompanyPage extends Page<Company> {
     CompanyService companyService;
 
-    public CompanyPage() {
+    CompanyPage() {
         super();
     }
 
-    public CompanyPage(LimitValue limit) {
+    CompanyPage(LimitValue limit) {
         super(limit);
     }
 

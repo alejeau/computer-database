@@ -2,14 +2,17 @@ package com.excilys.formation.cdb.mapper.request;
 
 import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
-import com.excilys.formation.cdb.paginator.ComputerSortedPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
+import com.excilys.formation.cdb.paginator.pager.ComputerSortedPage;
+import com.excilys.formation.cdb.paginator.pager.PageFactory;
 import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
 import com.excilys.formation.cdb.servlets.constants.ServletParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -18,13 +21,20 @@ import java.util.List;
 
 import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SELECTION;
 
+@Component
 public class DashboardRequestMapper {
     private static final Logger LOG = LoggerFactory.getLogger(DashboardRequestMapper.class);
 
-    private DashboardRequestMapper() {
+    private ComputerService computerService;
+    private PageFactory pageFactory;
+
+    @Autowired
+    public DashboardRequestMapper(ComputerService computerService, PageFactory pageFactory) {
+        this.computerService = computerService;
+        this.pageFactory = pageFactory;
     }
 
-    public static void mapDoPost(HttpServletRequest request, ComputerService computerService) throws MapperException {
+    public void mapDoPost(HttpServletRequest request) throws MapperException {
         LOG.debug("mapDoPost");
         String selection = request.getParameter(SELECTION);
 
@@ -44,7 +54,7 @@ public class DashboardRequestMapper {
         }
     }
 
-    public static ComputerSortedPage mapDoGet(HttpServletRequest request, ComputerService computerService) throws ServiceException {
+    public ComputerSortedPage mapDoGet(HttpServletRequest request) throws ServiceException {
         LOG.debug("mapDoGet");
 
         ComputerSortedPage computerSortedPage;
@@ -54,8 +64,7 @@ public class DashboardRequestMapper {
         ComputerField computerField = UrlMapper.mapToComputerFields(request, ServletParameter.FIELD, ComputerField.COMPUTER_NAME);
         boolean ascending = UrlMapper.mapToBoolean(request, ServletParameter.ASCENDING, true);
 
-        computerSortedPage = new ComputerSortedPage(displayBy, computerField, ascending);
-        computerSortedPage.setComputerService(computerService);
+        computerSortedPage = pageFactory.createComputerSortedPage(displayBy, computerField, ascending);
         computerSortedPage.goToPage(pageNb);
 
         return computerSortedPage;
