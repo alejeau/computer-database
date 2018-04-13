@@ -114,7 +114,7 @@ public class CLI {
         String choice;
 
         while (!exit) {
-            System.out.println("Which list would you like to view (current list: " + page.getPageNumber() + ")?");
+            System.out.println("Which list would you like to view (current page: " + page.getPageNumber() + ")?");
             System.out.println("n for next, p for previous, f for first, l for last and q to quit");
             choice = sc.nextLine();
 
