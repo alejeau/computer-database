@@ -36,6 +36,7 @@ public class SearchRequestMapper {
         ComputerField computerField = UrlMapper.mapToComputerFields(request, ServletParameter.FIELD, ComputerField.COMPUTER_NAME);
         boolean ascending = UrlMapper.mapToBoolean(request, ServletParameter.ASCENDING, true);
 
+        LOG.debug("search: {}, displayBy: {}, computerField: {}, ascending: {}", search, displayBy, computerField, ascending);
         computerSortedSearchPage = pageFactory.createComputerSortedSearchPage(search, displayBy, computerField, ascending);
         computerSortedSearchPage.goToPage(pageNb);
 

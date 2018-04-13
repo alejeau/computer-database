@@ -4,8 +4,11 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.DatabaseFieldsMapper;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.servlets.constants.ComputerField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ComputerSortedSearchPage extends ComputerSearchPage {
+    private static final Logger LOG = LoggerFactory.getLogger(ComputerSortedSearchPage.class);
     private ComputerField orderBy = ComputerField.COMPUTER_NAME;
     private boolean ascending = true;
 
@@ -29,6 +32,7 @@ public class ComputerSortedSearchPage extends ComputerSearchPage {
 
     @Override
     protected void refresh(long offset) throws ServiceException {
+        LOG.debug("search: {}, offset: {}, limit.getValue(): {}, orderBy: {}, ascending: {},", search, offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
         this.list = computerService
                 .getComputerOrderedBy(search, offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
     }
