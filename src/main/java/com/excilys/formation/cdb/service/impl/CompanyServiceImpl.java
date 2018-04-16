@@ -37,32 +37,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Long getNumberOfCompaniesWithName(String name) throws ServiceException {
-        try {
-            return companyDAO.getNumberOfCompaniesWithName(name);
-        } catch (DAOException e) {
-            LOG.error("{}", e);
-            throw new ServiceException("Couldn't retrieve the number of companies WITH NAME LIKE \"" + name + "\"!", e);
-        }
-    }
-
-    @Override
     public Company getCompany(Long id) throws ServiceException {
         try {
             return companyDAO.getCompany(id);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the the company with the \"" + id + "\"!", e);
-        }
-    }
-
-    @Override
-    public List<Company> getCompany(String name, Long index, Long limit) throws ServiceException {
-        try {
-            return companyDAO.getCompaniesWithName(name, index, limit);
-        } catch (DAOException e) {
-            LOG.error("{}", e);
-            throw new ServiceException("Couldn't retrieve the number of companies WITH NAME LIKE \"" + name + "\"!", e);
         }
     }
 

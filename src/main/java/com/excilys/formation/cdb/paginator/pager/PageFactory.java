@@ -28,14 +28,8 @@ public interface PageFactory {
     ComputerSortedSearchPage createComputerSortedSearchPage(String search, LimitValue limit);
 
     ComputerSortedSearchPage createComputerSortedSearchPage(String search, LimitValue limit, ComputerField orderBy, boolean ascending);
-    
+
     CompanyPage createCompanyPage();
-    
+
     CompanyPage createCompanyPage(LimitValue limitValue);
-
-    CompanySearchPage createCompanySearchPage();
-
-    CompanySearchPage createCompanySearchPage(String search);
-
-    CompanySearchPage createCompanySearchPage(String search, LimitValue limit);
 }

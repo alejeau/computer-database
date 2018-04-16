@@ -69,11 +69,6 @@ public class CompanyDAOTest {
     }
 
     @Test
-    public void getCompanyWithName() throws DAOException {
-        assertEquals(COMPANY_LIST, companyDAO.getCompaniesWithName(NAME, INDEX, LIMIT));
-    }
-
-    @Test
     public void getCompanies() throws DAOException {
         assertEquals(COMPANY_LIST, companyDAO.getCompanies());
     }
