@@ -26,23 +26,6 @@ public class CompanyMapper {
         return new Company(companyDTO.getId(), companyDTO.getName());
     }
 
-    public static Company map(ResultSet rs) throws MapperException {
-        Company c = null;
-        try {
-            if (rs.isBeforeFirst()) {
-                c = new Company();
-                while (rs.next()) {
-                    c.setId(rs.getLong(DbFields.COMPANY_ID));
-                    c.setName(rs.getString(DbFields.COMPANY_NAME));
-                }
-            }
-        } catch (SQLException e) {
-            LOG.error("{}", e);
-            throw new MapperException("Couldn't map the ResultSet to a Company!", e);
-        }
-        return c;
-    }
-
     public static Company mapFromComputer(ResultSet rs) throws SQLException {
         Company c = new Company();
         c.setId(rs.getLong(DbFields.COMPANY_ID));

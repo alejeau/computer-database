@@ -116,25 +116,4 @@ public class PageFactoryImpl implements PageFactory {
         companyPage.setCompanyService(companyService);
         return companyPage;
     }
-
-    @Override
-    public CompanySearchPage createCompanySearchPage() {
-        CompanySearchPage companySearchPage = new CompanySearchPage();
-        companySearchPage.setCompanyService(companyService);
-        return companySearchPage;
-    }
-
-    @Override
-    public CompanySearchPage createCompanySearchPage(String search) {
-        CompanySearchPage companySearchPage = new CompanySearchPage(search);
-        companySearchPage.setCompanyService(companyService);
-        return companySearchPage;
-    }
-
-    @Override
-    public CompanySearchPage createCompanySearchPage(String search, LimitValue limit) {
-        CompanySearchPage companySearchPage = new CompanySearchPage(search, limit);
-        companySearchPage.setCompanyService(companyService);
-        return companySearchPage;
-    }
 }
