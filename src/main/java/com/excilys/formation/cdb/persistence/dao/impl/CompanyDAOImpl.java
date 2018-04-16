@@ -84,9 +84,7 @@ public class CompanyDAOImpl implements CompanyDAO {
         LOG.debug("deleteCompany");
 
         Object[] params = new Object[]{id};
-//        jdbcTemplate.update(DELETE_COMPUTER_WITH_COMPANY_ID, params);
-        jdbcTemplate.update(DELETE_COMPUTER_WITH_COMPANY_ID.replace("?", id.toString()));
-//        jdbcTemplate.update(DELETE_COMPANY_WITH_ID, params);
-        jdbcTemplate.update(DELETE_COMPANY_WITH_ID.replace("?", id.toString()));
+        jdbcTemplate.update(DELETE_COMPUTER_WITH_COMPANY_ID, params);
+        jdbcTemplate.update(DELETE_COMPANY_WITH_ID, params);
     }
 }
