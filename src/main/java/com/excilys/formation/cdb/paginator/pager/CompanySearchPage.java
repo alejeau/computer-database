@@ -22,9 +22,9 @@ public class CompanySearchPage extends CompanyPage {
 
     @Override
     public Long currentLastPageNumber() throws ServiceException {
-        Long numberOfComputer = companyService.getNumberOfCompaniesWithName(this.search);
-        Long lastPageNumber = numberOfComputer / this.limit.getValue();
-        return numberOfComputer % 10 == 0 ? lastPageNumber - 1L : lastPageNumber;
+        Long numberOfCompany = companyService.getNumberOfCompaniesWithName(this.search);
+        Long lastPageNumber = numberOfCompany / this.limit.getValue();
+        return (numberOfCompany % 10 == 0) && (numberOfCompany != 0L) ? lastPageNumber - 1L : lastPageNumber;
     }
 
     @Override

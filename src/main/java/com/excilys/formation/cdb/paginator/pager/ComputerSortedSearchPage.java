@@ -32,7 +32,6 @@ public class ComputerSortedSearchPage extends ComputerSearchPage {
 
     @Override
     protected void refresh(long offset) throws ServiceException {
-        LOG.debug("search: {}, offset: {}, limit.getValue(): {}, orderBy: {}, ascending: {},", search, offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
         this.list = computerService
                 .getComputerOrderedBy(search, offset, limit.getValue(), DatabaseFieldsMapper.toDatabaseField(orderBy), this.ascending);
     }

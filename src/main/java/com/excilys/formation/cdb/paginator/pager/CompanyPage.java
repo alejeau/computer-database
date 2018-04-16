@@ -21,7 +21,7 @@ public class CompanyPage extends Page<Company> {
     public Long currentLastPageNumber() throws ServiceException {
         Long numberOfCompany = companyService.getNumberOfCompanies();
         Long lastPageNumber = numberOfCompany / this.limit.getValue();
-        return numberOfCompany % 10 == 0 ? lastPageNumber - 1L : lastPageNumber;
+        return (numberOfCompany % 10 == 0) && (numberOfCompany != 0L) ? lastPageNumber - 1L : lastPageNumber;
     }
 
     @Override

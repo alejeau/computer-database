@@ -27,7 +27,7 @@ public class ComputerSearchPage extends ComputerPage {
     public Long currentLastPageNumber() throws ServiceException {
         Long numberOfComputer = computerService.getNumberOfComputersWithName(this.search);
         Long lastPageNumber = numberOfComputer / this.limit.getValue();
-        return numberOfComputer % 10 == 0 ? lastPageNumber - 1L : lastPageNumber;
+        return (numberOfComputer % 10 == 0) && (numberOfComputer != 0L) ? lastPageNumber - 1L : lastPageNumber;
     }
 
     @Override
