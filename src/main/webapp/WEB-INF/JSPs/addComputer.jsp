@@ -39,12 +39,16 @@
                         <div class="form-group">
                             <label for="introduced">Introduced date</label> <span class="errmsg"><cst:errors error="introduced" /> <cst:errors error="dates" /></span>
                             <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduction date"
-                                   data-validation="date" data-validation-format="yyyy-mm-dd" data-validation-optional="true">
+                                   data-validation="date"
+                                   data-validation-format="yyyy-mm-dd"
+                                   data-validation-optional="true">
                         </div>
                         <div class="form-group">
                             <label for="discontinued">Discontinued date</label> <span class="errmsg"><cst:errors error="discontinued" /> <cst:errors error="dates" /></span>
                             <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinuation date"
-                                   data-validation="date" data-validation-format="yyyy-mm-dd" data-validation-optional="true">
+                                   data-validation="date"
+                                   data-validation-format="yyyy-mm-dd"
+                                   data-validation-optional="true">
                         </div>
                         <div class="form-group">
                             <label for="companyId">Company</label>
@@ -65,7 +69,6 @@
 </section>
 
 <script src="<spring:url value="/resources"/>/js/jquery.min.js"></script>
-<%--<script src="<spring:url value="/resources"/>/js/jquery.form-validator.min.js"></script>--%>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <script>
     $.validate({

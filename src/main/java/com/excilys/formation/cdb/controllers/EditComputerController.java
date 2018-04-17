@@ -95,9 +95,9 @@ public class EditComputerController {
         Computer computer = null;
         boolean displaySuccessMessage = false;
         errorList = ComputerValidator.validate(computerName, introduced, discontinued);
+        Long computerId = UrlMapper.mapLongNumber(params, ControllerParameters.COMPUTER_ID, NO_COMPUTER);
         try {
             if (errorList == null) {
-                Long computerId = UrlMapper.mapLongNumber(params, ControllerParameters.COMPUTER_ID, NO_COMPUTER);
                 if (!computerId.equals(NO_COMPUTER) && computerService.getComputer(computerId) != null) {
                     displaySuccessMessage = true;
                     Long companyId = Long.valueOf(params.get(COMPANY_ID));
@@ -122,6 +122,9 @@ public class EditComputerController {
                         .filter(Objects::nonNull)
                         .map(Error::toString)
                         .forEach(LOG::error);
+                if (!computerId.equals(NO_COMPUTER)) {
+                    computer = computerService.getComputer(computerId);
+                }
             }
 
             modelAndView = setModelAndView(modelAndView, params, ComputerMapper.toDTO(computer), errorList, displaySuccessMessage);

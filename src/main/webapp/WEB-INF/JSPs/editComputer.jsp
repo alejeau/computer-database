@@ -50,7 +50,9 @@
                             <label for="discontinued">Discontinued date</label> <span class="errmsg"><cst:errors error="discontinued" /> <cst:errors error="dates" /></span>
                             <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinuation date"
                                    value="<c:out value='${ computerDTO.discontinued }' />"
-                                   data-validation="date" data-validation-format="yyyy-mm-dd" data-validation-optional="true">
+                                   data-validation="date"
+                                   data-validation-format="yyyy-mm-dd"
+                                   data-validation-optional="true">
                         </div>
                         <div class="form-group">
                             <label for="companyId">Company</label>
