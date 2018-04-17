@@ -14,58 +14,18 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <welcome-file-list>
-        <welcome-file>/WEB-INF/JSPs/index.jsp</welcome-file>
-        <welcome-file>/WEB-INF/JSPs/404.jsp</welcome-file>
-    </welcome-file-list>
-
     <servlet>
-        <servlet-name>ServletDashboard</servlet-name>
-        <servlet-class>com.excilys.formation.cdb.servlets.ServletDashboard</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAddComputer</servlet-name>
-        <servlet-class>com.excilys.formation.cdb.servlets.ServletAddComputer</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletEditComputer</servlet-name>
-        <servlet-class>com.excilys.formation.cdb.servlets.ServletEditComputer</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletSearch</servlet-name>
-        <servlet-class>com.excilys.formation.cdb.servlets.ServletSearch</servlet-class>
+        <servlet-name>mvc-dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:web-config.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ServletDashboard</servlet-name>
-        <url-pattern>/access</url-pattern>
+        <servlet-name>mvc-dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAddComputer</servlet-name>
-        <url-pattern>/access/add</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletEditComputer</servlet-name>
-        <url-pattern>/access/edit</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletSearch</servlet-name>
-        <url-pattern>/access/search</url-pattern>
-    </servlet-mapping>
-
-    <error-page>
-        <!-- Forbidden directory listing -->
-        <error-code>403</error-code>
-        <location>/WEB-INF/JSPs/403.jsp</location>
-    </error-page>
-    <error-page>
-        <!-- Missing resource -->
-        <error-code>404</error-code>
-        <location>/WEB-INF/JSPs/404.jsp</location>
-    </error-page>
-    <error-page>
-        <!-- Uncaught exception -->
-        <error-code>500</error-code>
-        <location>/WEB-INF/JSPs/500.jsp</location>
-    </error-page>
 </web-app>

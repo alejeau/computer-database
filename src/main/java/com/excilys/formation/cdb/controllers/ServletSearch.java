@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.servlets;
+package com.excilys.formation.cdb.controllers;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
@@ -10,8 +10,8 @@ import com.excilys.formation.cdb.mapper.request.SearchRequestMapper;
 import com.excilys.formation.cdb.paginator.pager.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.servlets.constants.Paths;
-import com.excilys.formation.cdb.servlets.constants.Views;
+import com.excilys.formation.cdb.controllers.constants.Paths;
+import com.excilys.formation.cdb.controllers.constants.Views;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +26,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.CURRENT_PATH;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.IS_ASCENDING;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.LIMIT_VALUES;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ORDER_BY;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE_DTO;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SEARCH;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.SEARCH_FIELD;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.CURRENT_PATH;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.IS_ASCENDING;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.LIMIT_VALUES;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ORDER_BY;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.PAGE_DTO;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.SEARCH;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.SEARCH_FIELD;
 
 @Controller
 public class ServletSearch extends HttpServlet {

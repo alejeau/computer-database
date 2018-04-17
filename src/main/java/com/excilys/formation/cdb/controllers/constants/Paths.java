@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.servlets.constants;
+package com.excilys.formation.cdb.controllers.constants;
 
 public class Paths {
     private Paths() {

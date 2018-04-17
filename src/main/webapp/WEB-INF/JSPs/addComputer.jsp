@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="cst" tagdir="/WEB-INF/tags" %>
 
 <!DOCTYPE html>
@@ -8,10 +9,10 @@
     <title>Computer Database</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="<c:url value="/static"/>/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="<c:url value="/static"/>/css/font-awesome.css" rel="stylesheet" media="screen">
-    <link href="<c:url value="/static"/>/css/errors.css" rel="stylesheet" media="screen">
-    <link href="<c:url value="/static"/>/css/main.css" rel="stylesheet" media="screen">
+    <link href="<spring:url value="/resources"/>/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="<spring:url value="/resources"/>/css/font-awesome.css" rel="stylesheet" media="screen">
+    <link href="<spring:url value="/resources"/>/css/errors.css" rel="stylesheet" media="screen">
+    <link href="<spring:url value="/resources"/>/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
@@ -63,8 +64,8 @@
     </div>
 </section>
 
-<script src="<c:url value="/static"/>/js/jquery.min.js"></script>
-<%--<script src="<c:url value="/static"/>/js/jquery.form-validator.min.js"></script>--%>
+<script src="<spring:url value="/resources"/>/js/jquery.min.js"></script>
+<%--<script src="<spring:url value="/resources"/>/js/jquery.form-validator.min.js"></script>--%>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <script>
     $.validate({

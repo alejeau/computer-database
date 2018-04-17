@@ -1,7 +1,7 @@
-package com.excilys.formation.cdb.servlets.constants;
+package com.excilys.formation.cdb.controllers.constants;
 
-public class ServletParameter {
-    private ServletParameter() {
+public class ControllerParameters {
+    private ControllerParameters() {
     }
 
     // Computer fields

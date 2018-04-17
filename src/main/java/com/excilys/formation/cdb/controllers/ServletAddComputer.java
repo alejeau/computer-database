@@ -1,19 +1,16 @@
-package com.excilys.formation.cdb.servlets;
+package com.excilys.formation.cdb.controllers;
 
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
-import com.excilys.formation.cdb.mapper.request.UrlMapper;
 import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.servlets.constants.Paths;
-import com.excilys.formation.cdb.servlets.constants.Views;
+import com.excilys.formation.cdb.controllers.constants.Paths;
+import com.excilys.formation.cdb.controllers.constants.Views;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 import com.excilys.formation.cdb.validators.core.Error;
 import org.slf4j.Logger;
@@ -32,17 +29,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPANY_ID;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPANY_LIST;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.COMPUTER_NAME;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.CURRENT_PATH;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.DISCONTINUED;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.DISPLAY_SUCCESS_MESSAGE;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.ERROR_MAP;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.INTRODUCED;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.PAGE_NB;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_DISPLAY_BY;
-import static com.excilys.formation.cdb.servlets.constants.ServletParameter.TARGET_PAGE_NUMBER;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPANY_ID;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPANY_LIST;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPUTER_NAME;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.CURRENT_PATH;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.DISCONTINUED;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.DISPLAY_SUCCESS_MESSAGE;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ERROR_MAP;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.INTRODUCED;
 
 @Controller
 public class ServletAddComputer extends HttpServlet {
@@ -126,8 +120,8 @@ public class ServletAddComputer extends HttpServlet {
         Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
         request.setAttribute(ERROR_MAP, hashMap);
 
-        request.setAttribute(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(request, PAGE_NB, Page.FIRST_PAGE));
-        request.setAttribute(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(request, LimitValue.TEN).getValue());
+//        request.setAttribute(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(request, PAGE_NB, Page.FIRST_PAGE));
+//        request.setAttribute(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(request, LimitValue.TEN).getValue());
 
         return request;
     }
