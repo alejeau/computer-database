@@ -1,23 +1,32 @@
 package com.excilys.formation.cdb.controllers;
 
+import com.excilys.formation.cdb.controllers.constants.Paths;
+import com.excilys.formation.cdb.controllers.constants.Views;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
+import com.excilys.formation.cdb.exceptions.ControllerException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
+import com.excilys.formation.cdb.mapper.request.UrlMapper;
 import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.controllers.constants.Paths;
-import com.excilys.formation.cdb.controllers.constants.Views;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 import com.excilys.formation.cdb.validators.core.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -37,46 +46,46 @@ import static com.excilys.formation.cdb.controllers.constants.ControllerParamete
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.DISPLAY_SUCCESS_MESSAGE;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ERROR_MAP;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.INTRODUCED;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.PAGE_NB;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.TARGET_DISPLAY_BY;
+import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.TARGET_PAGE_NUMBER;
 
 @Controller
-public class ServletAddComputer extends HttpServlet {
-    private static final Logger LOG = LoggerFactory.getLogger(ServletAddComputer.class);
+@RequestMapping(Paths.LOCAL_PATH_ADD_COMPUTER)
+public class AddComputerController {
+    private static final Logger LOG = LoggerFactory.getLogger(AddComputerController.class);
 
-    @Autowired
     private ComputerService computerService;
-
-    @Autowired
     private CompanyService companyService;
 
-    public ServletAddComputer() {
+    @Autowired
+    public AddComputerController(ComputerService computerService, CompanyService companyService) {
+        this.computerService = computerService;
+        this.companyService = companyService;
     }
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
-
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOG.debug("doGet");
+    @GetMapping
+    public ModelAndView get(@RequestParam Map<String, String> params) throws ControllerException {
+        LOG.debug("get");
+        ModelAndView modelAndView = new ModelAndView(Views.ADD_COMPUTER);
         try {
-            request = setRequest(request, null, false);
+            modelAndView = setModelAndView(modelAndView, params, null, false);
         } catch (ServiceException e) {
             LOG.error("{}", e);
-            throw new ServletException(e);
+            throw new ControllerException(e);
         }
-        this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
+        return modelAndView;
     }
 
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOG.debug("doPost");
+    @PostMapping
+    public ModelAndView post(@RequestParam Map<String, String> params) throws ServletException, IOException {
+        LOG.debug("post");
+        ModelAndView modelAndView = new ModelAndView(Views.ADD_COMPUTER);
         List<Error> errorList;
 
-        String computerName = request.getParameter(COMPUTER_NAME);
-        String introduced = request.getParameter(INTRODUCED);
-        String discontinued = request.getParameter(DISCONTINUED);
+        String computerName = params.get(COMPUTER_NAME);
+        String introduced = params.get(INTRODUCED);
+        String discontinued = params.get(DISCONTINUED);
 
         boolean displaySuccessMessage = false;
         errorList = ComputerValidator.validate(computerName, introduced, discontinued);
@@ -84,7 +93,7 @@ public class ServletAddComputer extends HttpServlet {
         try {
             if (errorList == null) {
                 displaySuccessMessage = true;
-                Long companyId = Long.valueOf(request.getParameter(COMPANY_ID));
+                Long companyId = Long.valueOf(params.get(COMPANY_ID));
                 Company company = companyService.getCompany(companyId);
                 Computer computer = new Computer.Builder()
                         .name(computerName)
@@ -101,28 +110,28 @@ public class ServletAddComputer extends HttpServlet {
                         .forEach(LOG::error);
             }
 
-            setRequest(request, errorList, displaySuccessMessage);
+            setModelAndView(modelAndView, params, errorList, displaySuccessMessage);
         } catch (ServiceException | ValidationException e) {
             LOG.error("{}", e);
             throw new ServletException(e.getMessage(), e);
         }
-        this.getServletContext().getRequestDispatcher(Views.ADD_COMPUTER).forward(request, response);
+        return modelAndView;
     }
 
-    private HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
+    private ModelAndView setModelAndView(ModelAndView modelAndView, Map<String, String> params, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
-        request.setAttribute(CURRENT_PATH, Paths.ABSOLUTE_PATH_ADD_COMPUTER);
+        modelAndView.addObject(CURRENT_PATH, Paths.ABSOLUTE_PATH_ADD_COMPUTER);
 
-        request.setAttribute(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
+        modelAndView.addObject(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
         List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
-        request.setAttribute(COMPANY_LIST, companyList);
+        modelAndView.addObject(COMPANY_LIST, companyList);
 
         Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
-        request.setAttribute(ERROR_MAP, hashMap);
+        modelAndView.addObject(ERROR_MAP, hashMap);
 
-//        request.setAttribute(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(request, PAGE_NB, Page.FIRST_PAGE));
-//        request.setAttribute(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(request, LimitValue.TEN).getValue());
+        modelAndView.addObject(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(params, PAGE_NB, Page.FIRST_PAGE));
+        modelAndView.addObject(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(params, LimitValue.TEN).getValue());
 
-        return request;
+        return modelAndView;
     }
 }

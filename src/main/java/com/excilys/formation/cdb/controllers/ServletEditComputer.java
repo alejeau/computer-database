@@ -52,7 +52,7 @@ public class ServletEditComputer extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        LOG.debug("doGet");
+//        LOG.debug("get");
 //        Long computerId = UrlMapper.mapLongNumber(request, ControllerParameters.COMPUTER_ID, NO_COMPUTER);
 //        try {
 //            if (!computerId.equals(NO_COMPUTER) && computerService.getComputer(computerId) != null) {
