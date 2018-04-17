@@ -111,7 +111,7 @@ public class ServletAddComputer extends HttpServlet {
 
     private HttpServletRequest setRequest(HttpServletRequest request, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
-        request.setAttribute(CURRENT_PATH, Paths.PATH_ADD_COMPUTER);
+        request.setAttribute(CURRENT_PATH, Paths.ABSOLUTE_PATH_ADD_COMPUTER);
 
         request.setAttribute(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
         List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());

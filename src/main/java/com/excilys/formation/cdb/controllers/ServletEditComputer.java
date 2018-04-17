@@ -59,7 +59,7 @@ public class ServletEditComputer extends HttpServlet {
 //                ComputerDTO computerDTO = ComputerMapper.toDTO(computerService.getComputer(computerId));
 //                request = setRequest(request, computerDTO, new ArrayList<>(), false);
 //            } else {
-//                response.sendRedirect(Paths.PATH_DASHBOARD);
+//                response.sendRedirect(Paths.ABSOLUTE_PATH_DASHBOARD);
 //                return;
 //            }
 //        } catch (ServiceException e) {
@@ -101,7 +101,7 @@ public class ServletEditComputer extends HttpServlet {
 //                        LOG.error(e.getMessage());
 //                    }
 //                } else {
-//                    response.sendRedirect(Paths.PATH_DASHBOARD);
+//                    response.sendRedirect(Paths.ABSOLUTE_PATH_DASHBOARD);
 //                    return;
 //                }
 //            } else {
@@ -121,7 +121,7 @@ public class ServletEditComputer extends HttpServlet {
 
     private HttpServletRequest setRequest(HttpServletRequest request, ComputerDTO computerDTO, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
         LOG.debug("setRequest");
-        request.setAttribute(ControllerParameters.CURRENT_PATH, Paths.PATH_EDIT_COMPUTER);
+        request.setAttribute(ControllerParameters.CURRENT_PATH, Paths.ABSOLUTE_PATH_EDIT_COMPUTER);
 
         // URL attributes
 //        request.setAttribute(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(request, ControllerParameters.PAGE_NB, Page.FIRST_PAGE));

@@ -35,9 +35,25 @@ public class DashboardRequestMapper {
         this.pageFactory = pageFactory;
     }
 
-    public void mapDoPost(HttpServletRequest request) throws MapperException {
-        LOG.debug("mapDoPost");
-        String selection = request.getParameter(SELECTION);
+    public ComputerSortedPage mapGet(Map<String, String> params) throws ServiceException {
+        LOG.debug("mapGet");
+
+        ComputerSortedPage computerSortedPage;
+
+        Long pageNb = UrlMapper.mapLongNumber(params, ControllerParameters.PAGE_NB, Page.FIRST_PAGE);
+        LimitValue displayBy = UrlMapper.mapDisplayBy(params, LimitValue.TEN);
+        ComputerField computerField = UrlMapper.mapToComputerFields(params, ControllerParameters.FIELD, ComputerField.COMPUTER_NAME);
+        boolean ascending = UrlMapper.mapToBoolean(params, ControllerParameters.ASCENDING, true);
+
+        computerSortedPage = pageFactory.createComputerSortedPage(displayBy, computerField, ascending);
+        computerSortedPage.goToPage(pageNb);
+
+        return computerSortedPage;
+    }
+
+    public void mapPost(Map<String, String> params) throws MapperException {
+        LOG.debug("mapPost");
+        String selection = params.get(SELECTION);
 
         if (selection != null && !selection.isEmpty()) {
             String[] stringToDelete = selection.split(",");
@@ -53,21 +69,5 @@ public class DashboardRequestMapper {
                 throw new MapperException(e);
             }
         }
-    }
-
-    public ComputerSortedPage mapGet(Map<String, String> params) throws ServiceException {
-        LOG.debug("mapGet");
-
-        ComputerSortedPage computerSortedPage;
-
-        Long pageNb = UrlMapper.mapLongNumber(params, ControllerParameters.PAGE_NB, Page.FIRST_PAGE);
-        LimitValue displayBy = UrlMapper.mapDisplayBy(params, LimitValue.TEN);
-        ComputerField computerField = UrlMapper.mapToComputerFields(params, ControllerParameters.FIELD, ComputerField.COMPUTER_NAME);
-        boolean ascending = UrlMapper.mapToBoolean(params, ControllerParameters.ASCENDING, true);
-
-        computerSortedPage = pageFactory.createComputerSortedPage(displayBy, computerField, ascending);
-        computerSortedPage.goToPage(pageNb);
-
-        return computerSortedPage;
     }
 }
