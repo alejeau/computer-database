@@ -18,6 +18,7 @@
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <a class="navbar-brand" href="<cst:links target="dashboard"/>"> <spring:message code="application.header" /> </a>
+        <span style="float: right; color: white;"><cst:language /></span>
     </div>
 </header>
 
