@@ -24,7 +24,7 @@
 
 <section id="main">
     <div>
-        <h1><a href="<cst:links target="dashboard"/>">TO THE MAIN PAGE!</a></h1>
+        <h1><a href="<cst:links target="dashboard"/>"><spring:message code="welcome.main-page" /></a></h1>
     </div>
 </section>
 
