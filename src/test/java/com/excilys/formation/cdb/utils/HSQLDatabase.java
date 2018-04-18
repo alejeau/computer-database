@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.utils;
 
+import com.excilys.formation.cdb.config.TestConfig;
 import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
 import org.hsqldb.cmdline.SqlFile;
 import org.hsqldb.cmdline.SqlToolError;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @Component
-@ContextConfiguration(locations = {"/contexts/test-context.xml"})
+@ContextConfiguration(classes = TestConfig.class)
 public class HSQLDatabase {
     private DataSource dataSource;
 

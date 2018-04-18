@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.mapper;
 
 import com.excilys.formation.cdb.persistence.DatabaseField;
-import com.excilys.formation.cdb.servlets.constants.ComputerField;
+import com.excilys.formation.cdb.controllers.constants.ComputerField;
 
 public class DatabaseFieldsMapper {
 
