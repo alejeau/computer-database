@@ -185,6 +185,13 @@
             <version>${logback.version}</version>
         </dependency>
 
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${myqsl-jdbc.version}</version>
+        </dependency>
+
         <!-- JEE -->
         <dependency>
             <groupId>jstl</groupId>
@@ -211,17 +218,13 @@
             <version>${common-lang.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${myqsl-jdbc.version}</version>
-        </dependency>
-
+        <!-- Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <exclusions>
                 <exclusion>
+                    <!-- Exclude Commons Logging in favor of SLF4j -->
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
