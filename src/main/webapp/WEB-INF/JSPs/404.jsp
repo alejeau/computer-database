@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="cst" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
@@ -22,10 +23,7 @@
         <div class="alert alert-danger">
             Error 404: The requested page can not be found.
             <br/>
-            <!-- stacktrace -->
-            <c:forEach var="trace" items="${pageContext.exception.stackTrace}">
-                ${trace}<br/>
-            </c:forEach>
+            Go to the <a href="<cst:links target="dashboard"/>">main page</a>.
         </div>
     </div>
 </section>
