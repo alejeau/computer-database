@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><spring:message code="dashboard.title" /></title>
+    <title><spring:message code="application.title" /></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <!-- Bootstrap -->
@@ -16,7 +16,7 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="<cst:links target="reset" />"> <spring:message code="dashboard.header" /> </a>
+        <a class="navbar-brand" href="<cst:links target="reset" />"> <spring:message code="application.header" /> </a>
     </div>
 </header>
 
