@@ -6,7 +6,7 @@
 
     <groupId>com.excilys.formation.cdb</groupId>
     <artifactId>computer-database</artifactId>
-    <version>4.5.4-RELEASE</version>
+    <version>4.5.5-SNAPSHOT</version>
 
     <packaging>war</packaging>
 
@@ -22,7 +22,7 @@
         <mojo.version>1.2.1</mojo.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
         <cargo.version>1.6.7</cargo.version>
-        <tomcat.home>/home/${user.name}/apps/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
+        <tomcat.home>/home/${user.name}/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
         <!-- checkstyle -->
         <checkstyle.version>3.0.0</checkstyle.version>
 
@@ -185,6 +185,13 @@
             <version>${logback.version}</version>
         </dependency>
 
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${myqsl-jdbc.version}</version>
+        </dependency>
+
         <!-- JEE -->
         <dependency>
             <groupId>jstl</groupId>
@@ -211,17 +218,13 @@
             <version>${common-lang.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${myqsl-jdbc.version}</version>
-        </dependency>
-
+        <!-- Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <exclusions>
                 <exclusion>
+                    <!-- Exclude Commons Logging in favor of SLF4j -->
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>

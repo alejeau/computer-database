@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Computer Database</title>
+    <title><spring:message code="application.title" /></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="<spring:url value="/resources"/>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -14,16 +14,17 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="<cst:links target="dashboard"/>"> Application - Computer Database </a>
+        <a class="navbar-brand" href="<cst:links target="dashboard"/>"> <spring:message code="application.header" /> </a>
+        <span style="float: right; color: white;"><cst:language /></span>
     </div>
 </header>
 
 <section id="main">
     <div class="container">
         <div class="alert alert-danger">
-            Error 404: The requested page can not be found.
+            <spring:message code="error404.message" />
             <br/>
-            Go to the <a href="<cst:links target="dashboard"/>">main page</a>.
+            <spring:message code="error404.goto" /> <a href="<cst:links target="dashboard"/>"><spring:message code="error404.main-page" /></a>.
         </div>
     </div>
 </section>

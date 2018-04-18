@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Computer Database</title>
+    <title><spring:message code="application.title" /></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="<spring:url value="/resources"/>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -18,13 +18,14 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="<cst:links target="dashboard"/>"> Application - Computer Database </a>
+        <a class="navbar-brand" href="<cst:links target="dashboard"/>"> <spring:message code="application.header" /> </a>
+        <span style="float: right; color: white;"><cst:language /></span>
     </div>
 </header>
 
 <section id="main">
     <div>
-        <h1><a href="<cst:links target="dashboard"/>">TO THE MAIN PAGE!</a></h1>
+        <h1><a href="<cst:links target="dashboard"/>"><spring:message code="welcome.main-page" /></a></h1>
     </div>
 </section>
 

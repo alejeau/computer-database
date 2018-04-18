@@ -10,6 +10,7 @@
 <%@attribute name="ascending" required="false" %>
 <%@attribute name="changeAscending" required="false" %>
 <%@attribute name="computerId" required="false" %>
+<%@attribute name="lang" required="false" %>
 
 <c:set var="pathDash" value="/computer-database/access"/>
 <c:set var="pathAdd" value="/computer-database/access/add"/>
@@ -93,6 +94,9 @@
 </c:if>
 <c:if test="${ not empty ascending }">
     <c:set var="tmpAsc" value="${ emptyText.concat('&ascending=').concat(ascending) }"/>
+</c:if>
+<c:if test="${ not empty lang }">
+    <c:set var="tmpAsc" value="${ emptyText.concat('&lang=').concat(lang) }"/>
 </c:if>
 
 <c:set var="tmpPath" value="${ tmpPath.concat(tmpPageNb) }"/>

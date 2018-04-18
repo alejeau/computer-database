@@ -1,4 +1,5 @@
 <%@ tag body-content="empty" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cst" tagdir="/WEB-INF/tags" %>
 
@@ -26,7 +27,7 @@
     <li>
         <a href='<cst:links target="self" pageNb="0" search="${searchField}"
         field="${orderBy}" ascending="${isAscending}"/>' aria-label="Previous">
-            <span aria-hidden="true">First</span>
+            <span aria-hidden="true"><spring:message code="pager.first" /></span>
         </a>
     </li>
     <li>
@@ -60,7 +61,7 @@
     <li>
         <a href='<cst:links target="self" pageNb="${pageDTO.maxPageNumber}" search="${searchField}" field="${orderBy}" ascending="${isAscending}"/>'
            aria-label="Previous">
-            <span aria-hidden="true">Last</span>
+            <span aria-hidden="true"><spring:message code="pager.last" /></span>
         </a>
     </li>
 </ul>

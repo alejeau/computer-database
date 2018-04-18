@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Computer Database</title>
+    <title><spring:message code="application.title" /></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <!-- Bootstrap -->
@@ -16,27 +16,28 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="<cst:links target="reset" />"> Application - Computer Database </a>
+        <a class="navbar-brand" href="<cst:links target="reset" />"> <spring:message code="application.header" /> </a>
+        <span style="float: right; color: white;"><cst:language /></span>
     </div>
 </header>
 
 <section id="main">
     <div class="container">
         <h1 id="homeTitle">
-            ${pageDTO.numberOfEntries} Computers found
+            ${pageDTO.numberOfEntries} <spring:message code="dashboard.number-of-computers" />
         </h1>
         <div id="actions" class="form-horizontal">
             <div class="pull-left">
                 <form id="searchForm" action="<cst:links target="search" search="${searchField}"/>" method="GET" class="form-inline">
 
-                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
-                    <input type="submit" id="searchsubmit" value="Filter by name"
+                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="<spring:message code="dashboard.search" />"/>
+                    <input type="submit" id="searchsubmit" value="<spring:message code="dashboard.filter" />"
                            class="btn btn-primary"/>
                 </form>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" id="addComputer" href="<cst:links target="add" />">Add Computer</a>
-                <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Delete</a>
+                <a class="btn btn-success" id="addComputer" href="<cst:links target="add" />"><spring:message code="dashboard.add-computer" /></a>
+                <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="dashboard.delete" /></a>
             </div>
         </div>
     </div>
@@ -60,12 +61,12 @@
                                         </a>
                         </span>
                 </th>
-                <th><a href="<cst:links target="self" search="${searchField}" field="computerName" ascending="${isAscending}" changeAscending="${true}"/>">Computer name</a></th>
-                <th><a href="<cst:links target="self" search="${searchField}" field="introduced" ascending="${isAscending}" changeAscending="${true}"/>">Introduced date</a></th>
+                <th><a href="<cst:links target="self" search="${searchField}" field="computerName" ascending="${isAscending}" changeAscending="${true}"/>"><spring:message code="dashboard.computer-name" /></a></th>
+                <th><a href="<cst:links target="self" search="${searchField}" field="introduced" ascending="${isAscending}" changeAscending="${true}"/>"><spring:message code="dashboard.introduced-date" /></a></th>
                 <!-- Table header for Discontinued Date -->
-                <th><a href="<cst:links target="self" search="${searchField}" field="discontinued" ascending="${isAscending}" changeAscending="${true}"/>">Discontinued date</a></th>
+                <th><a href="<cst:links target="self" search="${searchField}" field="discontinued" ascending="${isAscending}" changeAscending="${true}"/>"><spring:message code="dashboard.discontinued-date" /></a></th>
                 <!-- Table header for Company -->
-                <th><a href="<cst:links target="self" search="${searchField}" field="companyName" ascending="${isAscending}" changeAscending="${true}"/>">Company</a></th>
+                <th><a href="<cst:links target="self" search="${searchField}" field="companyName" ascending="${isAscending}" changeAscending="${true}"/>"><spring:message code="dashboard.company" /></a></th>
             </tr>
             </thead>
             <!-- Browse attribute computers -->
