@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 @Configuration
 @PropertySource("classpath:/properties/db.properties")
 @ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.config",
         "com.excilys.formation.cdb.persistence.dao.impl",
         "com.excilys.formation.cdb.service.impl",
         "com.excilys.formation.cdb.paginator.pager",

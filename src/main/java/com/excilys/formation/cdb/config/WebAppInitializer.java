@@ -1,27 +1,22 @@
 package com.excilys.formation.cdb.config;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-public class WebAppInitializer implements WebApplicationInitializer {
     @Override
-    public void onStartup(ServletContext servletContext) {
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class<?>[]{WebMvcConfig.class};
+    }
 
-        // Load Spring web application configuration
-        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-        applicationContext.register(WebAppConfig.class);
-        applicationContext.refresh();
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[]{WebAppConfig.class};
+    }
 
-        servletContext.addListener(new ContextLoaderListener(applicationContext));
-
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(applicationContext));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/computer-database/*");
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{"/"};
     }
 }
 

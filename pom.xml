@@ -22,7 +22,7 @@
         <mojo.version>1.2.1</mojo.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
         <cargo.version>1.6.7</cargo.version>
-        <tomcat.home>/home/excilys/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
+        <tomcat.home>/home/${user.name}/apps/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
         <!-- checkstyle -->
         <checkstyle.version>3.0.0</checkstyle.version>
 
@@ -86,7 +86,7 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/computer-database</path>
+                    <path>/${artifactId}</path>
                 </configuration>
             </plugin>
             <!-- Cargo deployment plugin -->
