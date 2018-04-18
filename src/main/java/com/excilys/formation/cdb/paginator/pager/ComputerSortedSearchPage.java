@@ -3,7 +3,7 @@ package com.excilys.formation.cdb.paginator.pager;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.DatabaseFieldsMapper;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.servlets.constants.ComputerField;
+import com.excilys.formation.cdb.controllers.constants.ComputerField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

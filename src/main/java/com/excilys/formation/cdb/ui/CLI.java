@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.ui;
 
+import com.excilys.formation.cdb.config.CLIConfig;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
@@ -17,6 +18,7 @@ import com.excilys.formation.cdb.service.ComputerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 
@@ -278,7 +280,7 @@ public class CLI {
     }
 
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/contexts/cli-context.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CLIConfig.class);
         CLI cli = context.getBean(CLI.class);
         cli.mainLoop();
         context.close();
