@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class EditComputerController {
     }
 
     @PostMapping
-    public ModelAndView post(@ModelAttribute("edit") ComputerDTO computerDTO, @RequestParam Map<String, String> params) throws ControllerException {
+    public ModelAndView post(@ModelAttribute("edit") @Valid ComputerDTO computerDTO, @RequestParam Map<String, String> params) throws ControllerException {
         LOG.debug("post");
         ModelAndView modelAndView = new ModelAndView(Views.EDIT_COMPUTER);
         List<Error> errorList;

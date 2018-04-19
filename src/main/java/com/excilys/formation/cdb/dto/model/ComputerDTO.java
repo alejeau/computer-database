@@ -1,14 +1,26 @@
 package com.excilys.formation.cdb.dto.model;
 
 import com.excilys.formation.cdb.dto.ModelDTO;
+import com.excilys.formation.cdb.model.DatePattern;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class ComputerDTO implements ModelDTO {
+
     private long id;
+
+    @NotNull @NotEmpty
     private String name;
+
+    @DateTimeFormat(pattern = DatePattern.PATTERN)
     private String introduced;
+
+    @DateTimeFormat(pattern = DatePattern.PATTERN)
     private String discontinued;
+
     private String companyName;
     private Long companyId;
 
