@@ -52,7 +52,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public Company getCompany(Long id) {
-        LOG.debug("getCompanyName with id {}", id);
+        LOG.debug("getCompany with id {}", id);
 
         Object[] params = new Object[]{id};
         List<Company> companyList = jdbcTemplate.query(COMPANY_BY_ID, params, new JdbcTCompanyMapper());
