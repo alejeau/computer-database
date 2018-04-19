@@ -1,23 +1,13 @@
 package com.excilys.formation.cdb.mapper.model;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
-import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
-import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ComputerMapper {
-    private static final Logger LOG = LoggerFactory.getLogger(ComputerMapper.class);
 
     private ComputerMapper() {
     }

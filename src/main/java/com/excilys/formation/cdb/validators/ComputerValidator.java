@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.validators;
 
+import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.exceptions.DateException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Computer;
@@ -22,6 +23,12 @@ public class ComputerValidator {
         if (c.getIntroduced() != null && c.getDiscontinued() != null && c.getIntroduced().isAfter(c.getDiscontinued())) {
             throw new DateException("The date of introduction cannot be after the discontinuation date.");
         }
+    }
+
+    public static List<Error> validate(ComputerDTO computerDTO) {
+        List<Error> errorList = addToList(null, validateName(computerDTO.getName()));
+        errorList = addToList(errorList, validateDates(computerDTO.getIntroduced(), computerDTO.getDiscontinued()));
+        return errorList;
     }
 
     public static List<Error> validate(String name, String introduced, String discontinued) {

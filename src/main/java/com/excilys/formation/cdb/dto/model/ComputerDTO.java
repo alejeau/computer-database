@@ -10,17 +10,19 @@ public class ComputerDTO implements ModelDTO {
     private String introduced;
     private String discontinued;
     private String companyName;
+    private Long companyId;
 
     public ComputerDTO() {
         this.id = -1;
     }
 
-    public ComputerDTO(long id, String name, String introduced, String discontinued, String companyName) {
+    public ComputerDTO(long id, String name, String introduced, String discontinued, String companyName, Long companyId) {
         this.id = id;
         this.name = name;
         this.introduced = introduced;
         this.discontinued = discontinued;
         this.companyName = companyName;
+        this.companyId = companyId;
     }
 
     public long getId() {
@@ -63,44 +65,12 @@ public class ComputerDTO implements ModelDTO {
         this.companyName = companyName;
     }
 
-    public static class Builder {
-        private long nestedId = -1;
-        private String nestedName = null;
-        private String nestedIntroduced = null;
-        private String nestedDiscontinued = null;
-        private String nestedCompanyName = null;
+    public Long getCompanyId() {
+        return companyId;
+    }
 
-        public Builder() {
-        }
-
-        public ComputerDTO.Builder id(final long id) {
-            this.nestedId = id;
-            return this;
-        }
-
-        public ComputerDTO.Builder name(final String name) {
-            this.nestedName = name;
-            return this;
-        }
-
-        public ComputerDTO.Builder introduced(final String intro) {
-            this.nestedIntroduced = intro;
-            return this;
-        }
-
-        public ComputerDTO.Builder discontinued(final String discontinued) {
-            this.nestedDiscontinued = discontinued;
-            return this;
-        }
-
-        public ComputerDTO.Builder companyId(final String company) {
-            this.nestedCompanyName = company;
-            return this;
-        }
-
-        public ComputerDTO build() {
-            return new ComputerDTO(nestedId, nestedName, nestedIntroduced, nestedDiscontinued, nestedCompanyName);
-        }
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override
