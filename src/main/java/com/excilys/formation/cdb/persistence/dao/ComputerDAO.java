@@ -30,4 +30,6 @@ public interface ComputerDAO {
     void deleteComputer(Long id) throws DAOException;
 
     void deleteComputers(List<Long> idList) throws DAOException;
+
+    void deleteComputersWhitCompanyId(Long companyId) throws DAOException;
 }

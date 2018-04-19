@@ -67,7 +67,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional(rollbackFor = ServiceException.class)
+    @Transactional(rollbackFor = Exception.class)
     public void deleteCompany(Long id) throws ServiceException {
         try {
             companyDAO.deleteCompany(id);

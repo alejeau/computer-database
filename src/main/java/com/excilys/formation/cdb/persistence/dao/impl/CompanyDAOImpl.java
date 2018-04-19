@@ -18,7 +18,6 @@ import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.A
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.ALL_COMPANIES_WITH_LIMIT;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.COMPANY_BY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.DELETE_COMPANY_WITH_ID;
-import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.DELETE_COMPUTER_WITH_COMPANY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES;
 import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.NUMBER_OF_COMPANIES_WITH_NAME;
 
@@ -84,7 +83,6 @@ public class CompanyDAOImpl implements CompanyDAO {
         LOG.debug("deleteCompany");
 
         Object[] params = new Object[]{id};
-        jdbcTemplate.update(DELETE_COMPUTER_WITH_COMPANY_ID, params);
         jdbcTemplate.update(DELETE_COMPANY_WITH_ID, params);
     }
 }

@@ -21,11 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
 @Controller
+@EnableTransactionManagement
 public class CLI {
     private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
     private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
@@ -260,14 +263,16 @@ public class CLI {
         }
     }
 
-    private void deleteCompany() throws ServiceException {
-        Long id = getLong("Please enter the company's ID you wish to delete: ");
+    @Transactional(rollbackFor = Exception.class)
+    protected void deleteCompany() throws ServiceException {
+        Long companyId = getLong("Please enter the company's ID you wish to delete: ");
 
-        Company c = companyService.getCompany(id);
+        Company c = companyService.getCompany(companyId);
         if (c != null) {
-            companyService.deleteCompany(id);
+            computerService.deleteComputersWithCompanyId(companyId);
+            companyService.deleteCompany(companyId);
         } else {
-            System.out.println("There is no company with the ID: " + id + "\n");
+            System.out.println("There is no company with the ID: " + companyId + "\n");
         }
     }
 

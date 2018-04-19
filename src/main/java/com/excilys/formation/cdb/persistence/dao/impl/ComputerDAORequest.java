@@ -28,4 +28,5 @@ class ComputerDAORequest {
     static final String INSERT_COMPUTER = String.format("INSERT INTO %s (%s, %s, %s, %s) values (?, ?, ?, ?);", COMPUTER, COMPUTER_NAME, COMPUTER_INTRODUCED, COMPUTER_DISCONTINUED, COMPUTER_COMPANY_ID);
     static final String UPDATE_COMPUTER = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?;", COMPUTER, COMPUTER_NAME, COMPUTER_INTRODUCED, COMPUTER_DISCONTINUED, COMPUTER_COMPANY_ID, COMPUTER_ID);
     static final String DELETE_COMPUTER = String.format("DELETE from %s WHERE %s = ?;", COMPUTER, COMPUTER_ID);
+    static final String DELETE_COMPUTER_WITH_COMPANY_ID = String.format("DELETE FROM %s WHERE %s=?", COMPUTER, COMPUTER_COMPANY_ID);
 }

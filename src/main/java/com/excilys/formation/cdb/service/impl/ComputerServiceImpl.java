@@ -124,7 +124,7 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    @Transactional(rollbackFor = ServiceException.class)
+    @Transactional(rollbackFor = Exception.class)
     public void deleteComputer(Long id) throws ServiceException {
         try {
             computerDAO.deleteComputer(id);
@@ -135,13 +135,25 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    @Transactional(rollbackFor = ServiceException.class)
+    @Transactional(rollbackFor = Exception.class)
     public void deleteComputers(List<Long> idList) throws ServiceException {
         try {
             computerDAO.deleteComputers(idList);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't delete the list of computers!", e);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteComputersWithCompanyId(Long companyId) throws ServiceException {
+        try {
+            computerDAO.deleteComputersWhitCompanyId(companyId);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            String error = String.format("Couldn't delete the list of computers with company ID %d!", companyId);
+            throw new ServiceException(error, e);
         }
     }
 }

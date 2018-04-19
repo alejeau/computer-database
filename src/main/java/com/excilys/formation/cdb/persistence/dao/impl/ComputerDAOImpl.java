@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.DELETE_COMPUTER;
+import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.DELETE_COMPUTER_WITH_COMPANY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.DIRECTION;
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.INSERT_COMPUTER;
 import static com.excilys.formation.cdb.persistence.dao.impl.ComputerDAORequest.NUMBER_OF_COMPUTERS;
@@ -85,13 +86,13 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> getComputersWithName(String name, long index, Long limit) throws DAOException {
+    public List<Computer> getComputersWithName(String name, long index, Long limit) {
         LOG.debug("getComputersWithName");
         return this.getComputersWithNameOrderedBy(name, index, limit, DatabaseField.COMPUTER_NAME, true);
     }
 
     @Override
-    public List<Computer> getComputersWithNameOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
+    public List<Computer> getComputersWithNameOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) {
         LOG.debug("getComputersWithNameOrderedBy");
         final String QUERY = SELECT_COMPUTER_BY_NAME_OR_COMPANY_NAME_ORDERED_BY
                 .replace(ORDER_FIELD, computerField.getValue())
@@ -103,12 +104,12 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public List<Computer> getComputerList(long index, Long limit) throws DAOException {
+    public List<Computer> getComputerList(long index, Long limit) {
         return getComputerListOrderedBy(index, limit, DatabaseField.COMPUTER_NAME, true);
     }
 
     @Override
-    public List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException {
+    public List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) {
         LOG.debug("getComputerList");
         final String QUERY = SELECT_ALL_COMPUTERS_ORDERED_BY
                 .replace(ORDER_FIELD, computerField.getValue())
@@ -121,7 +122,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
 
     @Override
-    public Long persistComputer(Computer computer) throws DAOException {
+    public Long persistComputer(Computer computer) {
         LOG.debug("persistComputer");
         final PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -157,7 +158,7 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public void updateComputer(Computer computer) throws DAOException {
+    public void updateComputer(Computer computer) {
         LOG.debug("updateComputer");
         LOG.debug("Computer: {}", computer);
 
@@ -172,14 +173,22 @@ public class ComputerDAOImpl implements ComputerDAO {
     }
 
     @Override
-    public void deleteComputer(Long id) throws DAOException {
+    public void deleteComputer(Long id) {
         LOG.debug("deleteComputer");
         this.deleteComputers(Collections.singletonList(id));
     }
 
     @Override
-    public void deleteComputers(List<Long> idList) throws DAOException {
+    public void deleteComputers(List<Long> idList) {
         LOG.debug("deleteComputers (by list)");
         idList.forEach(id -> jdbcTemplate.update(DELETE_COMPUTER, id));
+    }
+
+    @Override
+    public void deleteComputersWhitCompanyId(Long companyId) {
+        LOG.debug("deleteComputersWithCompanyId");
+
+        Object[] params = new Object[]{companyId};
+        jdbcTemplate.update(DELETE_COMPUTER_WITH_COMPANY_ID, params);
     }
 }

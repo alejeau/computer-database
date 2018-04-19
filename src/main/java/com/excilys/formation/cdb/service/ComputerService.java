@@ -33,4 +33,6 @@ public interface ComputerService {
     void deleteComputer(Long id) throws ServiceException;
 
     void deleteComputers(List<Long> idList) throws ServiceException;
+
+    void deleteComputersWithCompanyId(Long companyId) throws ServiceException;
 }
