@@ -29,11 +29,11 @@
                 <h1><spring:message code="edit-computer.title" /></h1>
                 <cst:successMessage />
                 <form action="<cst:links target="edit"/>" method="POST">
-                    <input type="hidden" name="computerId" value="<c:out value='${ computerDTO.id }' />"/>
+                    <input type="hidden" name="id" value="<c:out value='${ computerDTO.id }' />"/>
                     <fieldset>
                         <div class="form-group">
-                            <label for="computerName"><spring:message code="dashboard.computer-name" /></label> <span class="errmsg"><cst:errors error="name" /></span>
-                            <input type="text" class="form-control" id="computerName" name="computerName" placeholder="<spring:message code="dashboard.computer-name" />"
+                            <label for="name"><spring:message code="dashboard.computer-name" /></label> <span class="errmsg"><cst:errors error="name" /></span>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="<spring:message code="dashboard.computer-name" />"
                                    value="<c:out value='${ computerDTO.name }' />"
                                    pattern="^[\wÀ-ÿ\-'\+\*\.]+[\wÀ-ÿ\-'\+\*\. ]+$"
                                    data-validation-error-msg="<spring:message code="add-computer.error-validation-msg" />"

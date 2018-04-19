@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,14 +36,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPANY_ID;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPANY_LIST;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPUTER_DTO;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPUTER_NAME;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.DISCONTINUED;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.DISPLAY_SUCCESS_MESSAGE;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ERROR_MAP;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.INTRODUCED;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.TARGET_DISPLAY_BY;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.TARGET_PAGE_NUMBER;
 
@@ -83,52 +80,41 @@ public class EditComputerController {
     }
 
     @PostMapping
-    public ModelAndView post(@RequestParam Map<String, String> params) throws ControllerException {
+    public ModelAndView post(@ModelAttribute("edit") ComputerDTO computerDTO, @RequestParam Map<String, String> params) throws ControllerException {
         LOG.debug("post");
         ModelAndView modelAndView = new ModelAndView(Views.EDIT_COMPUTER);
         List<Error> errorList;
 
-        String computerName = params.get(COMPUTER_NAME);
-        String introduced = params.get(INTRODUCED);
-        String discontinued = params.get(DISCONTINUED);
-
         Computer computer = null;
         boolean displaySuccessMessage = false;
-        errorList = ComputerValidator.validate(computerName, introduced, discontinued);
-        Long computerId = UrlMapper.mapLongNumber(params, ControllerParameters.COMPUTER_ID, NO_COMPUTER);
+        errorList = ComputerValidator.validate(computerDTO);
+        Long computerId = computerDTO.getId();
+
         try {
             if (errorList == null) {
                 if (!computerId.equals(NO_COMPUTER) && computerService.getComputer(computerId) != null) {
                     displaySuccessMessage = true;
-                    Long companyId = Long.valueOf(params.get(COMPANY_ID));
+                    Long companyId = computerDTO.getCompanyId();
                     Company company = companyService.getCompany(companyId);
-                    computer = new Computer.Builder()
-                            .id(computerId)
-                            .name(computerName)
-                            .introduced(introduced)
-                            .discontinued(discontinued)
-                            .company(company)
-                            .build();
-                    try {
-                        computerService.updateComputer(computer);
-                    } catch (ValidationException e) {
-                        LOG.error(e.getMessage());
-                    }
+                    computer = ComputerMapper.toComputer(computerDTO, company);
+                    computerService.updateComputer(computer);
                 } else {
                     return dashboardController.get(params);
                 }
             } else {
+                // if there are errors, log them...
                 errorList.stream()
                         .filter(Objects::nonNull)
                         .map(Error::toString)
                         .forEach(LOG::error);
+                // ... and return the old computer
                 if (!computerId.equals(NO_COMPUTER)) {
                     computer = computerService.getComputer(computerId);
                 }
             }
 
             modelAndView = setModelAndView(modelAndView, params, ComputerMapper.toDTO(computer), errorList, displaySuccessMessage);
-        } catch (ServiceException e) {
+        } catch (ServiceException | ValidationException e) {
             LOG.error("{}", e);
             throw new ControllerException(e);
         }
