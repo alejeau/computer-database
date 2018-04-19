@@ -31,8 +31,8 @@ public class GlobalExceptionHandler {
      * @param exception the any runtime exception
      * @return ModelAndView of the error Views.ERROR_500 and the exception
      */
-    @ExceptionHandler(RuntimeException.class)
-    public ModelAndView handle(RuntimeException exception) {
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handle(Exception exception) {
         ModelAndView model = new ModelAndView(Views.ERROR_500);
         model.addObject(EXCEPTION_ATTRIBUTE_NAME, exception);
         return model;
