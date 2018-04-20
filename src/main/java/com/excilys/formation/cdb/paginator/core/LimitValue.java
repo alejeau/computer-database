@@ -17,10 +17,6 @@ public enum LimitValue {
         value = newValue;
     }
 
-    public Long getValue() {
-        return value;
-    }
-
     /**
      * Returns a sorted List of the values of the Enums.
      *
@@ -33,5 +29,9 @@ public enum LimitValue {
                 .forEach(longList::add);
         Collections.sort(longList);
         return longList;
+    }
+
+    public Long getValue() {
+        return value;
     }
 }

@@ -72,6 +72,23 @@ public class AddComputerController {
         return modelAndView;
     }
 
+    private ModelAndView setModelAndView(ModelAndView modelAndView, Map<String, String> params, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
+        LOG.debug("setRequest");
+        modelAndView.addObject(CURRENT_PATH, Paths.ABSOLUTE_PATH_ADD_COMPUTER);
+
+        modelAndView.addObject(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
+        List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
+        modelAndView.addObject(COMPANY_LIST, companyList);
+
+        Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
+        modelAndView.addObject(ERROR_MAP, hashMap);
+
+        modelAndView.addObject(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(params, PAGE_NB, Page.FIRST_PAGE));
+        modelAndView.addObject(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(params, LimitValue.TEN).getValue());
+
+        return modelAndView;
+    }
+
     @PostMapping
     public ModelAndView post(@ModelAttribute("add") @Valid ComputerDTO computerDTO, @RequestParam Map<String, String> params) throws ServletException, IOException {
         LOG.debug("post");
@@ -100,23 +117,6 @@ public class AddComputerController {
             LOG.error("{}", e);
             throw new ServletException(e.getMessage(), e);
         }
-        return modelAndView;
-    }
-
-    private ModelAndView setModelAndView(ModelAndView modelAndView, Map<String, String> params, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
-        LOG.debug("setRequest");
-        modelAndView.addObject(CURRENT_PATH, Paths.ABSOLUTE_PATH_ADD_COMPUTER);
-
-        modelAndView.addObject(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
-        List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
-        modelAndView.addObject(COMPANY_LIST, companyList);
-
-        Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
-        modelAndView.addObject(ERROR_MAP, hashMap);
-
-        modelAndView.addObject(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(params, PAGE_NB, Page.FIRST_PAGE));
-        modelAndView.addObject(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(params, LimitValue.TEN).getValue());
-
         return modelAndView;
     }
 }

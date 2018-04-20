@@ -31,10 +31,14 @@ public class ComputerValidator {
         return errorList;
     }
 
-    public static List<Error> validate(String name, String introduced, String discontinued) {
-        List<Error> errorList = addToList(null, validateName(name));
-        errorList = addToList(errorList, validateDates(introduced, discontinued));
-        return errorList;
+    public static List<Error> addToList(List<Error> list, Error p) {
+        if (p != null) {
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+            list.add(p);
+        }
+        return list;
     }
 
     /**
@@ -53,6 +57,16 @@ public class ComputerValidator {
         }
 
         return null;
+    }
+
+    public static List<Error> addToList(List<Error> list, List<Error> listToAdd) {
+        if (listToAdd != null) {
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+            list.addAll(listToAdd);
+        }
+        return list;
     }
 
     /**
@@ -107,23 +121,9 @@ public class ComputerValidator {
         return null;
     }
 
-    public static List<Error> addToList(List<Error> list, Error p) {
-        if (p != null) {
-            if (list == null) {
-                list = new ArrayList<>();
-            }
-            list.add(p);
-        }
-        return list;
-    }
-
-    public static List<Error> addToList(List<Error> list, List<Error> listToAdd) {
-        if (listToAdd != null) {
-            if (list == null) {
-                list = new ArrayList<>();
-            }
-            list.addAll(listToAdd);
-        }
-        return list;
+    public static List<Error> validate(String name, String introduced, String discontinued) {
+        List<Error> errorList = addToList(null, validateName(name));
+        errorList = addToList(errorList, validateDates(introduced, discontinued));
+        return errorList;
     }
 }

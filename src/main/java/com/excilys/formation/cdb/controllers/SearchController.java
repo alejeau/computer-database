@@ -48,6 +48,17 @@ public class SearchController {
         this.dashboardRequestMapper = dashboardRequestMapper;
     }
 
+    @PostMapping
+    public ModelAndView post(@RequestParam Map<String, String> params) throws ControllerException {
+        LOG.debug("post");
+        try {
+            dashboardRequestMapper.mapPost(params);
+        } catch (MapperException e) {
+            throw new ControllerException(e);
+        }
+        return get(params);
+    }
+
     @GetMapping
     public ModelAndView get(@RequestParam Map<String, String> params) throws ControllerException {
         LOG.debug("get");
@@ -60,17 +71,6 @@ public class SearchController {
             throw new ControllerException(e);
         }
         return modelAndView;
-    }
-
-    @PostMapping
-    public ModelAndView post(@RequestParam Map<String, String> params) throws ControllerException {
-        LOG.debug("post");
-        try {
-            dashboardRequestMapper.mapPost(params);
-        } catch (MapperException e) {
-            throw new ControllerException(e);
-        }
-        return get(params);
     }
 
     private ModelAndView setModelAndView(ModelAndView modelAndView, ComputerSortedSearchPage cssp) throws ServiceException {

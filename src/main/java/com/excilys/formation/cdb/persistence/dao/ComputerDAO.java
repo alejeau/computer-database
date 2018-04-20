@@ -4,7 +4,6 @@ import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 
-import java.sql.Connection;
 import java.util.List;
 
 public interface ComputerDAO {

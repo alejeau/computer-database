@@ -1,11 +1,8 @@
 package com.excilys.formation.cdb.mapper.model;
 
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
-import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;

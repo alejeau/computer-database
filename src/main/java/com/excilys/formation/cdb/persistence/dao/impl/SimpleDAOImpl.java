@@ -1,24 +1,15 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.exceptions.DAOException;
-import com.excilys.formation.cdb.mapper.jdbcTemplate.JdbcTCompanyMapper;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
-
-import static com.excilys.formation.cdb.persistence.dao.impl.CompanyDAORequest.ALL_COMPANIES_WITH_LIMIT;
 
 @Repository
 public class SimpleDAOImpl implements SimpleDAO {

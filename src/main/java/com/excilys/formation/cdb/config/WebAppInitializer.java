@@ -17,15 +17,15 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     }
 
     @Override
-    protected String[] getServletMappings() {
-        return new String[]{"/"};
-    }
-
-    @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
         final DispatcherServlet servlet = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
         servlet.setThrowExceptionIfNoHandlerFound(true);
         return servlet;
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{"/"};
     }
 }
 

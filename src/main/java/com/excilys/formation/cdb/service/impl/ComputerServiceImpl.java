@@ -100,6 +100,16 @@ public class ComputerServiceImpl implements ComputerService {
         }
     }
 
+    @Override
+    public void updateComputer(Computer c) throws ValidationException, ServiceException {
+        ComputerValidator.validate(c);
+        try {
+            computerDAO.updateComputer(c);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't update the computer!", e);
+        }
+    }
 
     @Override
     public Long persistComputer(Computer c) throws ValidationException, ServiceException {
@@ -109,17 +119,6 @@ public class ComputerServiceImpl implements ComputerService {
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't store the computer!", e);
-        }
-    }
-
-    @Override
-    public void updateComputer(Computer c) throws ValidationException, ServiceException {
-        ComputerValidator.validate(c);
-        try {
-            computerDAO.updateComputer(c);
-        } catch (DAOException e) {
-            LOG.error("{}", e);
-            throw new ServiceException("Couldn't update the computer!", e);
         }
     }
 

@@ -120,6 +120,20 @@ public class ComputerDAOImpl implements ComputerDAO {
         return jdbcTemplate.query(QUERY, params, new JdbcTComputerMapper());
     }
 
+    @Override
+    public void updateComputer(Computer computer) {
+        LOG.debug("updateComputer");
+        LOG.debug("Computer: {}", computer);
+
+        Object[] params = new Object[]{
+                computer.getName(),
+                computer.getIntroduced(),
+                computer.getDiscontinued(),
+                computer.getCompany() != null ? computer.getCompany().getId() : null,
+                computer.getId()
+        };
+        jdbcTemplate.update(UPDATE_COMPUTER, params);
+    }
 
     @Override
     public Long persistComputer(Computer computer) {
@@ -155,21 +169,6 @@ public class ComputerDAOImpl implements ComputerDAO {
         jdbcTemplate.update(psc, holder);
         Number key = holder.getKey();
         return key != null ? key.longValue() : -1L;
-    }
-
-    @Override
-    public void updateComputer(Computer computer) {
-        LOG.debug("updateComputer");
-        LOG.debug("Computer: {}", computer);
-
-        Object[] params = new Object[]{
-                computer.getName(),
-                computer.getIntroduced(),
-                computer.getDiscontinued(),
-                computer.getCompany() != null ? computer.getCompany().getId() : null,
-                computer.getId()
-        };
-        jdbcTemplate.update(UPDATE_COMPUTER, params);
     }
 
     @Override

@@ -37,9 +37,8 @@ public class Company implements Model {
     }
 
     @Override
-    public String toString() {
-        return new StringBuilder("ID: ").append(this.id)
-                .append(", name: ").append(this.name).toString();
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
@@ -56,8 +55,9 @@ public class Company implements Model {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public String toString() {
+        return new StringBuilder("ID: ").append(this.id)
+                .append(", name: ").append(this.name).toString();
     }
 
     public static class Builder {

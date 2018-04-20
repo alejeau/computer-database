@@ -80,6 +80,26 @@ public class EditComputerController {
         return modelAndView;
     }
 
+    private ModelAndView setModelAndView(ModelAndView modelAndView, Map<String, String> params, ComputerDTO computerDTO, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
+        LOG.debug("setModelAndView");
+        modelAndView.addObject(ControllerParameters.CURRENT_PATH, Paths.ABSOLUTE_PATH_EDIT_COMPUTER);
+
+        // URL attributes
+        modelAndView.addObject(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(params, ControllerParameters.PAGE_NB, Page.FIRST_PAGE));
+        modelAndView.addObject(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(params, LimitValue.TEN).getValue());
+
+        modelAndView.addObject(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
+        modelAndView.addObject(COMPUTER_DTO, computerDTO);
+
+        List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
+        modelAndView.addObject(COMPANY_LIST, companyList);
+
+        Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
+        modelAndView.addObject(ERROR_MAP, hashMap);
+
+        return modelAndView;
+    }
+
     @PostMapping
     public ModelAndView post(@ModelAttribute("edit") @Valid ComputerDTO computerDTO, @RequestParam Map<String, String> params) throws ControllerException {
         LOG.debug("post");
@@ -119,26 +139,6 @@ public class EditComputerController {
             LOG.error("{}", e);
             throw new ControllerException(e);
         }
-        return modelAndView;
-    }
-
-    private ModelAndView setModelAndView(ModelAndView modelAndView, Map<String, String> params, ComputerDTO computerDTO, List<Error> errorList, boolean displaySuccessMessage) throws ServiceException {
-        LOG.debug("setModelAndView");
-        modelAndView.addObject(ControllerParameters.CURRENT_PATH, Paths.ABSOLUTE_PATH_EDIT_COMPUTER);
-
-        // URL attributes
-        modelAndView.addObject(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(params, ControllerParameters.PAGE_NB, Page.FIRST_PAGE));
-        modelAndView.addObject(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(params, LimitValue.TEN).getValue());
-
-        modelAndView.addObject(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
-        modelAndView.addObject(COMPUTER_DTO, computerDTO);
-
-        List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
-        modelAndView.addObject(COMPANY_LIST, companyList);
-
-        Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
-        modelAndView.addObject(ERROR_MAP, hashMap);
-
         return modelAndView;
     }
 }

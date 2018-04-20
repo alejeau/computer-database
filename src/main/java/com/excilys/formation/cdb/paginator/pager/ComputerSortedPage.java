@@ -1,9 +1,9 @@
 package com.excilys.formation.cdb.paginator.pager;
 
+import com.excilys.formation.cdb.controllers.constants.ComputerField;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.DatabaseFieldsMapper;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.controllers.constants.ComputerField;
 
 public class ComputerSortedPage extends ComputerPage {
     private ComputerField orderBy = ComputerField.COMPUTER_NAME;

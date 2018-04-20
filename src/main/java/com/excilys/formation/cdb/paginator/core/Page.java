@@ -13,11 +13,9 @@ import java.util.List;
  */
 public abstract class Page<T extends Model> {
     public static final Long FIRST_PAGE = 0L;
-
-    private Long pageNumber;
-
     protected List<T> list = null;
     protected LimitValue limit;
+    private Long pageNumber;
 
     protected Page() {
         this.pageNumber = FIRST_PAGE;
@@ -28,10 +26,6 @@ public abstract class Page<T extends Model> {
         this.pageNumber = FIRST_PAGE;
         this.limit = limit;
     }
-
-    protected abstract Long currentLastPageNumber() throws ServiceException;
-
-    protected abstract void refresh(long offset) throws ServiceException;
 
     public List<T> getList() {
         return list;
@@ -56,6 +50,18 @@ public abstract class Page<T extends Model> {
         return this.list;
     }
 
+    private void checkValidPageNumber(Long requestedPage, Long lastPageNumber) {
+        if (requestedPage >= FIRST_PAGE && requestedPage <= lastPageNumber) {
+            this.pageNumber = requestedPage;
+        } else {
+            this.pageNumber = requestedPage < FIRST_PAGE ? FIRST_PAGE : lastPageNumber.intValue();
+        }
+    }
+
+    protected abstract Long currentLastPageNumber() throws ServiceException;
+
+    protected abstract void refresh(long offset) throws ServiceException;
+
     public List<T> previous() throws ServiceException {
         this.checkPreviousPageNumber();
         long offset = this.pageNumber * this.limit.getValue();
@@ -63,11 +69,23 @@ public abstract class Page<T extends Model> {
         return this.list;
     }
 
+    private void checkPreviousPageNumber() {
+        if (this.pageNumber - 1 >= FIRST_PAGE) {
+            this.pageNumber--;
+        }
+    }
+
     public List<T> next() throws ServiceException {
         this.checkNextPageNumber(this.currentLastPageNumber());
         long offset = this.pageNumber * this.limit.getValue();
         this.refresh(offset);
         return this.list;
+    }
+
+    private void checkNextPageNumber(Long currentLastPageNumber) {
+        if (this.pageNumber + 1 <= currentLastPageNumber) {
+            this.pageNumber++;
+        }
     }
 
     public List<T> first() throws ServiceException {
@@ -81,25 +99,5 @@ public abstract class Page<T extends Model> {
         long offset = this.pageNumber * this.limit.getValue();
         this.refresh(offset);
         return this.list;
-    }
-
-    private void checkValidPageNumber(Long requestedPage, Long lastPageNumber) {
-        if (requestedPage >= FIRST_PAGE && requestedPage <= lastPageNumber) {
-            this.pageNumber = requestedPage;
-        } else {
-            this.pageNumber = requestedPage < FIRST_PAGE ? FIRST_PAGE : lastPageNumber.intValue();
-        }
-    }
-
-    private void checkPreviousPageNumber() {
-        if (this.pageNumber - 1 >= FIRST_PAGE) {
-            this.pageNumber--;
-        }
-    }
-
-    private void checkNextPageNumber(Long currentLastPageNumber) {
-        if (this.pageNumber + 1 <= currentLastPageNumber) {
-            this.pageNumber++;
-        }
     }
 }

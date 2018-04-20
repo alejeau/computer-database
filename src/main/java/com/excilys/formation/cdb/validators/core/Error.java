@@ -20,8 +20,8 @@ public class Error {
     }
 
     @Override
-    public String toString() {
-        return new StringBuilder(fieldName.toString()).append(" ").append(message).toString();
+    public int hashCode() {
+        return Objects.hash(fieldName, message);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Error {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(fieldName, message);
+    public String toString() {
+        return new StringBuilder(fieldName.toString()).append(" ").append(message).toString();
     }
 }

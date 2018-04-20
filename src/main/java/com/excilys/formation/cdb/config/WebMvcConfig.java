@@ -5,7 +5,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -24,7 +23,7 @@ import java.util.Locale;
         "com.excilys.formation.cdb.persistence.dao.impl",
         "com.excilys.formation.cdb.service.impl",
         "com.excilys.formation.cdb.paginator.pager",
-        "com.excilys.formation.cdb.mapper.request",
+        "com.excilys.formation.cdb.mapper",
         "com.excilys.formation.cdb.controllers"
 })
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -38,17 +37,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return bean;
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
-    }
-
-    /* ************ */
-    /* *** i18n *** */
-    /* ************ */
-
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -56,6 +44,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
+
+    /* ************ */
+    /* *** i18n *** */
+    /* ************ */
 
     @Bean
     public CookieLocaleResolver localeResolver() {
@@ -66,15 +58,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return localeResolver;
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeInterceptor());
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }
+
     @Bean
     public LocaleChangeInterceptor localeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("lang");
         return interceptor;
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeInterceptor());
     }
 }

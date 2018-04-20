@@ -7,7 +7,8 @@ import javax.validation.constraints.NotNull;
 
 public class CompanyDTO implements ModelDTO {
 
-    @NotNull @Min(1L)
+    @NotNull
+    @Min(1L)
     private Long id;
 
     @NotNull

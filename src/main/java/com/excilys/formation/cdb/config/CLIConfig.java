@@ -16,7 +16,7 @@ import javax.sql.DataSource;
         "com.excilys.formation.cdb.persistence.dao.impl",
         "com.excilys.formation.cdb.service.impl",
         "com.excilys.formation.cdb.paginator.pager",
-        "com.excilys.formation.cdb.mapper.request",
+        "com.excilys.formation.cdb.mapper",
         "com.excilys.formation.cdb.ui"
 })
 public class CLIConfig {
@@ -34,14 +34,14 @@ public class CLIConfig {
     private String password;
 
     @Bean
+    public DataSourceTransactionManager txManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
+
+    @Bean
     public DataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource(url, username, password);
         driverManagerDataSource.setDriverClassName(driverClassName);
         return driverManagerDataSource;
-    }
-
-    @Bean
-    public DataSourceTransactionManager txManager() {
-        return new DataSourceTransactionManager(dataSource());
     }
 }

@@ -1,10 +1,10 @@
 package com.excilys.formation.cdb.mapper.request;
 
+import com.excilys.formation.cdb.controllers.constants.ComputerField;
+import com.excilys.formation.cdb.controllers.constants.ControllerParameters;
 import com.excilys.formation.cdb.exceptions.UnauthorizedLimitValueException;
 import com.excilys.formation.cdb.mapper.LimitValueMapper;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.controllers.constants.ComputerField;
-import com.excilys.formation.cdb.controllers.constants.ControllerParameters;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

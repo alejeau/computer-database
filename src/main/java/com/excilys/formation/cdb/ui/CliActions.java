@@ -17,10 +17,6 @@ public enum CliActions {
         value = newValue;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public static CliActions map(int choice) {
         switch (choice) {
             case 1:
@@ -42,6 +38,10 @@ public enum CliActions {
             default:
                 return EXIT;
         }
+    }
+
+    public String getValue() {
+        return value;
     }
 }
 

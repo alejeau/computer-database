@@ -64,6 +64,55 @@ public class Computer implements Model {
         this.company = company;
     }
 
+    @Override
+    public String shortToString() {
+        return new StringBuilder("ID: ").append(this.id)
+                .append(", name: ").append(this.name)
+                .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Computer computer = (Computer) o;
+        return Objects.equals(id, computer.id);
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        StringBuilder sb = new StringBuilder("ID: ").append(this.id).append("\n");
+        sb.append("Name: ").append(this.name).append("\n");
+        sb.append("Company ID: ").append(this.company).append("\n");
+        sb.append("Introduced in: ");
+        if (introduced != null) {
+            sb.append(introduced.format(formatter));
+        } else {
+            sb.append("N/A");
+        }
+        sb.append("\n");
+        sb.append("Discontinued in: ");
+        if (discontinued != null) {
+            sb.append(discontinued.format(formatter));
+        } else {
+            sb.append("N/A");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
+
     public static class Builder {
         private Long nestedId = null;
         private String nestedName = null;
@@ -122,54 +171,5 @@ public class Computer implements Model {
         public Computer build() {
             return new Computer(nestedId, nestedName, nestedIntroduced, nestedDiscontinued, nestedCompany);
         }
-    }
-
-    @Override
-    public String shortToString() {
-        return new StringBuilder("ID: ").append(this.id)
-                .append(", name: ").append(this.name)
-                .toString();
-    }
-
-    @Override
-    public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        StringBuilder sb = new StringBuilder("ID: ").append(this.id).append("\n");
-        sb.append("Name: ").append(this.name).append("\n");
-        sb.append("Company ID: ").append(this.company).append("\n");
-        sb.append("Introduced in: ");
-        if (introduced != null) {
-            sb.append(introduced.format(formatter));
-        } else {
-            sb.append("N/A");
-        }
-        sb.append("\n");
-        sb.append("Discontinued in: ");
-        if (discontinued != null) {
-            sb.append(discontinued.format(formatter));
-        } else {
-            sb.append("N/A");
-        }
-        sb.append("\n");
-        return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Computer computer = (Computer) o;
-        return Objects.equals(id, computer.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

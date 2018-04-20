@@ -1,9 +1,9 @@
 package com.excilys.formation.cdb.paginator.pager;
 
+import com.excilys.formation.cdb.controllers.constants.ComputerField;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.controllers.constants.ComputerField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

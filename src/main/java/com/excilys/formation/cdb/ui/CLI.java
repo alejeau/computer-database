@@ -7,11 +7,11 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
 import com.excilys.formation.cdb.model.Model;
+import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.paginator.pager.CompanyPage;
 import com.excilys.formation.cdb.paginator.pager.ComputerPage;
 import com.excilys.formation.cdb.paginator.pager.ComputerSearchPage;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.paginator.pager.PageFactory;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +43,13 @@ public class CLI {
         this.companyService = companyService;
         this.computerService = computerService;
         this.pageFactory = pageFactory;
+    }
+
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CLIConfig.class);
+        CLI cli = context.getBean(CLI.class);
+        cli.mainLoop();
+        context.close();
     }
 
     private int mainMenu() {
@@ -282,12 +288,5 @@ public class CLI {
         id = sc.nextLong();
         sc.nextLine();
         return id;
-    }
-
-    public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CLIConfig.class);
-        CLI cli = context.getBean(CLI.class);
-        cli.mainLoop();
-        context.close();
     }
 }

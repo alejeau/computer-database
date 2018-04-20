@@ -12,7 +12,8 @@ public class ComputerDTO implements ModelDTO {
 
     private long id;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String name;
 
     @DateTimeFormat(pattern = DatePattern.PATTERN)
@@ -86,6 +87,25 @@ public class ComputerDTO implements ModelDTO {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ComputerDTO computerDTO = (ComputerDTO) o;
+        return Objects.equals(id, computerDTO.id);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("ID: ").append(this.id).append("\n");
         sb.append("Name: ").append(this.name).append("\n");
@@ -105,24 +125,5 @@ public class ComputerDTO implements ModelDTO {
         }
         sb.append("\n");
         return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ComputerDTO computerDTO = (ComputerDTO) o;
-        return Objects.equals(id, computerDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

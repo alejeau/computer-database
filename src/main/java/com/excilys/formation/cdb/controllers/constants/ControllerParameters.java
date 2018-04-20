@@ -1,19 +1,14 @@
 package com.excilys.formation.cdb.controllers.constants;
 
 public class ControllerParameters {
-    private ControllerParameters() {
-    }
-
     // Computer fields
     public static final String COMPUTER_ID = "computerId";
     public static final String COMPUTER_NAME = "computerName";
     public static final String INTRODUCED = "introduced";
     public static final String DISCONTINUED = "discontinued";
-
     // Company fields
     public static final String COMPANY_ID = "companyId";
     public static final String COMPANY_NAME = "companyName";
-
     // Servlet fields
     public static final String CURRENT_PATH = "currentPath";
     public static final String TARGET_PAGE_NUMBER = "targetPageNumber";
@@ -33,4 +28,6 @@ public class ControllerParameters {
     public static final String ASCENDING = "ascending";
     public static final String PAGE_NB = "pageNb";
     public static final String DISPLAY_BY = "displayBy";
+    private ControllerParameters() {
+    }
 }

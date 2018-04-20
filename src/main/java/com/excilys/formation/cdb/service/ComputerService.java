@@ -3,9 +3,6 @@ package com.excilys.formation.cdb.service;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.paginator.pager.ComputerPage;
-import com.excilys.formation.cdb.paginator.pager.ComputerSearchPage;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 
 import java.util.List;
