@@ -4,11 +4,8 @@ import com.excilys.formation.cdb.controllers.constants.ComputerField;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.DatabaseFieldsMapper;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ComputerSortedSearchPage extends ComputerSearchPage {
-    private static final Logger LOG = LoggerFactory.getLogger(ComputerSortedSearchPage.class);
     private ComputerField orderBy = ComputerField.COMPUTER_NAME;
     private boolean ascending = true;
 

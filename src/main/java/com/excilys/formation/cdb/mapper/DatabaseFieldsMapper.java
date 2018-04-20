@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseFieldsMapper {
+
+    private DatabaseFieldsMapper() {
+    }
+
     public static DatabaseField toDatabaseField(ComputerField computerField) {
         switch (computerField) {
             case COMPUTER_NAME:

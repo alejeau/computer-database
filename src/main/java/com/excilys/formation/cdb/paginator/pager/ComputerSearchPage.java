@@ -2,11 +2,8 @@ package com.excilys.formation.cdb.paginator.pager;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ComputerSearchPage extends ComputerPage {
-    private static final Logger LOG = LoggerFactory.getLogger(ComputerSearchPage.class);
     protected String search;
 
     ComputerSearchPage() {

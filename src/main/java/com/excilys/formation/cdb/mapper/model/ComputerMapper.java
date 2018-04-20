@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ComputerMapper {
 
+    private ComputerMapper() {
+    }
+
     /**
      * Maps a {@link Computer} to {@link ComputerDTO} object
      *

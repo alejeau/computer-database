@@ -13,6 +13,9 @@ import java.util.List;
 @Component
 public class CompanyMapper {
 
+    private CompanyMapper() {
+    }
+
     public static CompanyDTO toDTO(Company company) {
         return new CompanyDTO(company.getId(), company.getName());
     }

@@ -14,34 +14,34 @@ import com.excilys.formation.cdb.paginator.pager.ComputerPage;
 import com.excilys.formation.cdb.paginator.pager.ComputerSearchPage;
 import com.excilys.formation.cdb.paginator.pager.PageFactory;
 import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerCompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
 @Controller
-@EnableTransactionManagement
 public class CLI {
     private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
     private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
 
     private CompanyService companyService;
     private ComputerService computerService;
+    private ComputerCompanyService computerCompanyService;
     private PageFactory pageFactory;
 
     private Scanner sc = new Scanner(System.in);
 
     @Autowired
-    public CLI(CompanyService companyService, ComputerService computerService, PageFactory pageFactory) {
+    public CLI(CompanyService companyService, ComputerService computerService, ComputerCompanyService computerCompanyService, PageFactory pageFactory) {
         this.companyService = companyService;
         this.computerService = computerService;
+        this.computerCompanyService = computerCompanyService;
         this.pageFactory = pageFactory;
     }
 
@@ -269,14 +269,12 @@ public class CLI {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    protected void deleteCompany() throws ServiceException {
+    private void deleteCompany() throws ServiceException {
         Long companyId = getLong("Please enter the company's ID you wish to delete: ");
 
         Company c = companyService.getCompany(companyId);
         if (c != null) {
-            computerService.deleteComputersWithCompanyId(companyId);
-            companyService.deleteCompany(companyId);
+            computerCompanyService.deleteCompanyWithIdAndAssociatedComputers(companyId);
         } else {
             System.out.println("There is no company with the ID: " + companyId + "\n");
         }

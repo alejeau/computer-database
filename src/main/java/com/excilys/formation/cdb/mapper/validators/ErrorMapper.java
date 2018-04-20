@@ -10,6 +10,10 @@ import java.util.Objects;
 
 @Component
 public class ErrorMapper {
+
+    private ErrorMapper() {
+    }
+
     public static Map<String, String> toHashMap(List<Error> errorList) {
         HashMap<String, String> errorHashMap = new HashMap<>();
 

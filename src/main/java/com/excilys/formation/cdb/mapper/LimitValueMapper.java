@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LimitValueMapper {
+    private LimitValueMapper() {
+    }
+
     public static LimitValue toLimitValue(String value) throws UnauthorizedLimitValueException {
         if (value != null) {
             Long tmp = Long.parseLong(value);

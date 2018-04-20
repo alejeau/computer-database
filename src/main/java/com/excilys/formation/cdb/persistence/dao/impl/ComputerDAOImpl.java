@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.exceptions.DAOException;
-import com.excilys.formation.cdb.mapper.jdbcTemplate.JdbcTComputerMapper;
+import com.excilys.formation.cdb.mapper.jdbc.JdbcTComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
@@ -47,14 +47,12 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     private JdbcTemplate jdbcTemplate;
     private SimpleDAO simpleDAO;
-    private DataSource dataSource;
 
     ComputerDAOImpl() {
     }
 
     @Autowired
     public ComputerDAOImpl(SimpleDAO simpleDAO, DataSource dataSource) {
-        this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
         this.simpleDAO = simpleDAO;
     }
@@ -78,7 +76,7 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         Object[] params = new Object[]{id};
         List<Computer> computerList = jdbcTemplate.query(SELECT_COMPUTER_BY_ID, params, new JdbcTComputerMapper());
-        if (computerList.size() != 0) {
+        if (!computerList.isEmpty()) {
             return computerList.get(0);
         }
 
