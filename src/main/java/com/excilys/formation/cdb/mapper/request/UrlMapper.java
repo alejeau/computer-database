@@ -8,14 +8,13 @@ import com.excilys.formation.cdb.controllers.constants.ControllerParameters;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+@Component
 public class UrlMapper {
     private static final Logger LOG = LoggerFactory.getLogger(UrlMapper.class);
-
-    private UrlMapper() {
-    }
 
     public static ComputerField mapToComputerFields(Map<String, String> params, String field, ComputerField defaultValue) {
         LOG.debug("mapToComputerFields");

@@ -2,12 +2,10 @@ package com.excilys.formation.cdb.mapper;
 
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.controllers.constants.ComputerField;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DatabaseFieldsMapper {
-
-    private DatabaseFieldsMapper() {
-    }
-
     public static DatabaseField toDatabaseField(ComputerField computerField) {
         switch (computerField) {
             case COMPUTER_NAME:

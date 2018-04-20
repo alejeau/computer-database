@@ -7,14 +7,13 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
 import com.excilys.formation.cdb.paginator.pager.ComputerPage;
 import com.excilys.formation.cdb.paginator.pager.ComputerSearchPage;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PageMapper {
-
-    private PageMapper() {
-    }
 
     public static PageDTO<ComputerDTO> toPageDTO(ComputerPage computerPage, long numberOfComputers) throws ServiceException {
         List<ComputerDTO> computerDTOList = new ArrayList<>();

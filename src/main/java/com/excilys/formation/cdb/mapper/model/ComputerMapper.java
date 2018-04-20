@@ -6,17 +6,16 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ComputerMapper {
 
-    private ComputerMapper() {
-    }
-
     /**
-     * Maps a Computer to ComputerDTO object
+     * Maps a {@link Computer} to {@link ComputerDTO} object
      *
-     * @param computer the computer object to map
-     * @return a ComputerDTO object if Computer is not null, an empty ComputerDTO otherwise
+     * @param computer the {@link Computer} object to map
+     * @return a {@link ComputerDTO} object if {@link Computer} is not null, an empty {@link ComputerDTO} otherwise
      */
     public static ComputerDTO toDTO(Computer computer) {
         ComputerDTO computerDTO = new ComputerDTO();
@@ -37,6 +36,13 @@ public class ComputerMapper {
         return computerDTO;
     }
 
+    /**
+     * Maps a {@link ComputerDTO} and a {@link Company} to a {@link Computer}
+     *
+     * @param computerDTO the {@link ComputerDTO} to map
+     * @param company the Company of the {@link Computer}
+     * @return a {@link Computer} with elements of {@link ComputerDTO} and the provided {@link Company}
+     */
     public static Computer toComputer(ComputerDTO computerDTO, Company company) {
         return new Computer.Builder()
                 .id(computerDTO.getId())
