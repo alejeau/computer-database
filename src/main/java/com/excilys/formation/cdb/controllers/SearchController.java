@@ -1,5 +1,7 @@
 package com.excilys.formation.cdb.controllers;
 
+import com.excilys.formation.cdb.controllers.constants.Paths;
+import com.excilys.formation.cdb.controllers.constants.Views;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
 import com.excilys.formation.cdb.exceptions.ControllerException;
@@ -8,13 +10,9 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
 import com.excilys.formation.cdb.mapper.request.SearchRequestMapper;
-import com.excilys.formation.cdb.paginator.pager.ComputerSortedPage;
-import com.excilys.formation.cdb.paginator.pager.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.paginator.pager.ComputerSortedSearchPage;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.controllers.constants.Paths;
-import com.excilys.formation.cdb.controllers.constants.Views;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +20,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Map;
 
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.CURRENT_PATH;
@@ -37,7 +30,6 @@ import static com.excilys.formation.cdb.controllers.constants.ControllerParamete
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.LIMIT_VALUES;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ORDER_BY;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.PAGE_DTO;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.SEARCH;
 import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.SEARCH_FIELD;
 
 @Controller
