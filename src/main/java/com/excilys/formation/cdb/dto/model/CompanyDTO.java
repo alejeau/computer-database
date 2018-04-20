@@ -3,6 +3,7 @@ package com.excilys.formation.cdb.dto.model;
 import com.excilys.formation.cdb.dto.ModelDTO;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class CompanyDTO implements ModelDTO {
@@ -12,6 +13,7 @@ public class CompanyDTO implements ModelDTO {
     private Long id;
 
     @NotNull
+    @NotEmpty
     private String name;
 
     public CompanyDTO() {

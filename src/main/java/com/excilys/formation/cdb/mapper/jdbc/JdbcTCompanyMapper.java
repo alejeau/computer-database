@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.mapper.jdbcTemplate;
+package com.excilys.formation.cdb.mapper.jdbc;
 
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
