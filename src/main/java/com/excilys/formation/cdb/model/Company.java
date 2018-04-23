@@ -1,8 +1,15 @@
 package com.excilys.formation.cdb.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class Company implements Model {
+
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
 

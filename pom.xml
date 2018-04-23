@@ -21,18 +21,18 @@
         <tomcat.home>/home/${user.name}/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
 
         <!-- General versions -->
+        <java.version>1.8</java.version>
         <maven-compiler.version>3.1</maven-compiler.version>
         <maven-war.version>2.4</maven-war.version>
-        <java.version>1.8</java.version>
         <mojo.version>1.2.1</mojo.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
         <cargo.version>1.6.7</cargo.version>
+
         <common-lang.version>3.7</common-lang.version>
         <javax-validation.version>2.0.0.Final</javax-validation.version>
 
         <!-- checkstyle -->
         <checkstyle.version>3.0.0</checkstyle.version>
-
 
         <!-- test -->
         <junit.version>4.12</junit.version>
@@ -45,8 +45,11 @@
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
 
-
+        <!-- JEE -->
         <jstl.version>1.2</jstl.version>
+
+        <!-- ORM -->
+        <querydsl.version>4.1.3</querydsl.version>
 
         <!-- Spring Version -->
         <spring.version>5.0.5.RELEASE</spring.version>
@@ -71,6 +74,7 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+
             <!-- Enables launching the CLI via command line using Maven -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -87,6 +91,7 @@
                     <mainClass>com.excilys.formation.cdb.ui.CLI</mainClass>
                 </configuration>
             </plugin>
+
             <!-- Tomcat deployment plugin -->
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -95,9 +100,10 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/${artifactId}</path>
+                    <path>/${project.artifactId}</path>
                 </configuration>
             </plugin>
+
             <!-- Cargo deployment plugin -->
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
@@ -115,6 +121,8 @@
                     </configuration>
                 </configuration>
             </plugin>
+
+            <!-- Maven WAR plugin included to avoid failOnMissingWebXml -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -122,6 +130,24 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
+            </plugin>
+
+            <!-- Plugin for QueryDSL APT -->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -232,6 +258,20 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${common-lang.version}</version>
+        </dependency>
+
+        <!-- ORM -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <!-- annotation processing tool -->
+            <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl.version}</version>
         </dependency>
 
         <!-- Spring Framework -->

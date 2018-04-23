@@ -1,11 +1,18 @@
 package com.excilys.formation.cdb.model;
 
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+@Entity
 public class Computer implements Model {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private LocalDate introduced;
@@ -66,9 +73,7 @@ public class Computer implements Model {
 
     @Override
     public String shortToString() {
-        return new StringBuilder("ID: ").append(this.id)
-                .append(", name: ").append(this.name)
-                .toString();
+        return String.format("ID: %d, name: %s", this.id, this.name);
     }
 
     @Override

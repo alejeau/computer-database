@@ -16,6 +16,7 @@ import javax.sql.DataSource;
         "com.excilys.formation.cdb.utils",
         "com.excilys.formation.cdb.persistence.dao.impl",
         "com.excilys.formation.cdb.service.impl",
+        "com.excilys.formation.cdb.validators",
         "com.excilys.formation.cdb.paginator.pager",
         "com.excilys.formation.cdb.mapper.request"
 })
