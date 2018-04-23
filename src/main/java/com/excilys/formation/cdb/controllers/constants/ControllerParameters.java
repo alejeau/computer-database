@@ -28,6 +28,7 @@ public class ControllerParameters {
     public static final String ASCENDING = "ascending";
     public static final String PAGE_NB = "pageNb";
     public static final String DISPLAY_BY = "displayBy";
+
     private ControllerParameters() {
     }
 }

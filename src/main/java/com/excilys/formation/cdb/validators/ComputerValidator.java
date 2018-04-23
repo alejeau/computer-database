@@ -89,10 +89,8 @@ public class ComputerValidator {
         // if no errors and both dates aren't null, we can check their validity
         if (e1 == null
                 && e2 == null
-                && introduced != null
-                && !introduced.isEmpty()
-                && discontinued != null
-                && !discontinued.isEmpty()
+                && !StringUtils.isBlank(introduced)
+                && !StringUtils.isBlank(discontinued)
                 && (introduced.compareTo(discontinued) >= 0)) {
             errorList = addToList(errorList, new Error(FieldName.COMPUTER_DATES, ErrorMessage.INTRO_DATE_MUST_BE_BEFORE_DISCONTINUATION_DATE));
         }

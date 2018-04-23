@@ -16,6 +16,9 @@ import java.util.Map;
 public class UrlMapper {
     private static final Logger LOG = LoggerFactory.getLogger(UrlMapper.class);
 
+    private UrlMapper() {
+    }
+
     public static ComputerField mapToComputerFields(Map<String, String> params, String field, ComputerField defaultValue) {
         LOG.debug("mapToComputerFields");
         String stringField = params.get(field);

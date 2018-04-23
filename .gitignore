@@ -11,7 +11,7 @@ target
 *~
 
 /build/
-
+src/main/webapp/WEB-INF/lib/*
 computer-database.iml
 
 #config files

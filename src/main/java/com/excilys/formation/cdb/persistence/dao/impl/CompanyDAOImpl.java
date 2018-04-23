@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.exceptions.DAOException;
-import com.excilys.formation.cdb.mapper.jdbcTemplate.JdbcTCompanyMapper;
+import com.excilys.formation.cdb.mapper.jdbc.JdbcTCompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.excilys.formation.cdb.persistence.dao.SimpleDAO;
@@ -55,7 +55,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
         Object[] params = new Object[]{id};
         List<Company> companyList = jdbcTemplate.query(COMPANY_BY_ID, params, new JdbcTCompanyMapper());
-        if (companyList.size() != 0) {
+        if (!companyList.isEmpty()) {
             return companyList.get(0);
         }
 

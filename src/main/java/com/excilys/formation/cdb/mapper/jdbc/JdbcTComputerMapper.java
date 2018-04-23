@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.mapper.jdbcTemplate;
+package com.excilys.formation.cdb.mapper.jdbc;
 
 import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Computer;
