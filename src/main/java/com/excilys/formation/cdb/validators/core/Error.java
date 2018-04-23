@@ -38,6 +38,6 @@ public class Error {
 
     @Override
     public String toString() {
-        return new StringBuilder(fieldName.toString()).append(" ").append(message).toString();
+        return String.format("%s %s", fieldName.toString(), message);
     }
 }

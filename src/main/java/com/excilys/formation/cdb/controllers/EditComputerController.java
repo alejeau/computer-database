@@ -18,20 +18,24 @@ import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.validators.ComputerDTOValidator;
 import com.excilys.formation.cdb.validators.ComputerValidator;
 import com.excilys.formation.cdb.validators.core.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,12 +57,19 @@ public class EditComputerController {
     private ComputerService computerService;
     private CompanyService companyService;
     private DashboardController dashboardController;
+    private ComputerDTOValidator computerDTOValidator;
 
     @Autowired
-    public EditComputerController(ComputerService computerService, CompanyService companyService, DashboardController dashboardController) {
+    public EditComputerController(ComputerService computerService, CompanyService companyService, DashboardController dashboardController, ComputerDTOValidator computerDTOValidator) {
         this.computerService = computerService;
         this.companyService = companyService;
         this.dashboardController = dashboardController;
+        this.computerDTOValidator = computerDTOValidator;
+    }
+
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(computerDTOValidator);
     }
 
     @GetMapping
@@ -74,6 +85,48 @@ public class EditComputerController {
                 return dashboardController.get(params);
             }
         } catch (ServiceException e) {
+            LOG.error("{}", e);
+            throw new ControllerException(e);
+        }
+        return modelAndView;
+    }
+
+    @PostMapping
+    public ModelAndView post(@Validated @ModelAttribute("edit") ComputerDTO computerDTO,
+                             BindingResult bindingResult,
+                             @RequestParam Map<String, String> params) throws ControllerException {
+        LOG.debug("post");
+
+        List<Error> errorList = null;
+        boolean displaySuccessMessage = true;
+        Computer computer = null;
+        Long computerId = computerDTO.getId();
+        ModelAndView modelAndView = new ModelAndView(Views.EDIT_COMPUTER);
+
+        try {
+            if (bindingResult.hasErrors()) {
+                displaySuccessMessage = false;
+                errorList = ComputerValidator.validate(computerDTO);
+                errorList.stream()
+                        .filter(Objects::nonNull)
+                        .map(Error::toString)
+                        .forEach(LOG::error);
+
+                if (!computerId.equals(NO_COMPUTER)) {
+                    computer = computerService.getComputer(computerId);
+                }
+            } else {
+                if (!computerId.equals(NO_COMPUTER) && computerService.getComputer(computerId) != null) {
+                    Long companyId = computerDTO.getCompanyId();
+                    Company company = companyService.getCompany(companyId);
+                    computer = ComputerMapper.toComputer(computerDTO, company);
+                    computerService.updateComputer(computer);
+                } else {
+                    return dashboardController.get(params);
+                }
+            }
+            modelAndView = setModelAndView(modelAndView, params, ComputerMapper.toDTO(computer), errorList, displaySuccessMessage);
+        } catch (ServiceException | ValidationException e) {
             LOG.error("{}", e);
             throw new ControllerException(e);
         }
@@ -97,48 +150,6 @@ public class EditComputerController {
         Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
         modelAndView.addObject(ERROR_MAP, hashMap);
 
-        return modelAndView;
-    }
-
-    @PostMapping
-    public ModelAndView post(@ModelAttribute("edit") @Valid ComputerDTO computerDTO, @RequestParam Map<String, String> params) throws ControllerException {
-        LOG.debug("post");
-        ModelAndView modelAndView = new ModelAndView(Views.EDIT_COMPUTER);
-        List<Error> errorList;
-
-        Computer computer = null;
-        boolean displaySuccessMessage = false;
-        errorList = ComputerValidator.validate(computerDTO);
-        Long computerId = computerDTO.getId();
-
-        try {
-            if (errorList == null) {
-                if (!computerId.equals(NO_COMPUTER) && computerService.getComputer(computerId) != null) {
-                    displaySuccessMessage = true;
-                    Long companyId = computerDTO.getCompanyId();
-                    Company company = companyService.getCompany(companyId);
-                    computer = ComputerMapper.toComputer(computerDTO, company);
-                    computerService.updateComputer(computer);
-                } else {
-                    return dashboardController.get(params);
-                }
-            } else {
-                // if there are errors, log them...
-                errorList.stream()
-                        .filter(Objects::nonNull)
-                        .map(Error::toString)
-                        .forEach(LOG::error);
-                // ... and return the old computer
-                if (!computerId.equals(NO_COMPUTER)) {
-                    computer = computerService.getComputer(computerId);
-                }
-            }
-
-            modelAndView = setModelAndView(modelAndView, params, ComputerMapper.toDTO(computer), errorList, displaySuccessMessage);
-        } catch (ServiceException | ValidationException e) {
-            LOG.error("{}", e);
-            throw new ControllerException(e);
-        }
         return modelAndView;
     }
 }

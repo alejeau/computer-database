@@ -56,8 +56,7 @@ public class Company implements Model {
 
     @Override
     public String toString() {
-        return new StringBuilder("ID: ").append(this.id)
-                .append(", name: ").append(this.name).toString();
+        return String.format("ID: %d, name: %s", this.id, this.name);
     }
 
     public static class Builder {
