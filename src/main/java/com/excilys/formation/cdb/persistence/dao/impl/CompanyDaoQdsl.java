@@ -13,14 +13,12 @@ import java.util.List;
 
 @Repository
 public class CompanyDaoQdsl implements CompanyDAO {
-    private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
     private JPAQueryFactory queryFactory;
     private QCompany qCompany;
 
-    private CompanyDaoQdsl() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory(DAOUtils.EMF_NAME);
-        this.entityManager = entityManagerFactory.createEntityManager();
+    public CompanyDaoQdsl() {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(DAOUtils.EMF_NAME);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         this.queryFactory = new JPAQueryFactory(entityManager);
         this.qCompany = QCompany.company;
     }

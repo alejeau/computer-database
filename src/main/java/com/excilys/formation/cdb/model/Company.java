@@ -1,5 +1,8 @@
 package com.excilys.formation.cdb.model;
 
+import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,7 +13,10 @@ public class Company implements Model {
 
     @Id
     @GeneratedValue
+    @Column(name = DbFields.COMPANY_ID)
     private Long id;
+
+    @Column(name = DbFields.COMPANY_NAME)
     private String name;
 
     public Company() {

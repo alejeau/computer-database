@@ -1,5 +1,8 @@
 package com.excilys.formation.cdb.model;
 
+import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -13,9 +16,16 @@ public class Computer implements Model {
 
     @Id
     @GeneratedValue
+    @Column(name = DbFields.COMPUTER_ID)
     private Long id;
+
+    @Column(name = DbFields.COMPUTER_NAME)
     private String name;
+
+    @Column(name = DbFields.COMPUTER_INTRODUCED)
     private LocalDate introduced;
+
+    @Column(name = DbFields.COMPUTER_DISCONTINUED)
     private LocalDate discontinued;
     private Company company;
 
