@@ -12,17 +12,21 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 
 @Repository
 public class ComputerDaoQdsl implements ComputerDAO {
+
+    @PersistenceContext
+    private EntityManager entityManager;
     private JPAQueryFactory queryFactory;
     private QComputer qComputer;
 
     public ComputerDaoQdsl() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(DAOUtils.EMF_NAME);
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(DAOUtils.EMF_NAME);
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
         this.queryFactory = new JPAQueryFactory(entityManager);
         this.qComputer = QComputer.computer;
     }
@@ -66,7 +70,11 @@ public class ComputerDaoQdsl implements ComputerDAO {
                 .offset(index)
                 .limit(limit);
         query = orderBy(query, computerField, ascending);
-        return query.fetch();
+        if (query != null) {
+            return query.fetch();
+        } else {
+            throw new IllegalStateException("The JPAQuery must not be null!");
+        }
     }
 
     @Override
@@ -80,7 +88,11 @@ public class ComputerDaoQdsl implements ComputerDAO {
                 .offset(index)
                 .limit(limit);
         query = orderBy(query, computerField, ascending);
-        return query.fetch();
+        if (query != null) {
+            return query.fetch();
+        } else {
+            throw new IllegalStateException("The JPAQuery must not be null!");
+        }
     }
 
     @Override
