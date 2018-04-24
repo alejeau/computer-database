@@ -152,6 +152,18 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Checkstyle -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>${checkstyle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${common-lang.version}</version>
+        </dependency>
+        
         <!-- tests -->
         <dependency>
             <groupId>junit</groupId>
@@ -220,18 +232,6 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${javax-validation.version}</version>
-        </dependency>
-
-        <!-- Checkstyle -->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>${checkstyle.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${common-lang.version}</version>
         </dependency>
 
         <!-- Spring Framework -->
