@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.config.TestConfig;
+import com.excilys.formation.cdb.config.HibernatePersistenceConfigTest;
 import com.excilys.formation.cdb.exceptions.ConnectionException;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Company;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
+@ContextConfiguration(classes = HibernatePersistenceConfigTest.class)
 public class ComputerDAOTest {
     @Autowired
     private ComputerDAO computerDAO;

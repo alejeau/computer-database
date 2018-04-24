@@ -26,6 +26,7 @@ public class ComputerDaoQdsl implements ComputerDAO {
 
     public ComputerDaoQdsl() {
 //        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(DAOUtils.EMF_NAME);
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.excilys.formation.cdb.config.HibernatePersistenceConfigCLI");
 //        EntityManager entityManager = entityManagerFactory.createEntityManager();
         this.queryFactory = new JPAQueryFactory(entityManager);
         this.qComputer = QComputer.computer;

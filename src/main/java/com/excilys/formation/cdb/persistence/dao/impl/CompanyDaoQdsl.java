@@ -4,6 +4,8 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.QCompany;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -22,7 +24,10 @@ public class CompanyDaoQdsl implements CompanyDAO {
 
     public CompanyDaoQdsl() {
 //        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(DAOUtils.EMF_NAME);
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.excilys.formation.cdb.config.HibernatePersistenceConfigCLI");
 //        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        Session session;
+//        session.get
         this.queryFactory = new JPAQueryFactory(entityManager);
         this.qCompany = QCompany.company;
     }

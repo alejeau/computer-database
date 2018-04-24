@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.config.TestConfig;
+import com.excilys.formation.cdb.config.HibernatePersistenceConfigTest;
 import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
+@ContextConfiguration(classes = HibernatePersistenceConfigTest.class)
 public class CompanyDAOTest {
     @Autowired
     private CompanyDAO companyDAO;

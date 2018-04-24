@@ -18,14 +18,7 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {
-        "com.excilys.formation.cdb.config",
-        "com.excilys.formation.cdb.persistence.dao.impl",
-        "com.excilys.formation.cdb.service.impl",
-        "com.excilys.formation.cdb.paginator.pager",
-        "com.excilys.formation.cdb.mapper",
-        "com.excilys.formation.cdb.controllers"
-})
+@ComponentScan("com.excilys.formation.cdb")
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean

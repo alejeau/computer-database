@@ -1,8 +1,8 @@
 package com.excilys.formation.cdb.config;
 
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +17,30 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-//@ComponentScan("com.excilys.formation.cdb.persistence")
-public class HibernatePersistenceConfig {
+@ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.persistence.dao.impl",
+        "com.excilys.formation.cdb.service.impl",
+        "com.excilys.formation.cdb.paginator.pager",
+        "com.excilys.formation.cdb.mapper",
+        "com.excilys.formation.cdb.ui"
+})
+public class HibernatePersistenceConfigCLI extends DataSourceFactory {
     private Environment environment;
 
+    @Value("${jdbc.driverClassName}")
+    private String driverClassName;
+
+    @Value("${jdbc.jdbcUrl}")
+    private String url;
+
+    @Value("${jdbc.username}")
+    private String username;
+
+    @Value("${jdbc.password}")
+    private String password;
+
     @Autowired
-    public HibernatePersistenceConfig(Environment environment) {
+    public HibernatePersistenceConfigCLI(Environment environment) {
         this.environment = environment;
     }
 
@@ -30,10 +48,7 @@ public class HibernatePersistenceConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-//        sessionFactory.setPackagesToScan(
-//                "com.excilys.formation.cdb.model"
-//                , "com.excilys.formation.cdb.persistence"
-//        );
+        sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
@@ -41,12 +56,7 @@ public class HibernatePersistenceConfig {
 
     @Bean
     public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.user"));
-        dataSource.setPassword(environment.getProperty("jdbc.pass"));
-        return dataSource;
+        return createDataSource(driverClassName, url, username, password);
     }
 
     @Bean

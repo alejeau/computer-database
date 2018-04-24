@@ -1,6 +1,7 @@
 package com.excilys.formation.cdb.ui;
 
-import com.excilys.formation.cdb.config.CLIConfig;
+import com.excilys.formation.cdb.config.HibernatePersistenceConfig;
+import com.excilys.formation.cdb.config.HibernatePersistenceConfigCLI;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
@@ -46,7 +47,7 @@ public class CLI {
     }
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CLIConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernatePersistenceConfigCLI.class);
         CLI cli = context.getBean(CLI.class);
         cli.mainLoop();
         context.close();
