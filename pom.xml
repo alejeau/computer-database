@@ -45,6 +45,12 @@
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
 
+        <!-- ORM -->
+        <hibernate.version>4.3.6.Final</hibernate.version>
+        <javassist.version>3.18.2-GA</javassist.version>
+
+        <!-- Connection Pool -->
+        <tomcat-dbcp.version>7.0.55</tomcat-dbcp.version>
 
         <jstl.version>1.2</jstl.version>
 
@@ -152,6 +158,18 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Checkstyle -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>${checkstyle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${common-lang.version}</version>
+        </dependency>
+
         <!-- tests -->
         <dependency>
             <groupId>junit</groupId>
@@ -222,16 +240,23 @@
             <version>${javax-validation.version}</version>
         </dependency>
 
-        <!-- Checkstyle -->
+        <!-- ORM -->
         <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>${checkstyle.version}</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
+        <!-- To enable Hibernate proxy model -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${common-lang.version}</version>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${javassist.version}</version>
+        </dependency>
+        <!-- Connection Pool -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-dbcp</artifactId>
+            <version>${tomcat-dbcp.version}</version>
         </dependency>
 
         <!-- Spring Framework -->
@@ -252,6 +277,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
         <dependency>
@@ -260,7 +289,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
+            <artifactId>spring-orm</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

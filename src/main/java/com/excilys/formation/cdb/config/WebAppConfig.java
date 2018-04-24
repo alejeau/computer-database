@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
@@ -22,7 +20,7 @@ import javax.sql.DataSource;
         "com.excilys.formation.cdb.mapper",
         "com.excilys.formation.cdb.controllers"
 })
-public class WebAppConfig {
+public class WebAppConfig extends DataSourceFactory {
 
     @Value("${jdbc.driverClassName}")
     private String driverClassName;
@@ -37,14 +35,7 @@ public class WebAppConfig {
     private String password;
 
     @Bean
-    public DataSourceTransactionManager txManager() {
-        return new DataSourceTransactionManager(dataSource());
-    }
-
-    @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource(url, username, password);
-        driverManagerDataSource.setDriverClassName(driverClassName);
-        return driverManagerDataSource;
+        return dataSource(driverClassName, url, username, password);
     }
 }
