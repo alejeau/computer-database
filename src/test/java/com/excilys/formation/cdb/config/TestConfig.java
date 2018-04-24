@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
@@ -20,7 +18,7 @@ import javax.sql.DataSource;
         "com.excilys.formation.cdb.paginator.pager",
         "com.excilys.formation.cdb.mapper.request"
 })
-public class TestConfig {
+public class TestConfig extends DataSourceFactory {
 
     @Value("${hsqldb.driverClassName}")
     private String driverClassName;
@@ -36,13 +34,6 @@ public class TestConfig {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource(url, username, password);
-        driverManagerDataSource.setDriverClassName(driverClassName);
-        return driverManagerDataSource;
-    }
-
-    @Bean
-    public DataSourceTransactionManager txManager() {
-        return new DataSourceTransactionManager(dataSource());
+        return dataSource(driverClassName, url, username, password);
     }
 }
