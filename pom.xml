@@ -20,16 +20,20 @@
         <!-- Tomcat path -->
         <tomcat.home>/home/${user.name}/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
 
-        <!-- General versions -->
+        <!-- Java Version-->
         <java.version>1.8</java.version>
+
+        <!-- Maven plugins -->
         <maven-compiler.version>3.1</maven-compiler.version>
         <maven-war.version>2.4</maven-war.version>
+        <maven-apt.version>1.1.3</maven-apt.version>
+
+        <!-- General versions -->
         <mojo.version>1.2.1</mojo.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
         <cargo.version>1.6.7</cargo.version>
 
         <common-lang.version>3.7</common-lang.version>
-        <javax-validation.version>2.0.0.Final</javax-validation.version>
 
         <!-- checkstyle -->
         <checkstyle.version>3.0.0</checkstyle.version>
@@ -47,16 +51,16 @@
 
         <!-- JEE -->
         <jstl.version>1.2</jstl.version>
+        <javax-validation.version>2.0.0.Final</javax-validation.version>
 
         <!-- ORM -->
-        <hibernate.version>4.3.6.Final</hibernate.version>
+        <hibernate.version>5.2.16.Final</hibernate.version>
         <javassist.version>3.18.2-GA</javassist.version>
-	<querydsl.version>4.1.3</querydsl.version>
+	    <querydsl.version>4.1.3</querydsl.version>
 
         <!-- Connection Pool -->
         <tomcat-dbcp.version>7.0.55</tomcat-dbcp.version>
-	
-	
+
         <jstl.version>1.2</jstl.version>
 
         <!-- Spring Version -->
@@ -144,7 +148,7 @@
             <plugin>
                 <groupId>com.mysema.maven</groupId>
                 <artifactId>apt-maven-plugin</artifactId>
-                <version>1.1.3</version>
+                <version>${maven-apt.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -286,7 +290,7 @@
             <artifactId>tomcat-dbcp</artifactId>
             <version>${tomcat-dbcp.version}</version>
         </dependency>
-	<!-- QueryDSL -->
+	    <!-- QueryDSL -->
         <dependency>
             <groupId>com.querydsl</groupId>
             <!-- annotation processing tool -->

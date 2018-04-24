@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.paginator.pager;
 
-import com.excilys.formation.cdb.controllers.constants.ComputerField;
 import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
@@ -52,55 +51,6 @@ public class PageFactoryImpl implements PageFactory {
         ComputerSearchPage computerSearchPage = new ComputerSearchPage(search, limit);
         computerSearchPage.setComputerService(computerService);
         return computerSearchPage;
-    }
-
-    @Override
-    public ComputerSortedPage createComputerSortedPage() {
-        ComputerSortedPage computerSortedPage = new ComputerSortedPage();
-        computerSortedPage.setComputerService(computerService);
-        return computerSortedPage;
-    }
-
-    @Override
-    public ComputerSortedPage createComputerSortedPage(LimitValue limit) {
-        ComputerSortedPage computerSortedPage = new ComputerSortedPage(limit);
-        computerSortedPage.setComputerService(computerService);
-        return computerSortedPage;
-    }
-
-    @Override
-    public ComputerSortedPage createComputerSortedPage(LimitValue limit, ComputerField orderBy, boolean ascending) {
-        ComputerSortedPage computerSortedPage = new ComputerSortedPage(limit, orderBy, ascending);
-        computerSortedPage.setComputerService(computerService);
-        return computerSortedPage;
-    }
-
-    @Override
-    public ComputerSortedSearchPage createComputerSortedSearchPage() {
-        ComputerSortedSearchPage computerSortedSearchPage = new ComputerSortedSearchPage();
-        computerSortedSearchPage.setComputerService(computerService);
-        return computerSortedSearchPage;
-    }
-
-    @Override
-    public ComputerSortedSearchPage createComputerSortedSearchPage(String search) {
-        ComputerSortedSearchPage computerSortedSearchPage = new ComputerSortedSearchPage(search);
-        computerSortedSearchPage.setComputerService(computerService);
-        return computerSortedSearchPage;
-    }
-
-    @Override
-    public ComputerSortedSearchPage createComputerSortedSearchPage(String search, LimitValue limit) {
-        ComputerSortedSearchPage computerSortedSearchPage = new ComputerSortedSearchPage(search, limit);
-        computerSortedSearchPage.setComputerService(computerService);
-        return computerSortedSearchPage;
-    }
-
-    @Override
-    public ComputerSortedSearchPage createComputerSortedSearchPage(String search, LimitValue limit, ComputerField orderBy, boolean ascending) {
-        ComputerSortedSearchPage computerSortedSearchPage = new ComputerSortedSearchPage(search, limit, orderBy, ascending);
-        computerSortedSearchPage.setComputerService(computerService);
-        return computerSortedSearchPage;
     }
 
     @Override

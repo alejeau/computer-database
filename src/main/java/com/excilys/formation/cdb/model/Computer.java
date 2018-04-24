@@ -4,28 +4,37 @@ import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-@Entity
+//@Entity
+//@Table(name = DbFields.COMPUTER)
 public class Computer implements Model {
 
-    @Id
-    @GeneratedValue
-    @Column(name = DbFields.COMPUTER_ID)
+//    @Id
+//    @GeneratedValue
+//    @Column(name = DbFields.COMPUTER_ID)
+//    private Long id;
+//
+//    @Column(name = DbFields.COMPUTER_NAME)
+//    private String name;
+//
+//    @Column(name = DbFields.COMPUTER_INTRODUCED)
+//    private LocalDate introduced;
+//
+//    @Column(name = DbFields.COMPUTER_DISCONTINUED)
+//    private LocalDate discontinued;
+//
+//    @Column(name = DbFields.COMPUTER_COMPANY_ID)
+//    private Company company;
+
     private Long id;
-
-    @Column(name = DbFields.COMPUTER_NAME)
     private String name;
-
-    @Column(name = DbFields.COMPUTER_INTRODUCED)
     private LocalDate introduced;
-
-    @Column(name = DbFields.COMPUTER_DISCONTINUED)
     private LocalDate discontinued;
     private Company company;
 

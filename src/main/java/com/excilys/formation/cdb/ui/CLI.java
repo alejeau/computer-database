@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.ui;
 
-import com.excilys.formation.cdb.config.HibernatePersistenceConfig;
 import com.excilys.formation.cdb.config.HibernatePersistenceConfigCLI;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.exceptions.ValidationException;

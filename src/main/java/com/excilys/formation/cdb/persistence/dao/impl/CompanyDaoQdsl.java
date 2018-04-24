@@ -3,32 +3,24 @@ package com.excilys.formation.cdb.persistence.dao.impl;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.QCompany;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.hibernate.Session;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class CompanyDaoQdsl implements CompanyDAO {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-    private JPAQueryFactory queryFactory;
+    private HibernateQueryFactory queryFactory;
     private QCompany qCompany;
 
-    public CompanyDaoQdsl() {
-//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(DAOUtils.EMF_NAME);
-//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.excilys.formation.cdb.config.HibernatePersistenceConfigCLI");
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
-//        Session session;
-//        session.get
-        this.queryFactory = new JPAQueryFactory(entityManager);
+    @Autowired
+    public CompanyDaoQdsl(SessionFactory sessionFactory) {
+        this.queryFactory = new HibernateQueryFactory(sessionFactory.getCurrentSession());
         this.qCompany = QCompany.company;
     }
 

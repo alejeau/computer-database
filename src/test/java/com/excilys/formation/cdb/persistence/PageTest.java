@@ -2,7 +2,6 @@ package com.excilys.formation.cdb.persistence;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Model;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
 import com.excilys.formation.cdb.paginator.core.Page;
 import org.junit.Test;
 

@@ -7,7 +7,7 @@ import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.ComputerService;
 
 public class ComputerPage extends Page<Computer> {
-    ComputerService computerService;
+    protected ComputerService computerService;
 
     ComputerPage() {
         super();

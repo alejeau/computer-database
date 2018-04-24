@@ -7,7 +7,7 @@ import com.excilys.formation.cdb.paginator.core.Page;
 import com.excilys.formation.cdb.service.CompanyService;
 
 public class CompanyPage extends Page<Company> {
-    CompanyService companyService;
+    protected CompanyService companyService;
 
     CompanyPage() {
         super();
