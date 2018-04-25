@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = HibernatePersistenceConfigTest.class)
-@Transactional
 public class CompanyDAOTest {
     @Autowired
     private CompanyDAO companyDAO;

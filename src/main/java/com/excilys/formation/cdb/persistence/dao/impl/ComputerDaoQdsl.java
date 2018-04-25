@@ -14,7 +14,13 @@
 //import java.util.Collections;
 //import java.util.List;
 //
+//
+//import org.springframework.transaction.annotation.EnableTransactionManagement;
+//import org.springframework.transaction.annotation.Transactional;
+//
 //@Repository
+//@Transactional
+//@EnableTransactionManagement
 //public class ComputerDaoQdsl implements ComputerDAO {
 //
 //    private HibernateQueryFactory queryFactory;
