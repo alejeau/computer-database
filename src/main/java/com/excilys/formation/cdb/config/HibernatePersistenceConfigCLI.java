@@ -10,34 +10,25 @@ import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.persistence",
         "com.excilys.formation.cdb.persistence.dao.impl",
         "com.excilys.formation.cdb.service.impl",
+        "com.excilys.formation.cdb.validators",
         "com.excilys.formation.cdb.paginator.pager",
-        "com.excilys.formation.cdb.mapper",
-        "com.excilys.formation.cdb.ui"
+        "com.excilys.formation.cdb.mapper.request"
 })
 public class HibernatePersistenceConfigCLI extends ParamsFactory {
     private Environment environment;
-
-    @Value("${jdbc.driverClassName}")
-    private String driverClassName;
-
-    @Value("${jdbc.jdbcUrl}")
-    private String url;
-
-    @Value("${jdbc.username}")
-    private String username;
-
-    @Value("${jdbc.password}")
-    private String password;
 
     @Autowired
     public HibernatePersistenceConfigCLI(Environment environment) {
@@ -46,25 +37,23 @@ public class HibernatePersistenceConfigCLI extends ParamsFactory {
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model");
-        sessionFactory.setHibernateProperties(hibernateProperties());
-
-        return sessionFactory;
+        return createSessionFactory(dataSource(), hibernateProperties());
     }
 
     @Bean
     public DataSource dataSource() {
-        return createDataSource(driverClassName, url, username, password);
+        return createDataSource(
+                environment.getProperty("jdbc.driverClassName"),
+                environment.getProperty("jdbc.jdbcUrl"),
+                environment.getProperty("jdbc.username"),
+                environment.getProperty("jdbc.password")
+        );
     }
 
     @Bean
     @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(sessionFactory);
-        return txManager;
+    public PlatformTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
+        return new HibernateTransactionManager(sessionFactory);
     }
 
     @Bean
@@ -74,10 +63,13 @@ public class HibernatePersistenceConfigCLI extends ParamsFactory {
 
     private Properties hibernateProperties() {
         return new Properties() {
+            // Using Environment to get the properties because they are otherwise equals to ${value}
             {
-                setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
-                setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
-                setProperty("hibernate.globally_quoted_identifiers", "true");
+                Arrays.asList(
+                        "hibernate.hbm2ddl.auto",
+                        "hibernate.dialect",
+                        "hibernate.show_sql"
+                ).forEach(p -> setProperty(p, environment.getProperty(p)));
             }
         };
     }

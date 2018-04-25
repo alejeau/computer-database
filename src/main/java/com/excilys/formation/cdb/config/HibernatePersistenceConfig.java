@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.config;
 
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,15 +9,25 @@ import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-//@ComponentScan("com.excilys.formation.cdb.persistence")
-public class HibernatePersistenceConfig {
+@ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.persistence",
+        "com.excilys.formation.cdb.persistence.dao.impl",
+        "com.excilys.formation.cdb.service.impl",
+        "com.excilys.formation.cdb.validators",
+        "com.excilys.formation.cdb.paginator.pager",
+        "com.excilys.formation.cdb.mapper.request",
+        "com.excilys.formation.cdb.controllers"
+})
+public class HibernatePersistenceConfig extends ParamsFactory{
     private Environment environment;
 
     @Autowired
@@ -28,33 +37,23 @@ public class HibernatePersistenceConfig {
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-//        sessionFactory.setPackagesToScan(
-//                "com.excilys.formation.cdb.model"
-//                , "com.excilys.formation.cdb.persistence"
-//        );
-        sessionFactory.setHibernateProperties(hibernateProperties());
-
-        return sessionFactory;
+        return createSessionFactory(dataSource(), hibernateProperties());
     }
 
     @Bean
     public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.user"));
-        dataSource.setPassword(environment.getProperty("jdbc.pass"));
-        return dataSource;
+        return createDataSource(
+                environment.getProperty("jdbc.driverClassName"),
+                environment.getProperty("jdbc.jdbcUrl"),
+                environment.getProperty("jdbc.username"),
+                environment.getProperty("jdbc.password")
+        );
     }
 
     @Bean
     @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(sessionFactory);
-        return txManager;
+    public PlatformTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
+        return new HibernateTransactionManager(sessionFactory);
     }
 
     @Bean
@@ -64,10 +63,13 @@ public class HibernatePersistenceConfig {
 
     private Properties hibernateProperties() {
         return new Properties() {
+            // Using Environment to get the properties because they are otherwise equals to ${value}
             {
-                setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
-                setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
-                setProperty("hibernate.globally_quoted_identifiers", "true");
+                Arrays.asList(
+                        "hibernate.hbm2ddl.auto",
+                        "hibernate.dialect",
+                        "hibernate.show_sql"
+                ).forEach(p -> setProperty(p, environment.getProperty(p)));
             }
         };
     }

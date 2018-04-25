@@ -45,17 +45,12 @@ public class HibernatePersistenceConfigTest extends ParamsFactory {
 
     @Bean
     public DataSource dataSource() {
-        final String DRIVER_CLASS_NAME = "hsqldb.driverClassName";
-        final String URL = "hsqldb.url";
-        final String USERNAME = "hsqldb.username";
-        final String PASSWORD = "hsqldb.password";
-
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(environment.getProperty(DRIVER_CLASS_NAME));
-        dataSource.setUrl(environment.getProperty(URL));
-        dataSource.setUsername(environment.getProperty(USERNAME));
-        dataSource.setPassword(environment.getProperty(PASSWORD));
-        return dataSource;
+        return createDataSource(
+                environment.getProperty("hsqldb.driverClassName"),
+                environment.getProperty("hsqldb.url"),
+                environment.getProperty("hsqldb.username"),
+                environment.getProperty("hsqldb.password")
+                );
     }
 
     @Bean
@@ -73,12 +68,11 @@ public class HibernatePersistenceConfigTest extends ParamsFactory {
         return new Properties() {
             // Using Environment to get the properties because they are otherwise equals to ${value}
             {
-                final String HBM2DDL = "hibernate.hbm2ddl.auto";
-                final String DIALECT = "hibernate.dialect";
-                final String SHOW_SQL = "hibernate.show_sql";
-
-                Arrays.asList(HBM2DDL, DIALECT, SHOW_SQL)
-                        .forEach(p -> setProperty(p, environment.getProperty(p)));
+                Arrays.asList(
+                        "hibernate.hbm2ddl.auto",
+                        "hibernate.dialect",
+                        "hibernate.show_sql"
+                ).forEach(p -> setProperty(p, environment.getProperty(p)));
             }
         };
     }
