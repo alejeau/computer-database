@@ -24,7 +24,7 @@ import java.util.Properties;
         "com.excilys.formation.cdb.mapper",
         "com.excilys.formation.cdb.ui"
 })
-public class HibernatePersistenceConfigCLI extends DataSourceFactory {
+public class HibernatePersistenceConfigCLI extends ParamsFactory {
     private Environment environment;
 
     @Value("${jdbc.driverClassName}")

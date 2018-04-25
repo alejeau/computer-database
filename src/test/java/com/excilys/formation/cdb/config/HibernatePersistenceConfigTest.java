@@ -11,9 +11,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.Properties;
 
 @Configuration
@@ -28,7 +30,7 @@ import java.util.Properties;
         "com.excilys.formation.cdb.paginator.pager",
         "com.excilys.formation.cdb.mapper.request"
 })
-public class HibernatePersistenceConfigTest {
+public class HibernatePersistenceConfigTest extends ParamsFactory {
     private Environment environment;
 
     @Autowired
@@ -36,32 +38,30 @@ public class HibernatePersistenceConfigTest {
         this.environment = environment;
     }
 
-    @Bean
+    @Bean("SessionFactory")
     public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model");
-        sessionFactory.setHibernateProperties(hibernateProperties());
-
-        return sessionFactory;
+        return createSessionFactory(dataSource(), hibernateProperties());
     }
 
     @Bean
     public DataSource dataSource() {
+        final String DRIVER_CLASS_NAME = "hsqldb.driverClassName";
+        final String URL = "hsqldb.url";
+        final String USERNAME = "hsqldb.username";
+        final String PASSWORD = "hsqldb.password";
+
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(environment.getProperty("hsqldb.driverClassName"));
-        dataSource.setUrl(environment.getProperty("hsqldb.url"));
-        dataSource.setUsername(environment.getProperty("hsqldb.user"));
-        dataSource.setPassword(environment.getProperty("hsqldb.pass"));
+        dataSource.setDriverClassName(environment.getProperty(DRIVER_CLASS_NAME));
+        dataSource.setUrl(environment.getProperty(URL));
+        dataSource.setUsername(environment.getProperty(USERNAME));
+        dataSource.setPassword(environment.getProperty(PASSWORD));
         return dataSource;
     }
 
     @Bean
     @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(sessionFactory);
-        return txManager;
+    public PlatformTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
+        return new HibernateTransactionManager(sessionFactory);
     }
 
     @Bean
@@ -71,10 +71,14 @@ public class HibernatePersistenceConfigTest {
 
     private Properties hibernateProperties() {
         return new Properties() {
+            // Using Environment to get the properties because they are otherwise equals to ${value}
             {
-                setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
-                setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
-                setProperty("hibernate.globally_quoted_identifiers", "true");
+                final String HBM2DDL = "hibernate.hbm2ddl.auto";
+                final String DIALECT = "hibernate.dialect";
+                final String SHOW_SQL = "hibernate.show_sql";
+
+                Arrays.asList(HBM2DDL, DIALECT, SHOW_SQL)
+                        .forEach(p -> setProperty(p, environment.getProperty(p)));
             }
         };
     }
