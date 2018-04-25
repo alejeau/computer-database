@@ -27,11 +27,11 @@ import java.util.Properties;
         "com.excilys.formation.cdb.mapper.request",
         "com.excilys.formation.cdb.controllers"
 })
-public class HibernatePersistenceConfig extends ParamsFactory{
+public class HibernatePersistenceConfigWebApp extends ParamsFactory{
     private Environment environment;
 
     @Autowired
-    public HibernatePersistenceConfig(Environment environment) {
+    public HibernatePersistenceConfigWebApp(Environment environment) {
         this.environment = environment;
     }
 

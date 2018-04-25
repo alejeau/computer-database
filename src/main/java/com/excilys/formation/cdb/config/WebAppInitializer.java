@@ -13,7 +13,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{HibernatePersistenceConfig.class};
+        return new Class[]{HibernatePersistenceConfigWebApp.class};
     }
 
     @Override
