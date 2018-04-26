@@ -41,7 +41,7 @@ public class CompanyDaoQdsl implements CompanyDAO {
         HibernateQuery<Company> query = new HibernateQuery<>(session);
         Long result = query.select(qCompany.id)
                 .from(qCompany)
-                .where(qCompany.name.eq(name))
+                .where(qCompany.name.contains(name))
                 .fetchCount();
         session.close();
         return result;

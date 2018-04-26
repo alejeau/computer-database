@@ -68,6 +68,8 @@
 
         <!-- ORM -->
         <hibernate.version>5.1.13.Final</hibernate.version>
+        <hibernate-jpa.version>1.0.2.Final</hibernate-jpa.version>
+        <hibernate-hql.version>1.5.0.Final</hibernate-hql.version>
         <hibernate-validator.version>6.0.9.Final</hibernate-validator.version>
         <javassist.version>3.18.2-GA</javassist.version>
         <querydsl.version>4.2.1</querydsl.version>
@@ -291,11 +293,21 @@
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate.javax.persistence</groupId>-->
+            <!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->
+            <!--<version>${hibernate-jpa.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate.hql</groupId>-->
+            <!--<artifactId>hibernate-hql-parser</artifactId>-->
+            <!--<version>${hibernate-hql.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-testing</artifactId>
@@ -352,6 +364,11 @@
             <artifactId>querydsl-apt</artifactId>
             <version>${querydsl.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl.version}</version>
         </dependency>
         <dependency>
             <groupId>com.querydsl</groupId>

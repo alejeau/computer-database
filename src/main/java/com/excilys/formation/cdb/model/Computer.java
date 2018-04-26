@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -27,6 +28,8 @@ public class Computer implements Model {
 
     @Column(name = DbFields.COMPUTER_DISCONTINUED)
     private LocalDate discontinued;
+
+    @ManyToOne
     private Company company;
 
     public Computer() {
