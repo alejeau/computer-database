@@ -73,6 +73,7 @@
         <hibernate-validator.version>6.0.9.Final</hibernate-validator.version>
         <javassist.version>3.18.2-GA</javassist.version>
         <querydsl.version>4.2.1</querydsl.version>
+        <joda-time.version>2.9.9</joda-time.version>
 
         <!-- Connection Pool -->
         <tomcat-dbcp.version>7.0.55</tomcat-dbcp.version>
@@ -358,6 +359,12 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-sql-spring</artifactId>
             <version>${querydsl.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
         </dependency>
 
 
