@@ -1,5 +1,7 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import org.springframework.stereotype.Component;
+
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY;
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_ID;
 import static com.excilys.formation.cdb.persistence.dao.impl.DbFields.COMPANY_NAME;

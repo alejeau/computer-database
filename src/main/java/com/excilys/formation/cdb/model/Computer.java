@@ -1,18 +1,23 @@
 package com.excilys.formation.cdb.model;
 
+import com.excilys.formation.cdb.persistence.dao.impl.DAOUtils;
 import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
+import org.hibernate.annotations.SQLInsert;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
+//@SQLInsert(sql = DAOUtils.INSERT_COMPUTER)
+@Table(name = DbFields.COMPUTER)
 public class Computer implements Model {
 
     @Id
@@ -30,6 +35,7 @@ public class Computer implements Model {
     private LocalDate discontinued;
 
     @ManyToOne
+    @JoinColumn(name = DbFields.COMPUTER_COMPANY_ID)
     private Company company;
 
     public Computer() {
