@@ -1,0 +1,23 @@
+.idea/
+*.svn
+.DS_Store
+.project
+.settings
+.classpath
+*.factorypath
+Thumbs.db
+bin
+target
+*~
+
+/build/
+src/main/webapp/WEB-INF/lib/*
+computer-database.iml
+
+#config files
+config/db/db.properties
+cdb.log
+logs/*
+scr/main/webapp/WEB-INF/lib/*
+WebContent/WEB-INF/lib/*
+out/*
