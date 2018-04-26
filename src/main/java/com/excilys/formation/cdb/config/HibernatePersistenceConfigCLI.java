@@ -2,7 +2,6 @@ package com.excilys.formation.cdb.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +34,7 @@ public class HibernatePersistenceConfigCLI extends ParamsFactory {
         this.environment = environment;
     }
 
-    @Bean
+    @Bean("SessionFactory")
     public LocalSessionFactoryBean sessionFactory() {
         return createSessionFactory(dataSource(), hibernateProperties());
     }

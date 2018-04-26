@@ -35,7 +35,8 @@ public class HibernatePersistenceConfigWebApp extends ParamsFactory{
         this.environment = environment;
     }
 
-    @Bean
+
+    @Bean("SessionFactory")
     public LocalSessionFactoryBean sessionFactory() {
         return createSessionFactory(dataSource(), hibernateProperties());
     }

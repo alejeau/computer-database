@@ -1,12 +1,11 @@
 package com.excilys.formation.cdb.model;
 
-import com.excilys.formation.cdb.persistence.dao.impl.DAOUtils;
 import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
-import org.hibernate.annotations.SQLInsert;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,12 +15,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
-//@SQLInsert(sql = DAOUtils.INSERT_COMPUTER)
 @Table(name = DbFields.COMPUTER)
 public class Computer implements Model {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = DbFields.COMPUTER_ID)
     private Long id;
 
