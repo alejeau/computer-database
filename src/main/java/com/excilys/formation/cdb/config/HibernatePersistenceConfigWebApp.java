@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -18,6 +19,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource("classpath:/properties/db.properties")
 @ComponentScan(basePackages = {
         "com.excilys.formation.cdb.persistence",
         "com.excilys.formation.cdb.persistence.dao.impl",
@@ -27,7 +29,7 @@ import java.util.Properties;
         "com.excilys.formation.cdb.mapper.request",
         "com.excilys.formation.cdb.controllers"
 })
-public class HibernatePersistenceConfigWebApp extends ParamsFactory{
+public class HibernatePersistenceConfigWebApp extends ParamsFactory {
     private Environment environment;
 
     @Autowired
