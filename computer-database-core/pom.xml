@@ -5,20 +5,52 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.excilys.formation.computerdb</groupId>
+        <groupId>com.excilys.formation.cdb</groupId>
         <artifactId>computer-database</artifactId>
-        <version>${computer-database.version}</version>
+        <version>4.6.2-SNAPSHOT</version>
     </parent>
 
-    <name>computer-database</name>
-    <url>https://github.com/alejeau/computer-database</url>
-    
-    <groupId>com.excilys.formation.computerdb.core</groupId>
+    <groupId>com.excilys.formation.cdb.core</groupId>
     <artifactId>computer-database-core</artifactId>
     <version>${computer-database.core.version}</version>
+    <name>computer-database-core</name>
 
     <properties>
         <!-- sets the projects encoding to UTF-8 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <build>
+        <plugins>
+            <!-- Plugin for QueryDSL APT -->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!-- To enable Hibernate proxy model -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${javassist.version}</version>
+        </dependency>
+
+        <!-- ORM -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <!-- QueryDSL -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <!-- annotation processing tool -->
+            <artifactId>querydsl-apt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
