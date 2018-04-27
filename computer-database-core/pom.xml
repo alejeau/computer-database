@@ -43,7 +43,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <!-- StringUtils -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -69,6 +69,18 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <!-- QueryDSL -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <!-- annotation processing tool -->
+            <artifactId>querydsl-apt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
         </dependency>
     </dependencies>
 </project>
