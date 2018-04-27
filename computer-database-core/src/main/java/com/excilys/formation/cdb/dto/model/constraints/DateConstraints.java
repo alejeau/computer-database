@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.validators;
+package com.excilys.formation.cdb.dto.model.constraints;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

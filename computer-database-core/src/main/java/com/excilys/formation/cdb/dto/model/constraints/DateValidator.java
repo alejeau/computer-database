@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.validators;
+package com.excilys.formation.cdb.dto.model.constraints;
 
 import com.excilys.formation.cdb.model.DatePattern;
 import org.apache.commons.lang3.StringUtils;

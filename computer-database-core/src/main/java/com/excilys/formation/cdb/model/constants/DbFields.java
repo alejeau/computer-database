@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.persistence.dao.impl;
+package com.excilys.formation.cdb.model.constants;
 
 import org.springframework.stereotype.Component;
 

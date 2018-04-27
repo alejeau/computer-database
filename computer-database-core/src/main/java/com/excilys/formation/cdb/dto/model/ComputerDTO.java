@@ -1,14 +1,10 @@
 package com.excilys.formation.cdb.dto.model;
 
 import com.excilys.formation.cdb.dto.ModelDTO;
-import com.excilys.formation.cdb.model.DatePattern;
-import com.excilys.formation.cdb.validators.DateConstraints;
-import com.excilys.formation.cdb.validators.NameConstraints;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.excilys.formation.cdb.dto.model.constraints.DateConstraints;
+import com.excilys.formation.cdb.dto.model.constraints.NameConstraints;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @DateConstraints(

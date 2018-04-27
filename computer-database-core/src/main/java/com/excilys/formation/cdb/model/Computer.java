@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.model;
 
-import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
+import com.excilys.formation.cdb.model.constants.DbFields;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
