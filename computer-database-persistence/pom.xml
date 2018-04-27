@@ -10,10 +10,11 @@
         <version>4.6.2-SNAPSHOT</version>
     </parent>
 
+    <packaging>jar</packaging>
     <groupId>com.excilys.formation.cdb.persistence</groupId>
     <artifactId>computer-database-persistence</artifactId>
-    <version>${computer-database.persistence.version}</version>
     <name>computer-database-persistence</name>
+    <version>0.0.1-SNAPSHOT</version>
 
     <properties>
         <!-- sets the projects encoding to UTF-8 -->
@@ -22,8 +23,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.excilys.formation.cdb</groupId>
-            <artifactId>computer-database-binding</artifactId>
+            <groupId>com.excilys.formation.cdb.core</groupId>
+            <artifactId>computer-database-core</artifactId>
         </dependency>
 
         <!-- ORM -->
@@ -31,59 +32,52 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <!-- Necessary to correctly convert LocalDate -->
-            <artifactId>hibernate-java8</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-entitymanager</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--&lt;!&ndash; Necessary to correctly convert LocalDate &ndash;&gt;-->
+            <!--<artifactId>hibernate-java8</artifactId>-->
+        <!--</dependency>-->
 
-        <!-- These modules are no longer imported by default in Java 9 -->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-        </dependency>
-
-        <!-- Connection Pool -->
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-dbcp</artifactId>
-        </dependency>
+        <!--&lt;!&ndash; These modules are no longer imported by default in Java 9 &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>javax.xml.bind</groupId>-->
+            <!--<artifactId>jaxb-api</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.xml.bind</groupId>-->
+            <!--<artifactId>jaxb-core</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.xml.bind</groupId>-->
+            <!--<artifactId>jaxb-impl</artifactId>-->
+        <!--</dependency>-->
 
         <!-- QueryDSL -->
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-sql-spring</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.querydsl</groupId>-->
+            <!--<artifactId>querydsl-sql-spring</artifactId>-->
+        <!--</dependency>-->
 
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-orm</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>

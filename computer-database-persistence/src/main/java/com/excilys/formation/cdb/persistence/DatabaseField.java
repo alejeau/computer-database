@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.persistence;
 
-import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
+import com.excilys.formation.cdb.model.constants.DbFields;
 
 public enum DatabaseField {
     COMPUTER_NAME(DbFields.COMPUTER_NAME),

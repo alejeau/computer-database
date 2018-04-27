@@ -12,8 +12,8 @@
     <modules>
         <module>computer-database-core</module>
         <module>computer-database-persistence</module>
-        <module>computer-database-service</module>
         <module>computer-database-binding</module>
+        <module>computer-database-service</module>
         <module>computer-database-webapp</module>
         <module>computer-database-console</module>
     </modules>
@@ -27,6 +27,13 @@
 
         <!-- Tomcat path -->
         <tomcat.home>/home/${user.name}/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
+
+        <computer-database-core.version>0.0.1-SNAPSHOT</computer-database-core.version>
+        <computer-database-persistence.version>0.0.1-SNAPSHOT</computer-database-persistence.version>
+        <computer-database-service.version>0.0.1-SNAPSHOT</computer-database-service.version>
+        <computer-database-binding.version>0.0.1-SNAPSHOT</computer-database-binding.version>
+        <computer-database-webapp.version>0.0.1-SNAPSHOT</computer-database-webapp.version>
+        <computer-database-console.version>0.0.1-SNAPSHOT</computer-database-console.version>
 
         <!-- Java Version-->
         <java.version>1.8</java.version>
@@ -229,6 +236,38 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <!-- Computer Database -->
+            <dependency>
+                <groupId>com.excilys.formation.cdb.core</groupId>
+                <artifactId>computer-database-core</artifactId>
+                <version>${computer-database-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb.persistence</groupId>
+                <artifactId>computer-database-persistence</artifactId>
+                <version>${computer-database-persistence.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb</groupId>
+                <artifactId>computer-database-service</artifactId>
+                <version>${computer-database-service.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb</groupId>
+                <artifactId>computer-database-binding</artifactId>
+                <version>${computer-database-binding.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb</groupId>
+                <artifactId>computer-database-console</artifactId>
+                <version>${computer-database-console.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb</groupId>
+                <artifactId>computer-database-webapp</artifactId>
+                <version>${computer-database-webapp.version}</version>
+            </dependency>
+
             <!--Spring BOM -->
             <dependency>
                 <groupId>org.springframework</groupId>
