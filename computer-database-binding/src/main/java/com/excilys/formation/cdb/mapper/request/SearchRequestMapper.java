@@ -1,12 +1,12 @@
 package com.excilys.formation.cdb.mapper.request;
 
-import com.excilys.formation.cdb.controllers.constants.ComputerField;
-import com.excilys.formation.cdb.controllers.constants.ControllerParameters;
 import com.excilys.formation.cdb.exceptions.ServiceException;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.core.Page;
-import com.excilys.formation.cdb.paginator.pager.ComputerSortedSearchPage;
-import com.excilys.formation.cdb.paginator.pager.PageFactory;
+import com.excilys.formation.cdb.model.constants.ComputerField;
+import com.excilys.formation.cdb.model.constants.ControllerParameters;
+import com.excilys.formation.cdb.model.constants.LimitValue;
+import com.excilys.formation.cdb.service.paginator.core.Page;
+import com.excilys.formation.cdb.service.paginator.pager.ComputerSortedSearchPage;
+import com.excilys.formation.cdb.service.paginator.pager.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

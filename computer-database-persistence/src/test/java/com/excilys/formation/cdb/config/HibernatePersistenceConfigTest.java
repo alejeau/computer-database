@@ -19,21 +19,17 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:/properties/db.properties")
+@PropertySource("classpath:/properties/db-test.properties")
 @ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.utils",
         "com.excilys.formation.cdb.persistence",
-        "com.excilys.formation.cdb.persistence.dao.impl",
-        "com.excilys.formation.cdb.service.impl",
-        "com.excilys.formation.cdb.service.validators",
-        "com.excilys.formation.cdb.service.paginator.pager",
-        "com.excilys.formation.cdb.mapper.request",
-        "com.excilys.formation.cdb.ui"
+        "com.excilys.formation.cdb.persistence.dao.impl"
 })
-public class HibernatePersistenceConfigCLI extends ParamsFactory {
+public class HibernatePersistenceConfigTest extends ParamsFactory {
     private Environment environment;
 
     @Autowired
-    public HibernatePersistenceConfigCLI(Environment environment) {
+    public HibernatePersistenceConfigTest(Environment environment) {
         this.environment = environment;
     }
 
@@ -45,10 +41,10 @@ public class HibernatePersistenceConfigCLI extends ParamsFactory {
     @Bean
     public DataSource dataSource() {
         return createDataSource(
-                environment.getProperty("jdbc.driverClassName"),
-                environment.getProperty("jdbc.jdbcUrl"),
-                environment.getProperty("jdbc.username"),
-                environment.getProperty("jdbc.password")
+                environment.getProperty("hsqldb.driverClassName"),
+                environment.getProperty("hsqldb.url"),
+                environment.getProperty("hsqldb.username"),
+                environment.getProperty("hsqldb.password")
         );
     }
 

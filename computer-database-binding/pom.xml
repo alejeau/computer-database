@@ -10,9 +10,10 @@
         <version>4.6.2-SNAPSHOT</version>
     </parent>
 
+    <packaging>jar</packaging>
     <groupId>com.excilys.formation.cdb.binding</groupId>
     <artifactId>computer-database-binding</artifactId>
-    <version>${computer-database.binding.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>computer-database-binding</name>
 
     <properties>
@@ -21,30 +22,29 @@
     </properties>
 
     <dependencies>
-        <!-- project's core -->
         <dependency>
-            <groupId>com.excilys.formation.cdb.core</groupId>
-            <artifactId>computer-database-core</artifactId>
+            <groupId>com.excilys.formation.cdb.service</groupId>
+            <artifactId>computer-database-service</artifactId>
         </dependency>
 
-        <!-- Validation -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
+        <!--&lt;!&ndash; Validation &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>javax.validation</groupId>-->
+            <!--<artifactId>validation-api</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate.validator</groupId>-->
+            <!--<artifactId>hibernate-validator</artifactId>-->
+        <!--</dependency>-->
 
-        <!-- Spring Framework -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
+        <!--&lt;!&ndash; Spring Framework &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-context</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-jdbc</artifactId>-->
+        <!--</dependency>-->
     </dependencies>
 </project>

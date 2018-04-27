@@ -10,9 +10,10 @@
         <version>4.6.2-SNAPSHOT</version>
     </parent>
 
+    <packaging>jar</packaging>
     <groupId>com.excilys.formation.cdb.console</groupId>
     <artifactId>computer-database-console</artifactId>
-    <version>${computer-database.console.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>computer-database-console</name>
 
     <properties>
@@ -31,8 +32,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.excilys.formation.cdb</groupId>
-            <artifactId>computer-database-service</artifactId>
+            <groupId>com.excilys.formation.cdb.binding</groupId>
+            <artifactId>computer-database-binding</artifactId>
         </dependency>
     </dependencies>
 </project>

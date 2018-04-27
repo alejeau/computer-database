@@ -5,8 +5,8 @@ import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.model.ComputerMapper;
-import com.excilys.formation.cdb.paginator.pager.ComputerPage;
-import com.excilys.formation.cdb.paginator.pager.ComputerSearchPage;
+import com.excilys.formation.cdb.service.paginator.pager.ComputerPage;
+import com.excilys.formation.cdb.service.paginator.pager.ComputerSearchPage;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

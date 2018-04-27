@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.mapper.validators;
 
-import com.excilys.formation.cdb.validators.core.Error;
+import com.excilys.formation.cdb.service.validators.core.Error;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package com.excilys.formation.cdb.mapper;
 
 import com.excilys.formation.cdb.exceptions.UnauthorizedLimitValueException;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
+import com.excilys.formation.cdb.model.constants.LimitValue;
 import org.springframework.stereotype.Component;
 
 @Component

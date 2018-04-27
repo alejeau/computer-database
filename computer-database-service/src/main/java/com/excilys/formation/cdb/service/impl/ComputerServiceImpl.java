@@ -7,7 +7,7 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.persistence.dao.ComputerDAO;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.validators.ComputerValidator;
+import com.excilys.formation.cdb.service.validators.ComputerValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

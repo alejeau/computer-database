@@ -2,7 +2,7 @@ package com.excilys.formation.cdb.mapper.model;
 
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.persistence.dao.impl.DbFields;
+import com.excilys.formation.cdb.model.constants.DbFields;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
