@@ -14,13 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 
 @Repository
+@EnableTransactionManagement
 public class ComputerDaoQdsl implements ComputerDAO {
-    private static final Logger LOG = LoggerFactory.getLogger(ComputerDAO.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ComputerDaoQdsl.class);
 
     private SessionFactory sessionFactory;
     private QComputer qComputer;
@@ -126,7 +129,13 @@ public class ComputerDaoQdsl implements ComputerDAO {
     }
 
     @Override
+//    @Transactional
     public void updateComputer(Computer c) {
+        LOG.debug("updateComputer");
+        LOG.debug("Computer to update: {}", c);
+        if (c == null) {
+            throw new RuntimeException("Computer is null");
+        }
         try (Session session = sessionFactory.openSession()) {
             new HibernateUpdateClause(session, qComputer)
                     .where(qComputer.id.eq(c.getId()))
@@ -141,6 +150,7 @@ public class ComputerDaoQdsl implements ComputerDAO {
     }
 
     @Override
+//    @Transactional
     public Long persistComputer(Computer c) {
         LOG.debug("Computer to persist: {}", c);
         try (Session session = sessionFactory.openSession()) {

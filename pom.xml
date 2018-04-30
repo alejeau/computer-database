@@ -177,7 +177,8 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/generated-sources/java</outputDirectory>
-                            <processor>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</processor>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                            <!--<processor>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</processor>-->
                         </configuration>
                     </execution>
                 </executions>
