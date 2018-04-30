@@ -21,31 +21,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <build>
-        <plugins>
-            <!-- Tomcat deployment plugin -->
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-            </plugin>
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--&lt;!&ndash; Tomcat deployment plugin &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.tomcat.maven</groupId>-->
+                <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
+            <!--</plugin>-->
 
-            <!-- Cargo deployment plugin -->
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-            </plugin>
+            <!--&lt;!&ndash; Cargo deployment plugin &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.cargo</groupId>-->
+                <!--<artifactId>cargo-maven2-plugin</artifactId>-->
+            <!--</plugin>-->
 
-            <!-- Maven WAR plugin included to avoid failOnMissingWebXml -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war.version}</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+            <!--&lt;!&ndash; Maven WAR plugin included to avoid failOnMissingWebXml &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-war-plugin</artifactId>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
 
     <dependencies>
         <dependency>

@@ -28,6 +28,8 @@
         <!-- Tomcat path -->
         <tomcat.home>/home/${user.name}/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
 
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+
         <computer-database-core.version>0.0.1-SNAPSHOT</computer-database-core.version>
         <computer-database-persistence.version>0.0.1-SNAPSHOT</computer-database-persistence.version>
         <computer-database-service.version>0.0.1-SNAPSHOT</computer-database-service.version>
@@ -42,6 +44,7 @@
         <maven-compiler.version>3.1</maven-compiler.version>
         <maven-war.version>2.4</maven-war.version>
         <maven-apt.version>1.1.3</maven-apt.version>
+        <maven-plugins.version>3.0.2</maven-plugins.version>
 
         <!-- General versions -->
         <mojo.version>1.2.1</mojo.version>
@@ -138,7 +141,9 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/${project.artifactId}</path>
+                    <path>/computer-database</path>
+                    <username>admin</username>
+                    <password>password</password>
                 </configuration>
             </plugin>
 
@@ -172,7 +177,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/generated-sources/java</outputDirectory>
-                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                            <processor>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</processor>
                         </configuration>
                     </execution>
                 </executions>

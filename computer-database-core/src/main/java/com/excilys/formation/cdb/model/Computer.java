@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.model;
 
 import com.excilys.formation.cdb.model.constants.DbFields;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class Computer implements Model {
     @Column(name = DbFields.COMPUTER_DISCONTINUED)
     private LocalDate discontinued;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = DbFields.COMPUTER_COMPANY_ID)
     private Company company;
 

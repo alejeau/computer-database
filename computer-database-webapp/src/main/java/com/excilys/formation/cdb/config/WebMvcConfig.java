@@ -3,7 +3,9 @@ package com.excilys.formation.cdb.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,6 +20,7 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
+@EnableTransactionManagement
 @ComponentScan(basePackages = {
         "com.excilys.formation.cdb.config",
         "com.excilys.formation.cdb.persistence",
@@ -28,6 +31,7 @@ import java.util.Locale;
         "com.excilys.formation.cdb.mapper.request",
         "com.excilys.formation.cdb.controllers"
 })
+@Import(HibernatePersistenceConfig.class)
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
