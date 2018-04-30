@@ -23,8 +23,8 @@ import java.util.Locale;
         "com.excilys.formation.cdb.persistence",
         "com.excilys.formation.cdb.persistence.dao.impl",
         "com.excilys.formation.cdb.service.impl",
-        "com.excilys.formation.cdb.validators",
-        "com.excilys.formation.cdb.paginator.pager",
+        "com.excilys.formation.cdb.service.validators",
+        "com.excilys.formation.cdb.service.paginator.pager",
         "com.excilys.formation.cdb.mapper.request",
         "com.excilys.formation.cdb.controllers"
 })

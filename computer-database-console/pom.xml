@@ -35,5 +35,12 @@
             <groupId>com.excilys.formation.cdb.binding</groupId>
             <artifactId>computer-database-binding</artifactId>
         </dependency>
+
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${myqsl-jdbc.version}</version>
+        </dependency>
     </dependencies>
 </project>

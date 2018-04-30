@@ -1,7 +1,5 @@
 package com.excilys.formation.cdb.controllers;
 
-import com.excilys.formation.cdb.controllers.constants.Paths;
-import com.excilys.formation.cdb.controllers.constants.Views;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import com.excilys.formation.cdb.exceptions.ControllerException;
@@ -9,9 +7,12 @@ import com.excilys.formation.cdb.exceptions.MapperException;
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.pager.ComputerSortedPage;
+import com.excilys.formation.cdb.model.constants.ControllerParameters;
+import com.excilys.formation.cdb.model.constants.LimitValue;
+import com.excilys.formation.cdb.model.constants.Paths;
+import com.excilys.formation.cdb.model.constants.Views;
 import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.paginator.pager.ComputerSortedPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
-
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.CURRENT_PATH;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.IS_ASCENDING;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.LIMIT_VALUES;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ORDER_BY;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.PAGE_DTO;
 
 @Controller
 @RequestMapping(Paths.LOCAL_PATH_DASHBOARD)
@@ -72,13 +67,13 @@ public class DashboardController {
     private ModelAndView setModelAndView(ModelAndView modelAndView, ComputerSortedPage computerSortedPage) throws ServiceException {
         LOG.debug("setModelAndView");
         // Setting the paths
-        modelAndView.addObject(CURRENT_PATH, Paths.ABSOLUTE_PATH_DASHBOARD);
+        modelAndView.addObject(ControllerParameters.CURRENT_PATH, Paths.ABSOLUTE_PATH_DASHBOARD);
 
         PageDTO<ComputerDTO> computerPageDTO = PageMapper.toPageDTO(computerSortedPage, computerService.getNumberOfComputers());
-        modelAndView.addObject(PAGE_DTO, computerPageDTO);
-        modelAndView.addObject(ORDER_BY, computerSortedPage.getOrderBy().getValue());
-        modelAndView.addObject(IS_ASCENDING, computerSortedPage.isAscending());
-        modelAndView.addObject(LIMIT_VALUES, LimitValue.toLongList());
+        modelAndView.addObject(ControllerParameters.PAGE_DTO, computerPageDTO);
+        modelAndView.addObject(ControllerParameters.ORDER_BY, computerSortedPage.getOrderBy().getValue());
+        modelAndView.addObject(ControllerParameters.IS_ASCENDING, computerSortedPage.isAscending());
+        modelAndView.addObject(ControllerParameters.LIMIT_VALUES, LimitValue.toLongList());
 
         return modelAndView;
     }

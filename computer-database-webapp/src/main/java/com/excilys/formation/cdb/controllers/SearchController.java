@@ -1,7 +1,5 @@
 package com.excilys.formation.cdb.controllers;
 
-import com.excilys.formation.cdb.controllers.constants.Paths;
-import com.excilys.formation.cdb.controllers.constants.Views;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
 import com.excilys.formation.cdb.exceptions.ControllerException;
@@ -10,9 +8,12 @@ import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.mapper.page.PageMapper;
 import com.excilys.formation.cdb.mapper.request.DashboardRequestMapper;
 import com.excilys.formation.cdb.mapper.request.SearchRequestMapper;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.pager.ComputerSortedSearchPage;
+import com.excilys.formation.cdb.model.constants.ControllerParameters;
+import com.excilys.formation.cdb.model.constants.LimitValue;
+import com.excilys.formation.cdb.model.constants.Paths;
+import com.excilys.formation.cdb.model.constants.Views;
 import com.excilys.formation.cdb.service.ComputerService;
+import com.excilys.formation.cdb.service.paginator.pager.ComputerSortedSearchPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
-
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.CURRENT_PATH;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.IS_ASCENDING;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.LIMIT_VALUES;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ORDER_BY;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.PAGE_DTO;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.SEARCH_FIELD;
 
 @Controller
 @RequestMapping(Paths.LOCAL_PATH_SEARCH_COMPUTER)
@@ -76,15 +70,15 @@ public class SearchController {
     private ModelAndView setModelAndView(ModelAndView modelAndView, ComputerSortedSearchPage cssp) throws ServiceException {
         LOG.debug("setRequest");
         // Setting the paths
-        modelAndView.addObject(CURRENT_PATH, Paths.ABSOLUTE_PATH_SEARCH_COMPUTER);
+        modelAndView.addObject(ControllerParameters.CURRENT_PATH, Paths.ABSOLUTE_PATH_SEARCH_COMPUTER);
 
         SearchPageDTO<ComputerDTO> computerSearchPageDTO = PageMapper
                 .toSearchPageDTO(cssp, computerService.getNumberOfComputersWithName(cssp.getSearch()));
-        modelAndView.addObject(PAGE_DTO, computerSearchPageDTO);
-        modelAndView.addObject(ORDER_BY, cssp.getOrderBy().getValue());
-        modelAndView.addObject(IS_ASCENDING, cssp.isAscending());
-        modelAndView.addObject(SEARCH_FIELD, cssp.getSearch());
-        modelAndView.addObject(LIMIT_VALUES, LimitValue.toLongList());
+        modelAndView.addObject(ControllerParameters.PAGE_DTO, computerSearchPageDTO);
+        modelAndView.addObject(ControllerParameters.ORDER_BY, cssp.getOrderBy().getValue());
+        modelAndView.addObject(ControllerParameters.IS_ASCENDING, cssp.isAscending());
+        modelAndView.addObject(ControllerParameters.SEARCH_FIELD, cssp.getSearch());
+        modelAndView.addObject(ControllerParameters.LIMIT_VALUES, LimitValue.toLongList());
 
         return modelAndView;
     }

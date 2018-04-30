@@ -10,6 +10,8 @@ import com.querydsl.jpa.hibernate.HibernateQuery;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Repository
 public class ComputerDaoQdsl implements ComputerDAO {
+    private static final Logger LOG = LoggerFactory.getLogger(ComputerDAO.class);
 
     private SessionFactory sessionFactory;
     private QComputer qComputer;
@@ -95,7 +98,6 @@ public class ComputerDaoQdsl implements ComputerDAO {
         List<Computer> computerList = query.fetch();
         session.close();
         return computerList;
-//        throw new NotYetImplementedException();
     }
 
     @Override
@@ -130,11 +132,13 @@ public class ComputerDaoQdsl implements ComputerDAO {
                 .where(qComputer.id.eq(c.getId()))
                 .set(qComputer, c)
                 .execute();
+        session.flush();
         session.close();
     }
 
     @Override
     public Long persistComputer(Computer c) {
+        LOG.debug("Computer to persist: {}", c);
         Session session = sessionFactory.openSession();
         session.persist(c);
         session.flush();

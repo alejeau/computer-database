@@ -27,6 +27,13 @@
             <artifactId>computer-database-core</artifactId>
         </dependency>
 
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${myqsl-jdbc.version}</version>
+        </dependency>
+
         <!-- ORM -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -67,10 +74,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
+        <!-- Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>

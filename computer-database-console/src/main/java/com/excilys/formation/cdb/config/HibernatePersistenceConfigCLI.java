@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.config;
 
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,17 +40,22 @@ public class HibernatePersistenceConfigCLI extends ParamsFactory {
 
     @Bean("SessionFactory")
     public LocalSessionFactoryBean sessionFactory() {
-        return createSessionFactory(dataSource(), hibernateProperties());
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model");
+        sessionFactory.setHibernateProperties(hibernateProperties());
+
+        return sessionFactory;
     }
 
     @Bean
     public DataSource dataSource() {
-        return createDataSource(
-                environment.getProperty("jdbc.driverClassName"),
-                environment.getProperty("jdbc.jdbcUrl"),
-                environment.getProperty("jdbc.username"),
-                environment.getProperty("jdbc.password")
-        );
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(environment.getProperty("jdbc.jdbcUrl"));
+        dataSource.setUsername(environment.getProperty("jdbc.username"));
+        dataSource.setPassword(environment.getProperty("jdbc.password"));
+        return dataSource;
     }
 
     @Bean

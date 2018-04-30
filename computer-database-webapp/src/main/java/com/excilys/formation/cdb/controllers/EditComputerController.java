@@ -1,8 +1,5 @@
 package com.excilys.formation.cdb.controllers;
 
-import com.excilys.formation.cdb.controllers.constants.ControllerParameters;
-import com.excilys.formation.cdb.controllers.constants.Paths;
-import com.excilys.formation.cdb.controllers.constants.Views;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.exceptions.ControllerException;
@@ -14,13 +11,16 @@ import com.excilys.formation.cdb.mapper.request.UrlMapper;
 import com.excilys.formation.cdb.mapper.validators.ErrorMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.paginator.core.LimitValue;
-import com.excilys.formation.cdb.paginator.core.Page;
+import com.excilys.formation.cdb.model.constants.ControllerParameters;
+import com.excilys.formation.cdb.model.constants.LimitValue;
+import com.excilys.formation.cdb.model.constants.Paths;
+import com.excilys.formation.cdb.model.constants.Views;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.validators.ComputerDTOValidator;
-import com.excilys.formation.cdb.validators.ComputerValidator;
-import com.excilys.formation.cdb.validators.core.Error;
+import com.excilys.formation.cdb.service.paginator.core.Page;
+import com.excilys.formation.cdb.service.validators.ComputerDTOValidator;
+import com.excilys.formation.cdb.service.validators.ComputerValidator;
+import com.excilys.formation.cdb.service.validators.core.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPANY_LIST;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.COMPUTER_DTO;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.DISPLAY_SUCCESS_MESSAGE;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.ERROR_MAP;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.TARGET_DISPLAY_BY;
-import static com.excilys.formation.cdb.controllers.constants.ControllerParameters.TARGET_PAGE_NUMBER;
 
 @Controller
 @RequestMapping(Paths.LOCAL_PATH_EDIT_COMPUTER)
@@ -138,17 +131,17 @@ public class EditComputerController {
         modelAndView.addObject(ControllerParameters.CURRENT_PATH, Paths.ABSOLUTE_PATH_EDIT_COMPUTER);
 
         // URL attributes
-        modelAndView.addObject(TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(params, ControllerParameters.PAGE_NB, Page.FIRST_PAGE));
-        modelAndView.addObject(TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(params, LimitValue.TEN).getValue());
+        modelAndView.addObject(ControllerParameters.TARGET_PAGE_NUMBER, UrlMapper.mapLongNumber(params, ControllerParameters.PAGE_NB, Page.FIRST_PAGE));
+        modelAndView.addObject(ControllerParameters.TARGET_DISPLAY_BY, UrlMapper.mapDisplayBy(params, LimitValue.TEN).getValue());
 
-        modelAndView.addObject(DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
-        modelAndView.addObject(COMPUTER_DTO, computerDTO);
+        modelAndView.addObject(ControllerParameters.DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
+        modelAndView.addObject(ControllerParameters.COMPUTER_DTO, computerDTO);
 
         List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
-        modelAndView.addObject(COMPANY_LIST, companyList);
+        modelAndView.addObject(ControllerParameters.COMPANY_LIST, companyList);
 
         Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
-        modelAndView.addObject(ERROR_MAP, hashMap);
+        modelAndView.addObject(ControllerParameters.ERROR_MAP, hashMap);
 
         return modelAndView;
     }

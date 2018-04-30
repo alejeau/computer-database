@@ -1,6 +1,6 @@
 package com.excilys.formation.cdb.controllers;
 
-import com.excilys.formation.cdb.controllers.constants.Views;
+import com.excilys.formation.cdb.model.constants.Views;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
