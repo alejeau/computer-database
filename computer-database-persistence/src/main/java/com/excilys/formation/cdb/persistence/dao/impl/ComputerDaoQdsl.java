@@ -127,22 +127,26 @@ public class ComputerDaoQdsl implements ComputerDAO {
 
     @Override
     public void updateComputer(Computer c) {
-        Session session = sessionFactory.openSession();
-        new HibernateUpdateClause(session, qComputer)
-                .where(qComputer.id.eq(c.getId()))
-                .set(qComputer, c)
-                .execute();
-        session.flush();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            new HibernateUpdateClause(session, qComputer)
+                    .where(qComputer.id.eq(c.getId()))
+                    .set(qComputer.id, c.getId())
+                    .set(qComputer.name, c.getName())
+                    .set(qComputer.introduced, c.getIntroduced())
+                    .set(qComputer.discontinued, c.getDiscontinued())
+                    .set(qComputer.company.id, c.getCompany().getId())
+                    .execute();
+            session.flush();
+        }
     }
 
     @Override
     public Long persistComputer(Computer c) {
         LOG.debug("Computer to persist: {}", c);
-        Session session = sessionFactory.openSession();
-        session.persist(c);
-        session.flush();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            session.persist(c);
+            session.flush();
+        }
         return c.getId();
     }
 
