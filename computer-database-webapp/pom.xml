@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.excilys.formation.cdb</groupId>
+        <artifactId>computer-database</artifactId>
+        <version>4.6.2-SNAPSHOT</version>
+    </parent>
+
+    <packaging>war</packaging>
+    <groupId>com.excilys.formation.cdb.webapp</groupId>
+    <artifactId>computer-database-webapp</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>computer-database-webapp</name>
+
+    <properties>
+        <!-- sets the projects encoding to UTF-8 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--&lt;!&ndash; Tomcat deployment plugin &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.tomcat.maven</groupId>-->
+                <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
+            <!--</plugin>-->
+
+            <!--&lt;!&ndash; Cargo deployment plugin &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.cargo</groupId>-->
+                <!--<artifactId>cargo-maven2-plugin</artifactId>-->
+            <!--</plugin>-->
+
+            <!--&lt;!&ndash; Maven WAR plugin included to avoid failOnMissingWebXml &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-war-plugin</artifactId>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.excilys.formation.cdb.binding</groupId>
+            <artifactId>computer-database-binding</artifactId>
+        </dependency>
+
+        <!-- JEE -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+    </dependencies>
+</project>
