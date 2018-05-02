@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,17 +37,20 @@ public class ComputerDaoQdsl implements ComputerDAO {
 
     @Override
     public Long getNumberOfComputers() {
+        LOG.debug("getNumberOfComputers {}");
         Session session = sessionFactory.openSession();
         HibernateQuery<Computer> query = new HibernateQuery<>(session);
         Long result = query.select(qComputer.id)
                 .from(qComputer)
                 .fetchCount();
         session.close();
+        LOG.debug("Returning {}", result);
         return result;
     }
 
     @Override
     public Long getNumberOfComputersWithName(String name) {
+        LOG.debug("getNumberOfComputersWithName {}");
         Session session = sessionFactory.openSession();
         HibernateQuery<Computer> query = new HibernateQuery<>(session);
         Long result = query.select(qComputer.id)
@@ -59,11 +61,13 @@ public class ComputerDaoQdsl implements ComputerDAO {
                 )
                 .fetchCount();
         session.close();
+        LOG.debug("Returning {}", result);
         return result;
     }
 
     @Override
     public Computer getComputer(Long id) {
+        LOG.debug("getComputer {}");
         Session session = sessionFactory.openSession();
         HibernateQuery<Computer> query = new HibernateQuery<>(session);
         Computer result = query.select(qComputer)
@@ -72,16 +76,19 @@ public class ComputerDaoQdsl implements ComputerDAO {
                 .where(qComputer.id.eq(id))
                 .fetchOne();
         session.close();
+        LOG.debug("Returning {}", result);
         return result;
     }
 
     @Override
     public List<Computer> getComputersWithName(String name, long index, Long limit) {
+        LOG.debug("getComputersWithName {}");
         return getComputersWithNameOrderedBy(name, index, limit, DatabaseField.COMPUTER_NAME, true);
     }
 
     @Override
     public List<Computer> getComputersWithNameOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) {
+        LOG.debug("getComputersWithNameOrderedBy {}");
         Session session = sessionFactory.openSession();
         HibernateQuery<Computer> query = new HibernateQuery<>(session);
         query.select(qComputer)
@@ -100,16 +107,19 @@ public class ComputerDaoQdsl implements ComputerDAO {
 
         List<Computer> computerList = query.fetch();
         session.close();
+        LOG.debug("Returning list of size {}", computerList.size());
         return computerList;
     }
 
     @Override
     public List<Computer> getComputerList(long index, Long limit) {
+        LOG.debug("getComputerList {}");
         return getComputerListOrderedBy(index, limit, DatabaseField.COMPUTER_NAME, true);
     }
 
     @Override
     public List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) {
+        LOG.debug("getComputerListOrderedBy {}");
         Session session = sessionFactory.openSession();
         HibernateQuery<Computer> query = new HibernateQuery<>(session);
         query = query.select(qComputer)
@@ -125,11 +135,13 @@ public class ComputerDaoQdsl implements ComputerDAO {
 
         List<Computer> computerList = query.fetch();
         session.close();
+        LOG.debug("Returning list of size {}", computerList.size());
         return computerList;
     }
 
     @Override
     public void updateComputer(Computer c) {
+        LOG.debug("updateComputer {}");
         try (Session session = sessionFactory.openSession()) {
             new HibernateUpdateClause(session, qComputer)
                     .where(qComputer.id.eq(c.getId()))
@@ -145,21 +157,24 @@ public class ComputerDaoQdsl implements ComputerDAO {
 
     @Override
     public Long persistComputer(Computer c) {
-        LOG.debug("Computer to persist: {}", c);
+        LOG.debug("persistComputer {}");
         try (Session session = sessionFactory.openSession()) {
             session.save(c);
             session.flush();
         }
+        LOG.debug("Returning id {}", c.getId());
         return c.getId();
     }
 
     @Override
     public void deleteComputer(Long id) {
+        LOG.debug("deleteComputer {}");
         deleteComputers(Collections.singletonList(id));
     }
 
     @Override
     public void deleteComputers(List<Long> idList) {
+        LOG.debug("deleteComputers {}");
         Session session = sessionFactory.openSession();
         idList.forEach(id -> new HibernateDeleteClause(session, qComputer)
                 .where(qComputer.id.eq(id))
@@ -169,6 +184,7 @@ public class ComputerDaoQdsl implements ComputerDAO {
 
     @Override
     public void deleteComputersWhitCompanyId(Long companyId) {
+        LOG.debug("deleteComputersWhitCompanyId {}");
         Session session = sessionFactory.openSession();
         new HibernateDeleteClause(session, qComputer)
                 .where(qComputer.company.id.eq(companyId))

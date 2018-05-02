@@ -13,9 +13,9 @@ public interface CompanyDAO {
 
     Company getCompany(Long id) throws DAOException;
 
-    List<Company> getCompanies() throws DAOException;
+    List<Company> getCompanyList() throws DAOException;
 
-    List<Company> getCompanies(Long index, Long limit) throws DAOException;
+    List<Company> getCompanyList(Long index, Long limit) throws DAOException;
 
     void deleteCompany(Long id) throws DAOException;
 }

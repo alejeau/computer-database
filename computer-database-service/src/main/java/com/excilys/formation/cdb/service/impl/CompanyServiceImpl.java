@@ -49,7 +49,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getCompanies() throws ServiceException {
         try {
-            return companyDAO.getCompanies();
+            return companyDAO.getCompanyList();
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't retrieve the complete list of companies!", e);
@@ -59,7 +59,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getCompanies(Long index, Long limit) throws ServiceException {
         try {
-            return companyDAO.getCompanies(index, limit);
+            return companyDAO.getCompanyList(index, limit);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't get list of companies from " + index + " to " + limit + "!", e);
