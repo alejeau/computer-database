@@ -34,15 +34,17 @@ public class CLI {
     private ComputerService computerService;
     private ComputerCompanyService computerCompanyService;
     private PageFactory pageFactory;
+    private UserManagementCLI userManagementCLI;
 
     private Scanner sc = new Scanner(System.in);
 
     @Autowired
-    public CLI(CompanyService companyService, ComputerService computerService, ComputerCompanyService computerCompanyService, PageFactory pageFactory) {
+    public CLI(CompanyService companyService, ComputerService computerService, ComputerCompanyService computerCompanyService, PageFactory pageFactory, UserManagementCLI userManagementCLI) {
         this.companyService = companyService;
         this.computerService = computerService;
         this.computerCompanyService = computerCompanyService;
         this.pageFactory = pageFactory;
+        this.userManagementCLI = userManagementCLI;
     }
 
     public static void main(String[] args) {
@@ -53,7 +55,6 @@ public class CLI {
     }
 
     private int mainMenu() {
-
         System.out.println("What would you like to do?");
         System.out.println(CliActions.VIEW_COMPUTER_LIST.getValue());
         System.out.println(CliActions.VIEW_COMPANY_LIST.getValue());
@@ -63,6 +64,7 @@ public class CLI {
         System.out.println(CliActions.UPDATE_COMPUTER.getValue());
         System.out.println(CliActions.DELETE_COMPUTER.getValue());
         System.out.println(CliActions.DELETE_COMPANY.getValue());
+        System.out.println(CliActions.USER_MANAGEMENT.getValue());
         System.out.println(CliActions.EXIT.getValue());
 
         System.out.println("Enter your choice: ");
@@ -114,6 +116,9 @@ public class CLI {
                 break;
             case DELETE_COMPANY:
                 deleteCompany();
+                break;
+            case USER_MANAGEMENT:
+                userManagementCLI.mainLoop();
                 break;
             default:
                 break;

@@ -1,15 +1,16 @@
 package com.excilys.formation.cdb.ui;
 
 public enum CliActions {
-    VIEW_COMPUTER_LIST("1) View the list of computers"),
-    VIEW_COMPANY_LIST("2) View the list of companies"),
-    CHECK_COMPUTER_BY_ID("3) Check a computer by ID"),
-    CHECK_COMPUTERS_BY_NAME("4) Check a computer by name"),
-    ADD_COMPUTER("5) Add a computer to the list"),
-    UPDATE_COMPUTER("6) Update a computer in the list (by id)"),
-    DELETE_COMPUTER("7) Delete a computer in the list (by id)"),
-    DELETE_COMPANY("8) Delete a company in the list (by id)"),
-    EXIT("9) Exit this program");
+    VIEW_COMPUTER_LIST(" 1) View the list of computers"),
+    VIEW_COMPANY_LIST(" 2) View the list of companies"),
+    CHECK_COMPUTER_BY_ID(" 3) Check a computer by ID"),
+    CHECK_COMPUTERS_BY_NAME(" 4) Check a computer by name"),
+    ADD_COMPUTER(" 5) Add a computer to the list"),
+    UPDATE_COMPUTER(" 6) Update a computer in the list (by id)"),
+    DELETE_COMPUTER(" 7) Delete a computer in the list (by id)"),
+    DELETE_COMPANY(" 8) Delete a company in the list (by id)"),
+    USER_MANAGEMENT(" 9) Manage the users and their rights"),
+    EXIT("10) Exit this program");
 
     private final String value;
 
@@ -35,6 +36,8 @@ public enum CliActions {
                 return DELETE_COMPUTER;
             case 8:
                 return DELETE_COMPANY;
+            case 9:
+                return USER_MANAGEMENT;
             default:
                 return EXIT;
         }

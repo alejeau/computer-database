@@ -42,7 +42,7 @@ public class HibernatePersistenceConfigCLI extends ParamsFactory {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model");
+        sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model", "com.excilys.formation.cdb.login");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
