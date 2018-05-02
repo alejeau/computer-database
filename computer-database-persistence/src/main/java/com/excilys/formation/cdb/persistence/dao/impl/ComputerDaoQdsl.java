@@ -144,11 +144,10 @@ public class ComputerDaoQdsl implements ComputerDAO {
     }
 
     @Override
-//    @Transactional
     public Long persistComputer(Computer c) {
         LOG.debug("Computer to persist: {}", c);
         try (Session session = sessionFactory.openSession()) {
-            session.persist(c);
+            session.save(c);
             session.flush();
         }
         return c.getId();
