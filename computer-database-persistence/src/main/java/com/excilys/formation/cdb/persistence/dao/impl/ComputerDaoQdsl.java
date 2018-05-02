@@ -129,13 +129,7 @@ public class ComputerDaoQdsl implements ComputerDAO {
     }
 
     @Override
-//    @Transactional
     public void updateComputer(Computer c) {
-        LOG.debug("updateComputer");
-        LOG.debug("Computer to update: {}", c);
-        if (c == null) {
-            throw new RuntimeException("Computer is null");
-        }
         try (Session session = sessionFactory.openSession()) {
             new HibernateUpdateClause(session, qComputer)
                     .where(qComputer.id.eq(c.getId()))
@@ -143,7 +137,7 @@ public class ComputerDaoQdsl implements ComputerDAO {
                     .set(qComputer.name, c.getName())
                     .set(qComputer.introduced, c.getIntroduced())
                     .set(qComputer.discontinued, c.getDiscontinued())
-                    .set(qComputer.company.id, c.getCompany().getId())
+                    .set(qComputer.company, c.getCompany())
                     .execute();
             session.flush();
         }

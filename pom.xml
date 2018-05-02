@@ -142,8 +142,6 @@
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
                     <path>/computer-database</path>
-                    <username>admin</username>
-                    <password>password</password>
                 </configuration>
             </plugin>
 
