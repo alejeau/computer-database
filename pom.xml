@@ -30,7 +30,7 @@
 
         <failOnMissingWebXml>false</failOnMissingWebXml>
 
-        <computer-database-core.version>0.0.1-SNAPSHOT</computer-database-core.version>
+        <computer-database-core.version>0.0.2-SNAPSHOT</computer-database-core.version>
         <computer-database-persistence.version>0.0.1-SNAPSHOT</computer-database-persistence.version>
         <computer-database-service.version>0.0.1-SNAPSHOT</computer-database-service.version>
         <computer-database-binding.version>0.0.1-SNAPSHOT</computer-database-binding.version>
