@@ -7,41 +7,19 @@
     <parent>
         <groupId>com.excilys.formation.cdb</groupId>
         <artifactId>computer-database</artifactId>
-        <version>4.6.2-SNAPSHOT</version>
+        <version>4.6.2-RELEASE</version>
     </parent>
 
     <packaging>war</packaging>
     <groupId>com.excilys.formation.cdb.webapp</groupId>
     <artifactId>computer-database-webapp</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1-RELEASE</version>
     <name>computer-database-webapp</name>
 
     <properties>
         <!-- sets the projects encoding to UTF-8 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <!--<build>-->
-        <!--<plugins>-->
-            <!--&lt;!&ndash; Tomcat deployment plugin &ndash;&gt;-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.tomcat.maven</groupId>-->
-                <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
-            <!--</plugin>-->
-
-            <!--&lt;!&ndash; Cargo deployment plugin &ndash;&gt;-->
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.cargo</groupId>-->
-                <!--<artifactId>cargo-maven2-plugin</artifactId>-->
-            <!--</plugin>-->
-
-            <!--&lt;!&ndash; Maven WAR plugin included to avoid failOnMissingWebXml &ndash;&gt;-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-war-plugin</artifactId>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</build>-->
 
     <dependencies>
         <dependency>

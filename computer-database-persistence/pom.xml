@@ -7,14 +7,14 @@
     <parent>
         <groupId>com.excilys.formation.cdb</groupId>
         <artifactId>computer-database</artifactId>
-        <version>4.6.2-SNAPSHOT</version>
+        <version>4.6.2-RELEASE</version>
     </parent>
 
     <packaging>jar</packaging>
     <groupId>com.excilys.formation.cdb.persistence</groupId>
     <artifactId>computer-database-persistence</artifactId>
     <name>computer-database-persistence</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1-RELEASE</version>
 
     <properties>
         <!-- sets the projects encoding to UTF-8 -->
