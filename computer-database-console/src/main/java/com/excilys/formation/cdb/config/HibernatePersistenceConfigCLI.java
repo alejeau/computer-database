@@ -11,6 +11,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -30,7 +32,7 @@ import java.util.Properties;
         "com.excilys.formation.cdb.mapper.request",
         "com.excilys.formation.cdb.ui"
 })
-public class HibernatePersistenceConfigCLI extends ParamsFactory {
+public class HibernatePersistenceConfigCLI {
     private Environment environment;
 
     @Autowired
@@ -80,5 +82,10 @@ public class HibernatePersistenceConfigCLI extends ParamsFactory {
                 ).forEach(p -> setProperty(p, environment.getProperty(p)));
             }
         };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import java.io.Console;
@@ -18,12 +19,15 @@ public class UserManagementCLI {
     private static final Logger LOG = LoggerFactory.getLogger(UserManagementCLI.class);
 
     private UserService userService;
+    private PasswordEncoder passwordEncoder;
     private Scanner sc = new Scanner(System.in);
 
     @Autowired
-    public UserManagementCLI(UserService userService) {
+    public UserManagementCLI(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     public void mainLoop() {
         int code;
@@ -32,7 +36,7 @@ public class UserManagementCLI {
             executeChoice(UserManagementActions.map(code));
             System.out.println();
         }
-        while (code != CliActions.values().length);
+        while (code != UserManagementActions.values().length);
     }
 
     private int mainMenu() {
@@ -95,9 +99,13 @@ public class UserManagementCLI {
             System.out.println(String.format("No users registered with the name %s", username));
             return;
         }
-        user.setUsername(getEncodedPassword());
-        user.setRole(getRole());
-        userService.updateUser(user);
+        if (verifyAdmin()) {
+            user.setPassword(getEncodedPassword());
+            user.setRole(getRole());
+            userService.updateUser(user);
+        } else {
+            System.out.println("You are not an admin!");
+        }
     }
 
     private void deleteUser() {
@@ -139,16 +147,20 @@ public class UserManagementCLI {
         return encodePassword(password);
     }
 
-    private boolean verifyPassword(User user) {
+    private boolean verifyAdmin() {
+        System.out.println("You need to be an admin to update a user, let's verify that.");
         Console console = System.console();
         if (console == null) {
             System.out.println("Couldn't get Console instance");
             System.exit(0);
         }
-        String currentPassword = encodePassword(
-                new String(console.readPassword("Please enter the user's current password: "))
-        );
-        return user.getPassword().equals(currentPassword);
+        String username = getUserName();
+        User user = userService.getUserWithName(username);
+        if (user != null && user.getRole().equals(UserRole.ADMIN)) {
+            String currentPassword = new String(console.readPassword("Please enter the admin's password: "));
+            return passwordEncoder.matches(currentPassword, user.getPassword());
+        }
+        return false;
     }
 
     private UserRole getRole() {
@@ -163,7 +175,6 @@ public class UserManagementCLI {
     }
 
     private String encodePassword(String password) {
-        //TODO: encode password
-        return password;
+        return passwordEncoder.encode(password);
     }
 }
