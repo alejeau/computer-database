@@ -1,10 +1,10 @@
 package com.excilys.formation.cdb.model.constants;
 
 public class Paths {
-    public static final String LOCAL_PATH_DASHBOARD = "/access";
-    public static final String LOCAL_PATH_ADD_COMPUTER = "/access/computer/add";
-    public static final String LOCAL_PATH_EDIT_COMPUTER = "/access/computer/edit";
-    public static final String LOCAL_PATH_SEARCH_COMPUTER = "/access/computer/search";
+    public static final String LOCAL_PATH_DASHBOARD = "/dashboard";
+    public static final String LOCAL_PATH_SEARCH_COMPUTER = "/dashboard/search";
+    public static final String LOCAL_PATH_ADD_COMPUTER = "/computer/add";
+    public static final String LOCAL_PATH_EDIT_COMPUTER = "/computer/edit";
     public static final String LOCAL_PATH_LOGIN = "/login";
 
     public static final String PREFIX = "/computer-database";
