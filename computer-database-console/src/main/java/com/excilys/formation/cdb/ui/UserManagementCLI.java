@@ -156,7 +156,7 @@ public class UserManagementCLI {
         }
         String username = getUserName();
         User user = userService.getUserWithName(username);
-        if (user != null && user.getRole().equals(UserRole.ADMIN)) {
+        if (user != null && user.getRole().equals(UserRole.ROLE_ADMIN)) {
             String currentPassword = new String(console.readPassword("Please enter the admin's password: "));
             return passwordEncoder.matches(currentPassword, user.getPassword());
         }
@@ -164,14 +164,14 @@ public class UserManagementCLI {
     }
 
     private UserRole getRole() {
-        System.out.println("Enter the user's role (1: ADMIN, 2: USER):");
+        System.out.println("Enter the user's role (1: ROLE_ADMIN, 2: ROLE_USER):");
         Integer role;
         do {
             role = sc.nextInt();
             sc.nextLine();
         } while (role < 0 && role > 2);
 
-        return role == 1 ? UserRole.ADMIN : UserRole.USER;
+        return role == 1 ? UserRole.ROLE_ADMIN : UserRole.ROLE_USER;
     }
 
     private String encodePassword(String password) {

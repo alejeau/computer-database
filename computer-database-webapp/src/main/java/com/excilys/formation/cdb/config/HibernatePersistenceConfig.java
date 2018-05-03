@@ -28,6 +28,7 @@ import java.util.Properties;
         "com.excilys.formation.cdb.service.validators",
         "com.excilys.formation.cdb.service.paginator.pager",
         "com.excilys.formation.cdb.mapper.request",
+        "com.excilys.formation.cdb.controllers"
 })
 public class HibernatePersistenceConfig {
     private Environment environment;
