@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@Service("userDetailsService")
+@Service
 @Transactional
 public class MyUserDetailsService implements UserDetailsService {
 
@@ -41,7 +41,7 @@ public class MyUserDetailsService implements UserDetailsService {
                     true,
                     true,
                     true,
-                    getAuthorities(Collections.singletonList(UserRole.ROLE_USER))
+                    getAuthorities(Collections.singletonList(UserRole.USER))
             );
         }
 
@@ -84,7 +84,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     private Collection<Privilege> privilegeMapper(UserRole userRole) {
         switch (userRole) {
-            case ROLE_ADMIN:
+            case ADMIN:
                 return Arrays.asList(Privilege.READ_PRIVILEGE, Privilege.WRITE_PRIVILEGE);
             default:
                 return Collections.singletonList(Privilege.READ_PRIVILEGE);

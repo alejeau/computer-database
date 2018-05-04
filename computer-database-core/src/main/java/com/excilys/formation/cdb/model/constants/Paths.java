@@ -6,6 +6,7 @@ public class Paths {
     public static final String LOCAL_PATH_ADD_COMPUTER = "/computer/add";
     public static final String LOCAL_PATH_EDIT_COMPUTER = "/computer/edit";
     public static final String LOCAL_PATH_LOGIN = "/login";
+    public static final String LOCAL_PATH_LOGOUT = "/logout";
 
     public static final String PREFIX = "/computer-database";
     public static final String ABSOLUTE_PATH_DASHBOARD = String.format("%s%s", PREFIX, LOCAL_PATH_DASHBOARD);
@@ -13,6 +14,7 @@ public class Paths {
     public static final String ABSOLUTE_PATH_EDIT_COMPUTER = String.format("%s%s", PREFIX, LOCAL_PATH_EDIT_COMPUTER);
     public static final String ABSOLUTE_PATH_SEARCH_COMPUTER = String.format("%s%s", PREFIX, LOCAL_PATH_SEARCH_COMPUTER);
     public static final String ABSOLUTE_PATH_LOGIN = String.format("%s%s", PREFIX, LOCAL_PATH_LOGIN);
+    public static final String ABSOLUTE_PATH_LOGOUT = String.format("%s%s", PREFIX, LOCAL_PATH_LOGOUT);
 
     private Paths() {
     }

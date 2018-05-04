@@ -11,6 +11,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -19,6 +21,7 @@ import java.util.Arrays;
 import java.util.Properties;
 
 @Configuration
+@EnableWebSecurity
 @EnableTransactionManagement
 @PropertySource("classpath:/properties/db.properties")
 @ComponentScan(basePackages = {
@@ -30,7 +33,7 @@ import java.util.Properties;
         "com.excilys.formation.cdb.mapper.request",
         "com.excilys.formation.cdb.controllers"
 })
-public class HibernatePersistenceConfig {
+public class HibernatePersistenceConfig extends WebSecurityConfigurerAdapter {
     private Environment environment;
 
     @Autowired

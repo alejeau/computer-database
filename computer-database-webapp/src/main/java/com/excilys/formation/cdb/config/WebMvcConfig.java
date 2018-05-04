@@ -22,7 +22,7 @@ import java.util.Locale;
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
-        "com.excilys.formation.cdb.config",
+//        "com.excilys.formation.cdb.config",
         "com.excilys.formation.cdb.persistence",
         "com.excilys.formation.cdb.persistence.dao.impl",
         "com.excilys.formation.cdb.service.impl",
@@ -31,7 +31,10 @@ import java.util.Locale;
         "com.excilys.formation.cdb.mapper.request",
         "com.excilys.formation.cdb.controllers"
 })
-@Import(HibernatePersistenceConfig.class)
+@Import({
+        HibernatePersistenceConfig.class,
+//        WebSecurityConfig.class
+})
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
