@@ -16,7 +16,8 @@
 <c:set var="pathSearch" value="/computer-database/dashboard/search"/>
 <c:set var="pathAdd" value="/computer-database/computer/add"/>
 <c:set var="pathEdit" value="/computer-database/computer/edit"/>
-<c:set var="pathReset " value="/computer-database/dashboard?reset=true"/>
+<c:set var="pathReset" value="/computer-database/dashboard?reset=true"/>
+<c:set var="pathLogout" value="/computer-database/logout"/>
 
 <c:set var="emptyText" value=""/>
 <c:set var="tmpPath" value=""/>
@@ -48,6 +49,10 @@
             <c:when test="${ target.equals('search') }">
                 <c:set var="tmpPath"
                        value="${ tmpPath.concat(pathSearch) }"/>
+            </c:when>
+            <c:when test="${ target.equals('logout') }">
+                <c:set var="tmpPath"
+                       value="${ tmpPath.concat(pathLogout) }"/>
             </c:when>
             <c:when test="${ target.equals('reset') }">
                 <c:set var="tmpPath"

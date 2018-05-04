@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.config.security;
 
+import com.excilys.formation.cdb.login.Privilege;
 import com.excilys.formation.cdb.login.UserRole;
 import com.excilys.formation.cdb.model.constants.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -39,12 +43,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/resources/**"); // allows login to access to the resources
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/resources/**")
-                .permitAll()
-                .antMatchers("/login*")
+//                .antMatchers("/resources/**", Paths.LOCAL_PATH_403)
+//                .permitAll()
+                .antMatchers(Paths.LOCAL_PATH_LOGIN + "*")
                 .anonymous()
                 .antMatchers("/computer/**")
                 .hasRole(UserRole.ADMIN.name())
@@ -54,15 +63,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage(Paths.ABSOLUTE_PATH_LOGIN)
-                .defaultSuccessUrl(Paths.ABSOLUTE_PATH_DASHBOARD)
-                .failureUrl(Paths.ABSOLUTE_PATH_LOGIN + "?error=true")
+                .loginPage(Paths.LOCAL_PATH_LOGIN)
+                .permitAll()
+                .defaultSuccessUrl(Paths.LOCAL_PATH_DASHBOARD)
+//                .failureUrl(Paths.LOCAL_PATH_LOGIN + "?error=true")
                 .and()
                 .logout()
-                .logoutUrl(Paths.ABSOLUTE_PATH_LOGOUT)
-                .logoutSuccessUrl(Paths.ABSOLUTE_PATH_LOGOUT + "?logout")
+                .logoutUrl("/logout")
+                .permitAll()
+//                .clearAuthentication(true)
+//                .logoutUrl(Paths.ABSOLUTE_PATH_LOGOUT)
+//                .logoutSuccessUrl(Paths.ABSOLUTE_PATH_LOGOUT + "?logout")
                 .and()
-                .csrf();
+                .csrf()
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/errors")
+        ;
     }
 
     @Bean

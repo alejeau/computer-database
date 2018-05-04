@@ -17,7 +17,7 @@
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <a class="navbar-brand" href="<cst:links target="reset" />"> <spring:message code="application.header" /> </a>
-        <span style="float: right; color: white;"><cst:language /></span>
+        <span style="float: right; color: white;"><cst:language /><cst:logout/></span>
     </div>
 </header>
 

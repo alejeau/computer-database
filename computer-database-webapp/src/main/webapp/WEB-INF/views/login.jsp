@@ -11,15 +11,13 @@
     <!-- Bootstrap -->
     <link href="<spring:url value="/resources"/>/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<spring:url value="/resources"/>/css/font-awesome.css" rel="stylesheet" media="screen">
-    <link href="<spring:url value="/resources"/>/css/errors.css" rel="stylesheet" media="screen">
     <link href="<spring:url value="/resources"/>/css/main.css" rel="stylesheet" media="screen">
-    <link href="<spring:url value="/resources"/>/css/index.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <a class="navbar-brand" href="<cst:links target="dashboard"/>"> <spring:message code="application.header" /> </a>
-        <span style="float: right; color: white;"><cst:language /></span>
+        <span style="float: right; color: white;"><cst:language /><cst:logout/></span>
     </div>
 </header>
 
@@ -67,5 +65,7 @@
 </section>
 
 <script src="<spring:url value="/resources"/>/js/jquery.min.js"></script>
+<script src="<spring:url value="/resources"/>/js/bootstrap.min.js"></script>
+<script src="<spring:url value="/resources"/>/js/dashboard.js"></script>
 </body>
 </html>

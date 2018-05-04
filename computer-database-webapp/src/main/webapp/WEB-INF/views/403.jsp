@@ -15,7 +15,7 @@
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <a class="navbar-brand" href="<cst:links target="dashboard"/>"> Application - Computer Database </a>
-        <span style="float: right; color: white;"><cst:language /></span>
+        <span style="float: right; color: white;"><cst:language /><cst:logout/></span>
     </div>
 </header>
 
@@ -24,10 +24,7 @@
         <div class="alert alert-danger">
             Error 403: Access denied!
             <br/>
-            <!-- stacktrace -->
-            <c:forEach var="trace" items="${pageContext.exception.stackTrace}">
-                ${trace}<br/>
-            </c:forEach>
+            <spring:message code="error404.goto" /> <a href="<cst:links target="dashboard"/>"><spring:message code="error404.main-page" /></a>.
         </div>
     </div>
 </section>
