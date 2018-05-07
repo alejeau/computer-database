@@ -16,6 +16,7 @@
         <module>computer-database-service</module>
         <module>computer-database-console</module>
         <module>computer-database-webapp</module>
+        <module>computer-database-webservice</module>
     </modules>
 
     <name>computer-database</name>
@@ -102,6 +103,9 @@
         <!-- Java 8 = JAX-B Version 2.2.8 -->
         <!-- Java 9 = JAX-B Version 2.2.11 -->
         <jaxb.version>2.2.11</jaxb.version>
+
+        <!-- REST -->
+        <jackson.version>2.9.5</jackson.version>
     </properties>
 
     <build>
@@ -141,7 +145,20 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/computer-database</path>
+                    <webapps>
+                        <webapp>
+                            <groupId>com.excilys.formation.cdb.webapp</groupId>
+                            <artifactId>computer-database-webapp</artifactId>
+                            <path>/computer-database</path>
+                            <asWebapp>true</asWebapp>
+                            <type>war</type>
+                        </webapp>
+                        <webapp>
+                            <groupId>com.excilys.formation.cdb.webservice</groupId>
+                            <artifactId>computer-database-webservice</artifactId>
+                            <type>war</type>
+                        </webapp>
+                    </webapps>
                     <username>admin</username>
                     <password>password</password>
                 </configuration>
@@ -423,6 +440,13 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${joda-time.version}</version>
+            </dependency>
+
+            <!-- REST -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
