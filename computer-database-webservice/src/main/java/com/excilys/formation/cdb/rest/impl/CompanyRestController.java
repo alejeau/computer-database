@@ -2,6 +2,7 @@ package com.excilys.formation.cdb.rest.impl;
 
 import com.excilys.formation.cdb.exceptions.ServiceException;
 import com.excilys.formation.cdb.model.Company;
+import com.excilys.formation.cdb.model.constants.Paths;
 import com.excilys.formation.cdb.rest.CompanyRest;
 import com.excilys.formation.cdb.service.CompanyService;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping(Paths.REST_COMPANY)
 public class CompanyRestController implements CompanyRest {
     private static final Logger LOG = LoggerFactory.getLogger(CompanyRestController.class);
 

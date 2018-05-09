@@ -11,9 +11,9 @@ public class ResponseEntityMapper {
 
     public static <T> ResponseEntity<T> toResponseEntity(T object) {
         if (object == null) {
-            return new ResponseEntity<T>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<T>(object, HttpStatus.OK);
+        return new ResponseEntity<>(object, HttpStatus.OK);
     }
 
     public static <T> ResponseEntity<List<T>> toListResponseEntity(List<T> list) {
