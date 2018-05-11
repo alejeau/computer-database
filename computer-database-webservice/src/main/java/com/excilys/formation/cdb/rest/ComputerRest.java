@@ -2,13 +2,11 @@ package com.excilys.formation.cdb.rest;
 
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.exceptions.ValidationException;
-import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.DatabaseField;
 import com.excilys.formation.cdb.service.validators.core.Error;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ComputerRest {
 
@@ -16,15 +14,15 @@ public interface ComputerRest {
 
     ResponseEntity<Long> getNumberOfComputersWithName(String name);
 
-    ResponseEntity<Computer> getComputer(Long id);
+    ResponseEntity<ComputerDTO> getComputer(Long id);
 
-    ResponseEntity<List<Computer>> getComputer(String name, long index, Long limit);
+    ResponseEntity<List<ComputerDTO>> getComputer(String name, long index, Long limit);
 
-    ResponseEntity<List<Computer>> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending);
+    ResponseEntity<List<ComputerDTO>> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending);
 
-    ResponseEntity<List<Computer>> getComputers(long index, Long limit);
+    ResponseEntity<List<ComputerDTO>> getComputers(long index, Long limit);
 
-    ResponseEntity<List<Computer>> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending);
+    ResponseEntity<List<ComputerDTO>> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending);
 
     ResponseEntity<List<Error>> updateComputer(ComputerDTO computerDTO) throws ValidationException;
 

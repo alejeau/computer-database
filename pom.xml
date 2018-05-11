@@ -159,8 +159,8 @@
                             <type>war</type>
                         </webapp>
                     </webapps>
-                    <!--<username>admin</username>-->
-                    <!--<password>password</password>-->
+                    <username>admin</username>
+                    <password>password</password>
                 </configuration>
             </plugin>
 
