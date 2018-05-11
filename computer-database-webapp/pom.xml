@@ -13,7 +13,7 @@
     <packaging>war</packaging>
     <groupId>com.excilys.formation.cdb.webapp</groupId>
     <artifactId>computer-database-webapp</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>computer-database-webapp</name>
 
     <properties>
