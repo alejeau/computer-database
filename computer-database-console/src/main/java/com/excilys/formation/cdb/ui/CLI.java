@@ -5,12 +5,9 @@ import com.excilys.formation.cdb.dto.ModelDTO;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.PageDTO;
-import com.excilys.formation.cdb.exceptions.ServiceException;
-import com.excilys.formation.cdb.exceptions.ValidationException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
-import com.excilys.formation.cdb.service.paginator.pager.ComputerSearchPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,11 +15,11 @@ import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -79,18 +76,13 @@ public class CLI {
         int code;
         do {
             code = mainMenu();
-            try {
-                executeChoice(CliActions.map(code));
-            } catch (ServiceException e) {
-                LOG.error("{}", e);
-                System.out.println("Couldn't execute the chosen action!");
-            }
+            executeChoice(CliActions.map(code));
             System.out.println();
         }
         while (code != CliActions.values().length);
     }
 
-    private void executeChoice(CliActions choice) throws ServiceException {
+    private void executeChoice(CliActions choice) {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
                 Long numberOfComputer = client.target(BASE_REST_URL)
@@ -103,7 +95,8 @@ public class CLI {
                 computerDTOPage.setCurrentPageNumber(FIRST_PAGE);
                 computerDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 computerDTOPage.setMaxPageNumber(maxPageNumberComputer);
-                viewPage(computerDTOPage, ComputerDTO.class, new GenericType<List<ComputerDTO>>(){});
+                viewPage(computerDTOPage, ComputerDTO.class, new GenericType<List<ComputerDTO>>() {
+                });
                 break;
             case VIEW_COMPANY_LIST:
                 Long numberOfCompany = client.target(BASE_REST_URL)
@@ -116,7 +109,8 @@ public class CLI {
                 companyDTOPage.setCurrentPageNumber(FIRST_PAGE);
                 companyDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 companyDTOPage.setMaxPageNumber(maxPageNumberCompany);
-                viewPage(companyDTOPage, CompanyDTO.class, new GenericType<List<CompanyDTO>>(){});
+                viewPage(companyDTOPage, CompanyDTO.class, new GenericType<List<CompanyDTO>>() {
+                });
                 break;
             case CHECK_COMPUTER_BY_ID:
                 checkComputerById();
@@ -125,7 +119,7 @@ public class CLI {
                 checkComputerByName();
                 break;
             case ADD_COMPUTER:
-                editComputer(new Computer());
+                editComputer(new ComputerDTO());
                 break;
             case UPDATE_COMPUTER:
                 updateComputer();
@@ -196,8 +190,8 @@ public class CLI {
     private void checkComputerById() {
         ComputerDTO computerDTO;
         Long id = getLong("Please enter the computer's ID: ");
+
         final String TARGET = String.format("/id/%d", id);
-        System.out.println(BASE_REST_URL + COMPUTER_REST_URL + TARGET);
         computerDTO = client.target(BASE_REST_URL)
                 .path(COMPUTER_REST_URL)
                 .path(TARGET)
@@ -211,7 +205,7 @@ public class CLI {
         }
     }
 
-    private void checkComputerByName() throws ServiceException {
+    private void checkComputerByName() {
 //        String name;
 //
 //        System.out.println("Please enter the computer's name: ");
@@ -221,42 +215,53 @@ public class CLI {
 //        viewPage(computerSearchPage);
     }
 
-    private void editComputer(Computer c) throws ServiceException {
-//        String name;
-//        LocalDate introduced;
-//        LocalDate discontinued;
-//        Company company;
-//
-//        System.out.println("Please enter the computer's name:");
-//        name = sc.nextLine();
-//
-//        introduced = getDate("introduction");
-//        discontinued = getDate("discontinuation");
-//
-//        company = getCompanyId();
-//
-//        c.setName(name);
-//        c.setIntroduced(introduced);
-//        c.setDiscontinued(discontinued);
-//        c.setCompany(company);
-//
-//        try {
-//            if (c.getId() == null) {
-//                Long id = computerService.persistComputer(c);
-//                System.out.println("The computer has the ID: " + id);
-//            } else {
-//                computerService.updateComputer(c);
-//            }
-//        } catch (ValidationException e) {
-//            System.out.println(e.getMessage());
-//        }
+    private void editComputer(ComputerDTO computerDTO) {
+        String name;
+        String introduced;
+        String discontinued;
+        CompanyDTO companyDTO;
+
+        System.out.println("Please enter the computer's name:");
+        name = sc.nextLine();
+
+        introduced = getDate("introduction");
+        discontinued = getDate("discontinuation");
+
+        companyDTO = getCompanyId();
+
+        computerDTO.setName(name);
+        computerDTO.setIntroduced(introduced);
+        computerDTO.setDiscontinued(discontinued);
+        computerDTO.setCompanyId(companyDTO.getId());
+
+        if (computerDTO.getId() == 0) {
+            Long id = client.target(BASE_REST_URL)
+                    .path(COMPUTER_REST_URL)
+                    .request()
+                    .post(Entity.entity(computerDTO, MediaType.APPLICATION_JSON))
+                    .readEntity(Long.class);
+
+            System.out.println("The computer has the ID: " + id);
+        } else {
+            client.target(BASE_REST_URL)
+                    .path(COMPUTER_REST_URL)
+                    .request()
+                    .put(Entity.entity(computerDTO, MediaType.APPLICATION_JSON));
+        }
+
     }
 
-    private void updateComputer() throws ServiceException {
-//        Long id = getLong("Which computer would you like to update (ID)?");
-//
-//        Computer c = computerService.getComputer(id);
-//        editComputer(c);
+    private void updateComputer() {
+        Long id = getLong("Which computer would you like to update (ID)?");
+
+
+        final String TARGET = String.format("/id/%d", id);
+        ComputerDTO computerDTO = client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(TARGET)
+                .request(MediaType.APPLICATION_JSON)
+                .get(ComputerDTO.class);
+        editComputer(computerDTO);
     }
 
     /**
@@ -265,56 +270,75 @@ public class CLI {
      * @param event the name of the event you want a date for.
      * @return a LocalDate corresponding to the input user's date.
      */
-    private LocalDate getDate(String event) {
-        LocalDate date = null;
+    private String getDate(String event) {
+        String d1 = null;
         boolean ok = false;
 
         while (!ok) {
             System.out.println("Please enter the computer's " + event + " date (yyyy-MM-dd or 'Enter' for no date):");
-            String d1 = sc.nextLine();
+            d1 = sc.nextLine();
             if (d1.isEmpty() || d1.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                if (!d1.isEmpty()) {
-                    date = LocalDate.parse(d1, DatePattern.FORMATTER);
-                }
                 ok = true;
             }
         }
 
-        return date;
+        return d1;
     }
 
-    private Company getCompanyId() throws ServiceException {
-        Company c = null;
-//
-//        while (c == null) {
-//            System.out.println();
-//            Long companyId = getLong("Please enter the computer's manufacturer ID:");
-//            c = companyService.getCompany(companyId);
-//        }
-//
-        return c;
+    private CompanyDTO getCompanyId() {
+        CompanyDTO companyDTO = null;
+
+        while (companyDTO == null) {
+            System.out.println();
+            Long companyId = getLong("Please enter the computer's manufacturer ID:");
+            final String TARGET = String.format("/id/%d", companyId);
+            companyDTO = client.target(BASE_REST_URL)
+                    .path(COMPANY_REST_URL)
+                    .path(TARGET)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(CompanyDTO.class);
+        }
+
+        return companyDTO;
     }
 
-    private void deleteComputer() throws ServiceException {
-//        Long id = getLong("Please enter the computer's ID you wish to delete: ");
-//
-//        Computer c = computerService.getComputer(id);
-//        if (c != null) {
-//            computerService.deleteComputer(id);
-//        } else {
-//            System.out.println("There is no computer with the ID: " + id + "\n");
-//        }
+    private void deleteComputer() {
+        Long id = getLong("Please enter the computer's ID you wish to delete: ");
+
+        final String TARGET = String.format("/id/%d", id);
+        ComputerDTO computerDTO = client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(TARGET)
+                .request(MediaType.APPLICATION_JSON)
+                .get(ComputerDTO.class);
+
+        if (computerDTO != null) {
+            client.target(BASE_REST_URL)
+                    .path(COMPUTER_REST_URL)
+                    .path(TARGET)
+                    .request()
+                    .delete();
+        } else {
+            System.out.println("There is no computer with the ID: " + id + "\n");
+        }
     }
 
-    private void deleteCompany() throws ServiceException {
-//        Long companyId = getLong("Please enter the company's ID you wish to delete: ");
-//
-//        Company c = companyService.getCompany(companyId);
-//        if (c != null) {
-//            computerCompanyService.deleteCompanyWithIdAndAssociatedComputers(companyId);
-//        } else {
-//            System.out.println("There is no company with the ID: " + companyId + "\n");
-//        }
+    private void deleteCompany() {
+        Long companyId = getLong("Please enter the company's ID you wish to delete: ");
+
+        final String COMPUTER_TARGET = String.format("/company/id/%d", companyId);
+        final String COMPANY_TARGET = String.format("/id/%d", companyId);
+        client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(COMPUTER_TARGET)
+                .request()
+                .delete();
+
+        client.target(BASE_REST_URL)
+                .path(COMPANY_REST_URL)
+                .path(COMPANY_TARGET)
+                .request()
+                .delete();
     }
 
     private Long getLong(final String message) {

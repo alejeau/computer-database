@@ -132,7 +132,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<List<Error>> updateComputer(@RequestBody ComputerDTO computerDTO) {
         List<Error> errorList = ComputerValidator.validate(computerDTO);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -155,7 +155,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Long> persistComputer(@RequestBody ComputerDTO computerDTO) {
         Long id = null;
         List<Error> errorList = ComputerValidator.validate(computerDTO);
@@ -177,7 +177,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/delete/id/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Boolean> deleteComputer(@PathVariable Long id) {
         try {
             computerService.deleteComputer(id);
@@ -189,7 +189,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/delete/list")
+    @DeleteMapping("/list")
     public ResponseEntity<Boolean> deleteComputers(@RequestBody List<Long> idList) {
         try {
             computerService.deleteComputers(idList);
@@ -201,7 +201,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/delete/company/id/{companyId}")
+    @DeleteMapping("/company/id/{companyId}")
     public ResponseEntity<Boolean> deleteComputersWithCompanyId(@PathVariable Long companyId) {
         try {
             computerService.deleteComputersWithCompanyId(companyId);
