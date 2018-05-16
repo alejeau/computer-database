@@ -90,6 +90,11 @@ public class ComputerDTO implements ModelDTO {
     }
 
     @Override
+    public String shortToString() {
+        return String.format("ID: %d, name: %s", this.id, this.name);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
