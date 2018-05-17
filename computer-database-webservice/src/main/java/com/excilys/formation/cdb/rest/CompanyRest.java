@@ -14,5 +14,9 @@ public interface CompanyRest {
 
     ResponseEntity<List<CompanyDTO>> getCompanyList(Long index, Long limit);
 
+    ResponseEntity<Long> persistCompany(CompanyDTO companyDTO);
+
+    ResponseEntity<Boolean> updateCompany(CompanyDTO companyDTO);
+
     ResponseEntity<Boolean> deleteCompany(Long id);
 }

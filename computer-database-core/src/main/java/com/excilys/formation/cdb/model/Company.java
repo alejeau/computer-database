@@ -6,6 +6,7 @@ import com.excilys.formation.cdb.model.constants.DbFields;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
@@ -15,7 +16,7 @@ import java.util.Objects;
 public class Company implements Model {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = DbFields.COMPANY_ID)
     private Long id;
 
