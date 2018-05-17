@@ -18,7 +18,17 @@ public class CompanyMapper {
     }
 
     public static CompanyDTO toDTO(Company company) {
+        if (company == null) {
+            return null;
+        }
         return new CompanyDTO(company.getId(), company.getName());
+    }
+
+    public static Company toCompany(CompanyDTO companyDTO) {
+        if (companyDTO == null) {
+            return null;
+        }
+        return new Company(companyDTO.getId(), companyDTO.getName());
     }
 
     public static Company mapFromComputer(ResultSet rs) throws SQLException {

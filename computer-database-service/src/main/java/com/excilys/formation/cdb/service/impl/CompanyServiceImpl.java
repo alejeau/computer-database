@@ -67,6 +67,26 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Long persistCompany(Company company) throws ServiceException {
+        try {
+            return companyDAO.persistCompany(company);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't persist the company!", e);
+        }
+    }
+
+    @Override
+    public void updateCompany(Company company) throws ServiceException {
+        try {
+            companyDAO.updateCompany(company);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't update the company!", e);
+        }
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteCompany(Long id) throws ServiceException {
         try {

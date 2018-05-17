@@ -14,7 +14,7 @@
     <groupId>com.excilys.formation.cdb.persistence</groupId>
     <artifactId>computer-database-persistence</artifactId>
     <name>computer-database-persistence</name>
-    <version>0.0.1-RELEASE</version>
+    <version>0.0.2-RELEASE</version>
 
     <properties>
         <!-- sets the projects encoding to UTF-8 -->

@@ -31,13 +31,13 @@
 
         <failOnMissingWebXml>false</failOnMissingWebXml>
 
-        <computer-database-core.version>0.0.2-RELEASE</computer-database-core.version>
-        <computer-database-persistence.version>0.0.1-RELEASE</computer-database-persistence.version>
-        <computer-database-service.version>0.0.1-RELEASE</computer-database-service.version>
-        <computer-database-binding.version>0.0.3-RELEASE</computer-database-binding.version>
+        <computer-database-core.version>0.0.3-RELEASE</computer-database-core.version>
+        <computer-database-persistence.version>0.0.2-RELEASE</computer-database-persistence.version>
+        <computer-database-service.version>0.0.3-RELEASE</computer-database-service.version>
+        <computer-database-binding.version>0.0.4-RELEASE</computer-database-binding.version>
         <computer-database-console.version>0.0.1-RELEASE</computer-database-console.version>
         <computer-database-webapp.version>0.0.2-RELEASE</computer-database-webapp.version>
-        <computer-database-webservice.version>0.0.2-RELEASE</computer-database-webservice.version>
+        <computer-database-webservice.version>0.0.3-RELEASE</computer-database-webservice.version>
 
         <!-- Java Version-->
         <java.version>1.8</java.version>

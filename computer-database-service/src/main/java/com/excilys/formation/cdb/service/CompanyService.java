@@ -15,5 +15,9 @@ public interface CompanyService {
 
     List<Company> getCompanies(Long index, Long limit) throws ServiceException;
 
+    Long persistCompany(Company company) throws ServiceException;
+
+    void updateCompany(Company company) throws ServiceException;
+
     void deleteCompany(Long id) throws ServiceException;
 }
