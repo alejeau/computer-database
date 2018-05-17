@@ -5,12 +5,6 @@ import com.excilys.formation.cdb.dto.ModelDTO;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.PageDTO;
-import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
-import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.model.DatePattern;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 
@@ -20,17 +14,11 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-interface DTOMapper<U extends ModelDTO> {
-    U FromDTO(Object a);
-}
-
 @Controller
 public class CLI {
-    private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
     private static final String BASE_REST_URL = "http://localhost:8080/computer-database-webservice";
     private static final String COMPUTER_REST_URL = "/computer";
     private static final String COMPANY_REST_URL = "/company";
@@ -252,8 +240,10 @@ public class CLI {
     }
 
     private void editComputer(ComputerDTO computerDTO) {
-        System.out.println("editComputer");
-        System.out.println(computerDTO);
+        if (computerDTO.getId() != ComputerDTO.NO_ID) {
+            System.out.println("Computer to update:");
+            System.out.println(computerDTO);
+        }
 
         String name;
         String introduced;
