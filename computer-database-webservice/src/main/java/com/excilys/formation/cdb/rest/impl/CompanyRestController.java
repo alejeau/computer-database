@@ -1,6 +1,8 @@
 package com.excilys.formation.cdb.rest.impl;
 
+import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.exceptions.ServiceException;
+import com.excilys.formation.cdb.mapper.model.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.constants.Paths;
 import com.excilys.formation.cdb.rest.CompanyRest;
@@ -8,7 +10,9 @@ import com.excilys.formation.cdb.service.CompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +48,7 @@ public class CompanyRestController implements CompanyRest {
 
     @Override
     @GetMapping("/id/{id}")
-    public ResponseEntity<Company> getCompanyWithId(@PathVariable Long id) {
+    public ResponseEntity<CompanyDTO> getCompanyWithId(@PathVariable Long id) {
         LOG.debug(" {}");
         Company company = null;
         try {
@@ -53,12 +57,12 @@ public class CompanyRestController implements CompanyRest {
             LOG.error("{}", e);
         }
 
-        return ResponseEntityMapper.toResponseEntity(company);
+        return ResponseEntityMapper.toResponseEntity(CompanyMapper.toDTO(company));
     }
 
     @Override
     @GetMapping("/all")
-    public ResponseEntity<List<Company>> getCompanies() {
+    public ResponseEntity<List<CompanyDTO>> getCompanies() {
         LOG.debug(" {}");
         List<Company> companyList = null;
         try {
@@ -67,12 +71,12 @@ public class CompanyRestController implements CompanyRest {
             LOG.error("{}", e);
         }
 
-        return ResponseEntityMapper.toListResponseEntity(companyList);
+        return ResponseEntityMapper.toListResponseEntity(CompanyMapper.toCompanyDtoList(companyList));
     }
 
     @Override
-    @GetMapping("/list/index/{index}/limit/{limit}")
-    public ResponseEntity<List<Company>> getCompanyList(@PathVariable Long index, @PathVariable Long limit) {
+    @GetMapping("/index/{index}/limit/{limit}")
+    public ResponseEntity<List<CompanyDTO>> getCompanyList(@PathVariable Long index, @PathVariable Long limit) {
         LOG.debug(" {}");
         List<Company> companyList = null;
         try {
@@ -81,6 +85,18 @@ public class CompanyRestController implements CompanyRest {
             LOG.error("{}", e);
         }
 
-        return ResponseEntityMapper.toListResponseEntity(companyList);
+        return ResponseEntityMapper.toListResponseEntity(CompanyMapper.toCompanyDtoList(companyList));
+    }
+
+    @Override
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<Boolean> deleteCompany(@PathVariable Long id) {
+        try {
+            companyService.deleteCompany(id);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_MODIFIED);
+        }
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
     }
 }

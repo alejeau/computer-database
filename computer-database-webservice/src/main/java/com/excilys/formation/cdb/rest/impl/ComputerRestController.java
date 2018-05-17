@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(Paths.REST_COMPUTER)
@@ -132,12 +134,12 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<List<Error>> updateComputer(@RequestBody ComputerDTO computerDTO) {
         List<Error> errorList = ComputerValidator.validate(computerDTO);
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if (errorList != null) {
+        if (errorList == null) {
             try {
                 Company company = null;
                 if (computerDTO.getCompanyId() != null) {
@@ -149,18 +151,24 @@ public class ComputerRestController implements ComputerRest {
                 LOG.error("{}", e);
                 httpStatus = HttpStatus.NOT_MODIFIED;
             }
+        } else {
+            errorList.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(System.out::println);
         }
 
         return new ResponseEntity<>(errorList, httpStatus);
     }
 
     @Override
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Long> persistComputer(@RequestBody ComputerDTO computerDTO) {
+        LOG.debug("persistComputer");
+        LOG.debug("computerDTO: {}", computerDTO);
         Long id = null;
         List<Error> errorList = ComputerValidator.validate(computerDTO);
 
-        if (errorList != null) {
+        if (errorList == null) {
             try {
                 Company company = null;
                 if (computerDTO.getCompanyId() != null) {
@@ -171,13 +179,17 @@ public class ComputerRestController implements ComputerRest {
             } catch (ServiceException | ValidationException e) {
                 LOG.error("{}", e);
             }
+        } else {
+            errorList.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(System.out::println);
         }
 
         return ResponseEntityMapper.toResponseEntity(id);
     }
 
     @Override
-    @DeleteMapping("/delete/id/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Boolean> deleteComputer(@PathVariable Long id) {
         try {
             computerService.deleteComputer(id);
@@ -189,7 +201,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/delete/list")
+    @DeleteMapping("/list")
     public ResponseEntity<Boolean> deleteComputers(@RequestBody List<Long> idList) {
         try {
             computerService.deleteComputers(idList);
@@ -201,7 +213,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/delete/company/id/{companyId}")
+    @DeleteMapping("/company/id/{companyId}")
     public ResponseEntity<Boolean> deleteComputersWithCompanyId(@PathVariable Long companyId) {
         try {
             computerService.deleteComputersWithCompanyId(companyId);

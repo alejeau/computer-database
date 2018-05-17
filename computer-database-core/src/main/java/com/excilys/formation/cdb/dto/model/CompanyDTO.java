@@ -40,4 +40,9 @@ public class CompanyDTO implements ModelDTO {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String shortToString() {
+        return String.format("ID: %d, name: %s", this.id, this.name);
+    }
 }
