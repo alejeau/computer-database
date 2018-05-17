@@ -6,7 +6,7 @@
 
     <groupId>com.excilys.formation.cdb</groupId>
     <artifactId>computer-database</artifactId>
-    <version>4.6.2-RELEASE</version>
+    <version>4.7.2-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <modules>
@@ -16,6 +16,7 @@
         <module>computer-database-service</module>
         <module>computer-database-console</module>
         <module>computer-database-webapp</module>
+        <module>computer-database-webservice</module>
     </modules>
 
     <name>computer-database</name>
@@ -30,12 +31,13 @@
 
         <failOnMissingWebXml>false</failOnMissingWebXml>
 
-        <computer-database-core.version>0.0.1-RELEASE</computer-database-core.version>
-        <computer-database-persistence.version>0.0.1-RELEASE</computer-database-persistence.version>
-        <computer-database-service.version>0.0.1-RELEASE</computer-database-service.version>
-        <computer-database-binding.version>0.0.1-RELEASE</computer-database-binding.version>
-        <computer-database-console.version>0.0.1-RELEASE</computer-database-console.version>
-        <computer-database-webapp.version>0.0.1-RELEASE</computer-database-webapp.version>
+        <computer-database-core.version>0.0.2-SNAPSHOT</computer-database-core.version>
+        <computer-database-persistence.version>0.0.1-SNAPSHOT</computer-database-persistence.version>
+        <computer-database-service.version>0.0.1-SNAPSHOT</computer-database-service.version>
+        <computer-database-binding.version>0.0.3-SNAPSHOT</computer-database-binding.version>
+        <computer-database-console.version>0.0.1-SNAPSHOT</computer-database-console.version>
+        <computer-database-webapp.version>0.0.2-SNAPSHOT</computer-database-webapp.version>
+        <computer-database-webservice.version>0.0.2-SNAPSHOT</computer-database-webservice.version>
 
         <!-- Java Version-->
         <java.version>1.8</java.version>
@@ -102,6 +104,13 @@
         <!-- Java 8 = JAX-B Version 2.2.8 -->
         <!-- Java 9 = JAX-B Version 2.2.11 -->
         <jaxb.version>2.2.11</jaxb.version>
+
+        <!-- REST -->
+        <jackson.version>2.9.5</jackson.version>
+        <!-- JAX-WS RT -->
+        <jax.version>2.2.5</jax.version>
+        <jackson.version>2.9.5</jackson.version>
+        <jersey.version>2.27</jersey.version>
     </properties>
 
     <build>
@@ -113,6 +122,16 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Maven War Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
 
@@ -141,7 +160,20 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/computer-database</path>
+                    <webapps>
+                        <webapp>
+                            <groupId>com.excilys.formation.cdb.webapp</groupId>
+                            <artifactId>computer-database-webapp</artifactId>
+                            <path>/computer-database</path>
+                            <asWebapp>true</asWebapp>
+                            <type>war</type>
+                        </webapp>
+                        <webapp>
+                            <groupId>com.excilys.formation.cdb.webservice</groupId>
+                            <artifactId>computer-database-webservice</artifactId>
+                            <type>war</type>
+                        </webapp>
+                    </webapps>
                     <username>admin</username>
                     <password>password</password>
                 </configuration>
@@ -423,6 +455,42 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${joda-time.version}</version>
+            </dependency>
+
+            <!-- REST -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- JAX-WS RT -->
+            <dependency>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-rt</artifactId>
+                <version>${jax.version}</version>
+            </dependency>
+
+            <!-- Glassfish -->
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersey.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

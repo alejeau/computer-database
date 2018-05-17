@@ -6,6 +6,10 @@ import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 @Component
 public class ComputerMapper {
 
@@ -31,6 +35,7 @@ public class ComputerMapper {
                 computerDTO.setDiscontinued(computer.getDiscontinued().format(DatePattern.FORMATTER));
             }
             if (computer.getCompany() != null) {
+                computerDTO.setCompanyId(computer.getCompany().getId());
                 computerDTO.setCompanyName(computer.getCompany().getName());
             }
         }
@@ -52,5 +57,21 @@ public class ComputerMapper {
                 .discontinued(computerDTO.getDiscontinued())
                 .company(company)
                 .build();
+    }
+
+    public static List<ComputerDTO> toComputerDtoList(List<Computer> computerList) {
+        if (computerList == null) {
+            return new ArrayList<>();
+        }
+
+        int nonNullObjects = Long.valueOf(computerList.stream().filter(Objects::nonNull).count()).intValue();
+        List<ComputerDTO> computerDTOList = new ArrayList<>(nonNullObjects);
+        computerList
+                .stream()
+                .filter(Objects::nonNull)
+                .map(ComputerMapper::toDTO)
+                .forEach(computerDTOList::add);
+
+        return computerDTOList;
     }
 }
