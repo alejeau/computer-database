@@ -12,11 +12,11 @@
 <%@attribute name="computerId" required="false" %>
 <%@attribute name="lang" required="false" %>
 
-<c:set var="pathDash" value="/computer-database/access"/>
-<c:set var="pathAdd" value="/computer-database/access/computer/add"/>
-<c:set var="pathEdit" value="/computer-database/access/computer/edit"/>
-<c:set var="pathSearch" value="/computer-database/access/computer/search"/>
-<c:set var="pathReset " value="/computer-database/access?reset=true"/>
+<c:set var="pathDash" value="/computer-database-webapp/dashboard"/>
+<c:set var="pathAdd" value="/computer-database-webapp/computer/add"/>
+<c:set var="pathEdit" value="/computer-database-webapp/computer/edit"/>
+<c:set var="pathSearch" value="/computer-database-webapp/dashboard/search"/>
+<c:set var="pathReset " value="/computer-database-webapp/dashboard?reset=true"/>
 
 <c:set var="emptyText" value=""/>
 <c:set var="tmpPath" value=""/>
