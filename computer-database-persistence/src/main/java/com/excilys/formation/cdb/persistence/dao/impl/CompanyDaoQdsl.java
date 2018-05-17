@@ -5,6 +5,7 @@ import com.excilys.formation.cdb.model.QCompany;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQuery;
+import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -96,6 +97,30 @@ public class CompanyDaoQdsl implements CompanyDAO {
         session.close();
         LOG.debug("Returning list of size {}", companyList.size());
         return companyList;
+    }
+
+    @Override
+    public Long persistCompany(Company company) {
+        LOG.debug("persistComputer {}");
+        try (Session session = sessionFactory.openSession()) {
+            session.save(company);
+            session.flush();
+        }
+        LOG.debug("Returning id {}", company.getId());
+        return company.getId();
+    }
+
+    @Override
+    public void updateCompany(Company company) {
+        LOG.debug("updateCompany: {}", company);
+        try (Session session = sessionFactory.openSession()) {
+            new HibernateUpdateClause(session, qCompany)
+                    .where(qCompany.id.eq(company.getId()))
+                    .set(qCompany.id, company.getId())
+                    .set(qCompany.name, company.getName())
+                    .execute();
+            session.flush();
+        }
     }
 
     @Override
