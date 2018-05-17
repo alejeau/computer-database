@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(Paths.REST_COMPUTER)
@@ -137,7 +139,7 @@ public class ComputerRestController implements ComputerRest {
         List<Error> errorList = ComputerValidator.validate(computerDTO);
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if (errorList != null) {
+        if (errorList == null) {
             try {
                 Company company = null;
                 if (computerDTO.getCompanyId() != null) {
@@ -149,6 +151,10 @@ public class ComputerRestController implements ComputerRest {
                 LOG.error("{}", e);
                 httpStatus = HttpStatus.NOT_MODIFIED;
             }
+        } else {
+            errorList.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(System.out::println);
         }
 
         return new ResponseEntity<>(errorList, httpStatus);
@@ -157,10 +163,12 @@ public class ComputerRestController implements ComputerRest {
     @Override
     @PostMapping
     public ResponseEntity<Long> persistComputer(@RequestBody ComputerDTO computerDTO) {
+        LOG.debug("persistComputer");
+        LOG.debug("computerDTO: {}", computerDTO);
         Long id = null;
         List<Error> errorList = ComputerValidator.validate(computerDTO);
 
-        if (errorList != null) {
+        if (errorList == null) {
             try {
                 Company company = null;
                 if (computerDTO.getCompanyId() != null) {
@@ -171,6 +179,10 @@ public class ComputerRestController implements ComputerRest {
             } catch (ServiceException | ValidationException e) {
                 LOG.error("{}", e);
             }
+        } else {
+            errorList.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(System.out::println);
         }
 
         return ResponseEntityMapper.toResponseEntity(id);

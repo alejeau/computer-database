@@ -10,7 +10,9 @@ import com.excilys.formation.cdb.service.CompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,5 +86,17 @@ public class CompanyRestController implements CompanyRest {
         }
 
         return ResponseEntityMapper.toListResponseEntity(CompanyMapper.toCompanyDtoList(companyList));
+    }
+
+    @Override
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<Boolean> deleteCompany(@PathVariable Long id) {
+        try {
+            companyService.deleteCompany(id);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_MODIFIED);
+        }
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
     }
 }

@@ -13,6 +13,7 @@ import java.util.Objects;
 )
 @Component
 public class ComputerDTO implements ModelDTO {
+    public static final long NO_ID = -1L;
 
     private long id;
 
@@ -24,7 +25,7 @@ public class ComputerDTO implements ModelDTO {
     private Long companyId;
 
     public ComputerDTO() {
-        this.id = -1;
+        this.id = NO_ID;
     }
 
     public ComputerDTO(long id, String name, String introduced, String discontinued, String companyName, Long companyId) {

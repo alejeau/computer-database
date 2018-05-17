@@ -216,6 +216,9 @@ public class CLI {
     }
 
     private void editComputer(ComputerDTO computerDTO) {
+        System.out.println("editComputer");
+        System.out.println(computerDTO);
+
         String name;
         String introduced;
         String discontinued;
@@ -227,14 +230,14 @@ public class CLI {
         introduced = getDate("introduction");
         discontinued = getDate("discontinuation");
 
-        companyDTO = getCompanyId();
+        companyDTO = getCompanyId(true);
 
         computerDTO.setName(name);
         computerDTO.setIntroduced(introduced);
         computerDTO.setDiscontinued(discontinued);
-        computerDTO.setCompanyId(companyDTO.getId());
+        computerDTO.setCompanyId(companyDTO != null ? companyDTO.getId() : null);
 
-        if (computerDTO.getId() == 0) {
+        if (computerDTO.getId() == ComputerDTO.NO_ID) {
             Long id = client.target(BASE_REST_URL)
                     .path(COMPUTER_REST_URL)
                     .request()
@@ -285,19 +288,23 @@ public class CLI {
         return d1;
     }
 
-    private CompanyDTO getCompanyId() {
+    private CompanyDTO getCompanyId(boolean optional) {
         CompanyDTO companyDTO = null;
 
-        while (companyDTO == null) {
+        do {
             System.out.println();
             Long companyId = getLong("Please enter the computer's manufacturer ID:");
+            if (optional && companyId == null) {
+                return null;
+            }
+
             final String TARGET = String.format("/id/%d", companyId);
             companyDTO = client.target(BASE_REST_URL)
                     .path(COMPANY_REST_URL)
                     .path(TARGET)
                     .request(MediaType.APPLICATION_JSON)
                     .get(CompanyDTO.class);
-        }
+        } while (companyDTO == null);
 
         return companyDTO;
     }
