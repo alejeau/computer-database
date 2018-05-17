@@ -5,6 +5,7 @@ import com.excilys.formation.cdb.dto.ModelDTO;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.PageDTO;
+import com.excilys.formation.cdb.dto.paginator.SearchPageDTO;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.DatePattern;
@@ -96,7 +97,7 @@ public class CLI {
                 computerDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 computerDTOPage.setMaxPageNumber(maxPageNumberComputer);
                 viewPage(computerDTOPage, ComputerDTO.class, new GenericType<List<ComputerDTO>>() {
-                });
+                }, null);
                 break;
             case VIEW_COMPANY_LIST:
                 Long numberOfCompany = client.target(BASE_REST_URL)
@@ -110,7 +111,7 @@ public class CLI {
                 companyDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
                 companyDTOPage.setMaxPageNumber(maxPageNumberCompany);
                 viewPage(companyDTOPage, CompanyDTO.class, new GenericType<List<CompanyDTO>>() {
-                });
+                }, null);
                 break;
             case CHECK_COMPUTER_BY_ID:
                 checkComputerById();
@@ -135,7 +136,12 @@ public class CLI {
         }
     }
 
-    private <T extends PageDTO<U>, U extends ModelDTO> void viewPage(T page, Class itemClass, GenericType<List<U>> genericType) {
+    private <T extends PageDTO<U>, U extends ModelDTO> void viewPage(
+            T page,
+            Class itemClass,
+            GenericType<List<U>> genericType,
+            String search
+    ) {
         boolean exit = false;
         String choice;
 
@@ -158,12 +164,17 @@ public class CLI {
                 page = PageDtoValidator.goTo(page, Long.decode(choice));
             }
 
-            getList(page, itemClass, genericType);
+            getList(page, itemClass, genericType, search);
             System.out.println();
         }
     }
 
-    private <T extends PageDTO<U>, U extends ModelDTO> void getList(T page, Class itemClass, GenericType<List<U>> genericType) {
+    private <T extends PageDTO<U>, U extends ModelDTO> void getList(
+            T page,
+            Class itemClass,
+            GenericType<List<U>> genericType,
+            String search
+    ) {
         String target;
         System.out.println(itemClass);
         if (itemClass.equals(ComputerDTO.class)) {
@@ -174,12 +185,25 @@ public class CLI {
 
         System.out.println("Target: " + target);
 
-        Response response = client.target(BASE_REST_URL)
-                .path(target)
-                .path("/index/" + page.getCurrentPageNumber() * page.getObjectsPerPage())
-                .path("/limit/" + page.getObjectsPerPage())
-                .request(MediaType.APPLICATION_JSON)
-                .get(Response.class);
+        Response response;
+        if (search != null) {
+            response = client.target(BASE_REST_URL)
+                    .path(target)
+                    .path("/name/" + search)
+                    .path("/index/" + page.getCurrentPageNumber() * page.getObjectsPerPage())
+                    .path("/limit/" + page.getObjectsPerPage())
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Response.class);
+
+        } else {
+            response = client.target(BASE_REST_URL)
+                    .path(target)
+                    .path("/index/" + page.getCurrentPageNumber() * page.getObjectsPerPage())
+                    .path("/limit/" + page.getObjectsPerPage())
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Response.class);
+
+        }
 
         response.readEntity(genericType)
                 .stream()
@@ -206,13 +230,25 @@ public class CLI {
     }
 
     private void checkComputerByName() {
-//        String name;
-//
-//        System.out.println("Please enter the computer's name: ");
-//        name = sc.nextLine();
-//
-//        ComputerSearchPage computerSearchPage = pageFactory.createComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
-//        viewPage(computerSearchPage);
+        String name;
+
+        System.out.println("Please enter the computer's name: ");
+        name = sc.nextLine();
+
+        final String TARGET = String.format("/name/%s/total", name);
+
+        Long numberOfComputer = client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(TARGET)
+                .request(MediaType.APPLICATION_JSON)
+                .get(Long.class);
+        Long maxPageNumberComputer = lastPageNumber(numberOfComputer, NUMBER_OF_ELEMENTS_PER_PAGE);
+        PageDTO<ComputerDTO> computerDTOPage = new PageDTO<>();
+        computerDTOPage.setCurrentPageNumber(FIRST_PAGE);
+        computerDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+        computerDTOPage.setMaxPageNumber(maxPageNumberComputer);
+        viewPage(computerDTOPage, ComputerDTO.class, new GenericType<List<ComputerDTO>>() {
+        }, name);
     }
 
     private void editComputer(ComputerDTO computerDTO) {
