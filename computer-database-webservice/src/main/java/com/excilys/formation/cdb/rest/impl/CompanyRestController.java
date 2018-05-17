@@ -7,7 +7,6 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.constants.Paths;
 import com.excilys.formation.cdb.rest.CompanyRest;
 import com.excilys.formation.cdb.service.CompanyService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

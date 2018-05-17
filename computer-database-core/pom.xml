@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <groupId>com.excilys.formation.cdb.core</groupId>
     <artifactId>computer-database-core</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>computer-database-core</name>
 
     <properties>

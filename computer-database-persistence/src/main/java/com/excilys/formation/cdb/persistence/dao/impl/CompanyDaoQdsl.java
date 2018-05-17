@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.QCompany;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
@@ -118,7 +117,7 @@ public class CompanyDaoQdsl implements CompanyDAO {
             new HibernateUpdateClause(session, qCompany)
                     .where(qCompany.id.eq(company.getId()))
                     .set(qCompany.id, company.getId())
-                    .set(qCompany.name, company.getName()   )
+                    .set(qCompany.name, company.getName())
                     .execute();
             session.flush();
         }
