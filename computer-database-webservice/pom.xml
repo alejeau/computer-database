@@ -7,13 +7,13 @@
     <parent>
         <groupId>com.excilys.formation.cdb</groupId>
         <artifactId>computer-database</artifactId>
-        <version>4.7.2-SNAPSHOT</version>
+        <version>4.7.2-RELEASE</version>
     </parent>
 
     <packaging>war</packaging>
     <groupId>com.excilys.formation.cdb.webservice</groupId>
     <artifactId>computer-database-webservice</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3-RELEASE</version>
     <name>computer-database-webservice</name>
 
     <properties>
