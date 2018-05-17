@@ -43,6 +43,11 @@ public class CompanyDTO implements ModelDTO {
 
     @Override
     public String shortToString() {
+        return this.toString();
+    }
+
+    @Override
+    public String toString() {
         return String.format("ID: %d, name: %s", this.id, this.name);
     }
 }

@@ -7,13 +7,13 @@
     <parent>
         <groupId>com.excilys.formation.cdb</groupId>
         <artifactId>computer-database</artifactId>
-        <version>4.7.2-RELEASE</version>
+        <version>4.7.2-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
     <groupId>com.excilys.formation.cdb.binding</groupId>
     <artifactId>computer-database-binding</artifactId>
-    <version>0.0.3-RELEASE</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>computer-database-binding</name>
 
     <properties>

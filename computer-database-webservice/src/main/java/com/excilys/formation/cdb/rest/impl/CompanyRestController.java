@@ -7,6 +7,7 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.constants.Paths;
 import com.excilys.formation.cdb.rest.CompanyRest;
 import com.excilys.formation.cdb.service.CompanyService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,6 +90,49 @@ public class CompanyRestController implements CompanyRest {
         }
 
         return ResponseEntityMapper.toListResponseEntity(CompanyMapper.toCompanyDtoList(companyList));
+    }
+
+    @Override
+    @PostMapping
+    public ResponseEntity<Long> persistCompany(@RequestBody CompanyDTO companyDTO) {
+        LOG.debug("persistCompany");
+        LOG.debug("companyDTO: {}", companyDTO);
+        Long id = null;
+        Company company = CompanyMapper.toCompany(companyDTO);
+
+        if (company != null) {
+            try {
+                id = companyService.persistCompany(company);
+            } catch (ServiceException e) {
+                LOG.error("{}", e);
+            }
+        } else {
+            LOG.error("Company already had an id!");
+        }
+
+        return ResponseEntityMapper.toResponseEntity(id);
+    }
+
+    @Override
+    @PutMapping
+    public ResponseEntity<Boolean> updateCompany(@RequestBody CompanyDTO companyDTO) {
+        LOG.debug("updateCompany");
+        LOG.debug("companyDTO: {}", companyDTO);
+        Company company = CompanyMapper.toCompany(companyDTO);
+        Boolean success = null;
+
+        if (company != null) {
+            try {
+                companyService.updateCompany(company);
+                success = Boolean.TRUE;
+            } catch (ServiceException e) {
+                LOG.error("{}", e);
+            }
+        } else {
+            LOG.error("Could not update the company!");
+        }
+
+        return ResponseEntityMapper.toResponseEntity(success);
     }
 
     @Override
