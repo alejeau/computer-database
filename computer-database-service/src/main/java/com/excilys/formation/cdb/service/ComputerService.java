@@ -19,9 +19,11 @@ public interface ComputerService {
 
     List<Computer> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException;
 
-    List<Computer> getComputers(long index, Long limit) throws ServiceException;
+    List<Computer> getComputerList(long index, Long limit) throws ServiceException;
 
-    List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException;
+    List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException;
+
+    List<Computer> getComputerListWithCompanyId(Long companyId) throws ServiceException;
 
     void updateComputer(Computer c) throws ValidationException, ServiceException;
 

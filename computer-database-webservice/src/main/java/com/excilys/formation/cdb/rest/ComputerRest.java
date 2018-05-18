@@ -20,9 +20,11 @@ public interface ComputerRest {
 
     ResponseEntity<List<ComputerDTO>> getComputerOrderedBy(String name, long index, Long limit, DatabaseField computerField, boolean ascending);
 
-    ResponseEntity<List<ComputerDTO>> getComputers(long index, Long limit);
+    ResponseEntity<List<ComputerDTO>> getComputerList(long index, Long limit);
 
-    ResponseEntity<List<ComputerDTO>> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending);
+    ResponseEntity<List<ComputerDTO>> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending);
+
+    ResponseEntity<List<ComputerDTO>> getComputerListWithCompanyId(long companyId);
 
     ResponseEntity<List<Error>> updateComputer(ComputerDTO computerDTO) throws ValidationException;
 

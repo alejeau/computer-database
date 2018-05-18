@@ -81,7 +81,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 
     @Override
-    public List<Computer> getComputers(long index, Long limit) throws ServiceException {
+    public List<Computer> getComputerList(long index, Long limit) throws ServiceException {
         try {
             return computerDAO.getComputerList(index, limit);
         } catch (DAOException e) {
@@ -91,12 +91,22 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public List<Computer> getComputersOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException {
+    public List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws ServiceException {
         try {
             return computerDAO.getComputerListOrderedBy(index, limit, computerField, ascending);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't get list of computers from " + index + " to " + limit + "!", e);
+        }
+    }
+
+    @Override
+    public List<Computer> getComputerListWithCompanyId(Long companyId) throws ServiceException {
+        try {
+            return computerDAO.getComputerListWithCompanyId(companyId);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't get list of computers with Company ID " + companyId + "!", e);
         }
     }
 
@@ -148,7 +158,7 @@ public class ComputerServiceImpl implements ComputerService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteComputersWithCompanyId(Long companyId) throws ServiceException {
         try {
-            computerDAO.deleteComputersWhitCompanyId(companyId);
+            computerDAO.deleteComputersWithCompanyId(companyId);
         } catch (DAOException e) {
             LOG.error("{}", e);
             String error = String.format("Couldn't delete the list of computers with company ID %d!", companyId);

@@ -1,48 +1,37 @@
 package com.excilys.formation.cdb.ui;
 
 import com.excilys.formation.cdb.config.HibernatePersistenceConfigCLI;
-import com.excilys.formation.cdb.exceptions.ServiceException;
-import com.excilys.formation.cdb.exceptions.ValidationException;
-import com.excilys.formation.cdb.model.Company;
-import com.excilys.formation.cdb.model.Computer;
-import com.excilys.formation.cdb.model.DatePattern;
-import com.excilys.formation.cdb.model.Model;
-import com.excilys.formation.cdb.model.constants.LimitValue;
-import com.excilys.formation.cdb.service.CompanyService;
-import com.excilys.formation.cdb.service.ComputerCompanyService;
-import com.excilys.formation.cdb.service.ComputerService;
-import com.excilys.formation.cdb.service.paginator.core.Page;
-import com.excilys.formation.cdb.service.paginator.pager.CompanyPage;
-import com.excilys.formation.cdb.service.paginator.pager.ComputerPage;
-import com.excilys.formation.cdb.service.paginator.pager.ComputerSearchPage;
-import com.excilys.formation.cdb.service.paginator.pager.PageFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.excilys.formation.cdb.dto.ModelDTO;
+import com.excilys.formation.cdb.dto.model.CompanyDTO;
+import com.excilys.formation.cdb.dto.model.ComputerDTO;
+import com.excilys.formation.cdb.dto.paginator.PageDTO;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import java.time.LocalDate;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.Scanner;
 
 @Controller
 public class CLI {
-    private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
-    private static final LimitValue NUMBER_OF_ELEMENTS_PER_PAGE = LimitValue.TEN;
+    private static final String BASE_REST_URL = "http://localhost:8080/computer-database-webservice";
+    private static final String COMPUTER_REST_URL = "/computer";
+    private static final String COMPANY_REST_URL = "/company";
 
-    private CompanyService companyService;
-    private ComputerService computerService;
-    private ComputerCompanyService computerCompanyService;
-    private PageFactory pageFactory;
+    private static final long FIRST_PAGE = 0L;
+    private static final long NUMBER_OF_ELEMENTS_PER_PAGE = 10L;
 
+
+    private Client client = ClientBuilder.newClient();
     private Scanner sc = new Scanner(System.in);
 
-    @Autowired
-    public CLI(CompanyService companyService, ComputerService computerService, ComputerCompanyService computerCompanyService, PageFactory pageFactory) {
-        this.companyService = companyService;
-        this.computerService = computerService;
-        this.computerCompanyService = computerCompanyService;
-        this.pageFactory = pageFactory;
+
+    public CLI() {
     }
 
     public static void main(String[] args) {
@@ -76,26 +65,41 @@ public class CLI {
         int code;
         do {
             code = mainMenu();
-            try {
-                executeChoice(CliActions.map(code));
-            } catch (ServiceException e) {
-                LOG.error("{}", e);
-                System.out.println("Couldn't execute the chosen action!");
-            }
+            executeChoice(CliActions.map(code));
             System.out.println();
         }
         while (code != CliActions.values().length);
     }
 
-    private void executeChoice(CliActions choice) throws ServiceException {
+    private void executeChoice(CliActions choice) {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
-                ComputerPage computerPage = pageFactory.createComputerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
-                viewPage(computerPage);
+                Long numberOfComputer = client.target(BASE_REST_URL)
+                        .path(COMPUTER_REST_URL)
+                        .path("/total")
+                        .request(MediaType.APPLICATION_JSON)
+                        .get(Long.class);
+                Long maxPageNumberComputer = lastPageNumber(numberOfComputer, NUMBER_OF_ELEMENTS_PER_PAGE);
+                PageDTO<ComputerDTO> computerDTOPage = new PageDTO<>();
+                computerDTOPage.setCurrentPageNumber(FIRST_PAGE);
+                computerDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+                computerDTOPage.setMaxPageNumber(maxPageNumberComputer);
+                viewPage(computerDTOPage, ComputerDTO.class, new GenericType<List<ComputerDTO>>() {
+                }, null);
                 break;
             case VIEW_COMPANY_LIST:
-                CompanyPage companyPage = pageFactory.createCompanyPage(NUMBER_OF_ELEMENTS_PER_PAGE);
-                viewPage(companyPage);
+                Long numberOfCompany = client.target(BASE_REST_URL)
+                        .path(COMPANY_REST_URL)
+                        .path("/total")
+                        .request(MediaType.APPLICATION_JSON)
+                        .get(Long.class);
+                Long maxPageNumberCompany = lastPageNumber(numberOfCompany, NUMBER_OF_ELEMENTS_PER_PAGE);
+                PageDTO<CompanyDTO> companyDTOPage = new PageDTO<>();
+                companyDTOPage.setCurrentPageNumber(FIRST_PAGE);
+                companyDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+                companyDTOPage.setMaxPageNumber(maxPageNumberCompany);
+                viewPage(companyDTOPage, CompanyDTO.class, new GenericType<List<CompanyDTO>>() {
+                }, null);
                 break;
             case CHECK_COMPUTER_BY_ID:
                 checkComputerById();
@@ -104,7 +108,7 @@ public class CLI {
                 checkComputerByName();
                 break;
             case ADD_COMPUTER:
-                editComputer(new Computer());
+                editComputer(new ComputerDTO());
                 break;
             case UPDATE_COMPUTER:
                 updateComputer();
@@ -120,75 +124,131 @@ public class CLI {
         }
     }
 
-    private <T extends Page<U>, U extends Model> void viewPage(T page) throws ServiceException {
+    private <T extends PageDTO<U>, U extends ModelDTO> void viewPage(
+            T page,
+            Class itemClass,
+            GenericType<List<U>> genericType,
+            String search
+    ) {
         boolean exit = false;
         String choice;
 
         while (!exit) {
-            System.out.println("Which list would you like to view (current page: " + page.getPageNumber() + ")?");
+            System.out.println("Which list would you like to view (current page: " + page.getCurrentPageNumber() + ")?");
             System.out.println("n for next, p for previous, f for first, l for last and q to quit");
             choice = sc.nextLine();
 
             if (choice.isEmpty() || choice.equals("f")) {
-                page.first()
-                        .stream()
-                        .map(Model::shortToString)
-                        .forEach(System.out::println);
+                page = PageDtoValidator.first(page);
             } else if (choice.equals("q")) {
                 exit = true;
             } else if (choice.equals("p")) {
-                page.previous()
-                        .stream()
-                        .map(Model::shortToString)
-                        .forEach(System.out::println);
+                page = PageDtoValidator.previous(page);
             } else if (choice.equals("n")) {
-                page.next()
-                        .stream()
-                        .map(Model::shortToString)
-                        .forEach(System.out::println);
+                page = PageDtoValidator.next(page);
             } else if (choice.equals("l")) {
-                page.last()
-                        .stream()
-                        .map(Model::shortToString)
-                        .forEach(System.out::println);
+                page = PageDtoValidator.last(page);
             } else if (choice.matches("[0-9]+")) {
-                page.goToPage(Long.decode(choice))
-                        .stream()
-                        .map(Model::shortToString)
-                        .forEach(System.out::println);
+                page = PageDtoValidator.goTo(page, Long.decode(choice));
             }
+
+            getList(page, itemClass, genericType, search);
             System.out.println();
         }
     }
 
-    private void checkComputerById() throws ServiceException {
-        Computer c;
+    private <T extends PageDTO<U>, U extends ModelDTO> void getList(
+            T page,
+            Class itemClass,
+            GenericType<List<U>> genericType,
+            String search
+    ) {
+        String target;
+        System.out.println(itemClass);
+        if (itemClass.equals(ComputerDTO.class)) {
+            target = COMPUTER_REST_URL;
+        } else {
+            target = COMPANY_REST_URL;
+        }
+
+        System.out.println("Target: " + target);
+
+        Response response;
+        if (search != null) {
+            response = client.target(BASE_REST_URL)
+                    .path(target)
+                    .path("/name/" + search)
+                    .path("/index/" + page.getCurrentPageNumber() * page.getObjectsPerPage())
+                    .path("/limit/" + page.getObjectsPerPage())
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Response.class);
+
+        } else {
+            response = client.target(BASE_REST_URL)
+                    .path(target)
+                    .path("/index/" + page.getCurrentPageNumber() * page.getObjectsPerPage())
+                    .path("/limit/" + page.getObjectsPerPage())
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Response.class);
+
+        }
+
+        response.readEntity(genericType)
+                .stream()
+                .map(ModelDTO::shortToString)
+                .forEach(System.out::println);
+    }
+
+    private void checkComputerById() {
+        ComputerDTO computerDTO;
         Long id = getLong("Please enter the computer's ID: ");
 
-        c = computerService.getComputer(id);
+        final String TARGET = String.format("/id/%d", id);
+        computerDTO = client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(TARGET)
+                .request(MediaType.APPLICATION_JSON)
+                .get(ComputerDTO.class);
 
-        if (c != null) {
-            System.out.println(c);
+        if (computerDTO != null) {
+            System.out.println(computerDTO);
         } else {
             System.out.println("No computer registered with the ID " + id);
         }
     }
 
-    private void checkComputerByName() throws ServiceException {
+    private void checkComputerByName() {
         String name;
 
         System.out.println("Please enter the computer's name: ");
         name = sc.nextLine();
 
-        ComputerSearchPage computerSearchPage = pageFactory.createComputerSearchPage(name, NUMBER_OF_ELEMENTS_PER_PAGE);
-        viewPage(computerSearchPage);
+        final String TARGET = String.format("/name/%s/total", name);
+
+        Long numberOfComputer = client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(TARGET)
+                .request(MediaType.APPLICATION_JSON)
+                .get(Long.class);
+        Long maxPageNumberComputer = lastPageNumber(numberOfComputer, NUMBER_OF_ELEMENTS_PER_PAGE);
+        PageDTO<ComputerDTO> computerDTOPage = new PageDTO<>();
+        computerDTOPage.setCurrentPageNumber(FIRST_PAGE);
+        computerDTOPage.setObjectsPerPage(NUMBER_OF_ELEMENTS_PER_PAGE);
+        computerDTOPage.setMaxPageNumber(maxPageNumberComputer);
+        viewPage(computerDTOPage, ComputerDTO.class, new GenericType<List<ComputerDTO>>() {
+        }, name);
     }
 
-    private void editComputer(Computer c) throws ServiceException {
+    private void editComputer(ComputerDTO computerDTO) {
+        if (computerDTO.getId() != ComputerDTO.NO_ID) {
+            System.out.println("Computer to update:");
+            System.out.println(computerDTO);
+        }
+
         String name;
-        LocalDate introduced;
-        LocalDate discontinued;
-        Company company;
+        String introduced;
+        String discontinued;
+        CompanyDTO companyDTO;
 
         System.out.println("Please enter the computer's name:");
         name = sc.nextLine();
@@ -196,30 +256,41 @@ public class CLI {
         introduced = getDate("introduction");
         discontinued = getDate("discontinuation");
 
-        company = getCompanyId();
+        companyDTO = getCompanyId(true);
 
-        c.setName(name);
-        c.setIntroduced(introduced);
-        c.setDiscontinued(discontinued);
-        c.setCompany(company);
+        computerDTO.setName(name);
+        computerDTO.setIntroduced(introduced);
+        computerDTO.setDiscontinued(discontinued);
+        computerDTO.setCompanyId(companyDTO != null ? companyDTO.getId() : null);
 
-        try {
-            if (c.getId() == null) {
-                Long id = computerService.persistComputer(c);
-                System.out.println("The computer has the ID: " + id);
-            } else {
-                computerService.updateComputer(c);
-            }
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
+        if (computerDTO.getId() == ComputerDTO.NO_ID) {
+            Long id = client.target(BASE_REST_URL)
+                    .path(COMPUTER_REST_URL)
+                    .request()
+                    .post(Entity.entity(computerDTO, MediaType.APPLICATION_JSON))
+                    .readEntity(Long.class);
+
+            System.out.println("The computer has the ID: " + id);
+        } else {
+            client.target(BASE_REST_URL)
+                    .path(COMPUTER_REST_URL)
+                    .request()
+                    .put(Entity.entity(computerDTO, MediaType.APPLICATION_JSON));
         }
+
     }
 
-    private void updateComputer() throws ServiceException {
+    private void updateComputer() {
         Long id = getLong("Which computer would you like to update (ID)?");
 
-        Computer c = computerService.getComputer(id);
-        editComputer(c);
+
+        final String TARGET = String.format("/id/%d", id);
+        ComputerDTO computerDTO = client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(TARGET)
+                .request(MediaType.APPLICATION_JSON)
+                .get(ComputerDTO.class);
+        editComputer(computerDTO);
     }
 
     /**
@@ -228,56 +299,79 @@ public class CLI {
      * @param event the name of the event you want a date for.
      * @return a LocalDate corresponding to the input user's date.
      */
-    private LocalDate getDate(String event) {
-        LocalDate date = null;
+    private String getDate(String event) {
+        String d1 = null;
         boolean ok = false;
 
         while (!ok) {
             System.out.println("Please enter the computer's " + event + " date (yyyy-MM-dd or 'Enter' for no date):");
-            String d1 = sc.nextLine();
+            d1 = sc.nextLine();
             if (d1.isEmpty() || d1.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                if (!d1.isEmpty()) {
-                    date = LocalDate.parse(d1, DatePattern.FORMATTER);
-                }
                 ok = true;
             }
         }
 
-        return date;
+        return d1;
     }
 
-    private Company getCompanyId() throws ServiceException {
-        Company c = null;
+    private CompanyDTO getCompanyId(boolean optional) {
+        CompanyDTO companyDTO = null;
 
-        while (c == null) {
+        do {
             System.out.println();
             Long companyId = getLong("Please enter the computer's manufacturer ID:");
-            c = companyService.getCompany(companyId);
-        }
+            if (optional && companyId == null) {
+                return null;
+            }
 
-        return c;
+            final String TARGET = String.format("/id/%d", companyId);
+            companyDTO = client.target(BASE_REST_URL)
+                    .path(COMPANY_REST_URL)
+                    .path(TARGET)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(CompanyDTO.class);
+        } while (companyDTO == null);
+
+        return companyDTO;
     }
 
-    private void deleteComputer() throws ServiceException {
+    private void deleteComputer() {
         Long id = getLong("Please enter the computer's ID you wish to delete: ");
 
-        Computer c = computerService.getComputer(id);
-        if (c != null) {
-            computerService.deleteComputer(id);
+        final String TARGET = String.format("/id/%d", id);
+        ComputerDTO computerDTO = client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(TARGET)
+                .request(MediaType.APPLICATION_JSON)
+                .get(ComputerDTO.class);
+
+        if (computerDTO != null) {
+            client.target(BASE_REST_URL)
+                    .path(COMPUTER_REST_URL)
+                    .path(TARGET)
+                    .request()
+                    .delete();
         } else {
             System.out.println("There is no computer with the ID: " + id + "\n");
         }
     }
 
-    private void deleteCompany() throws ServiceException {
+    private void deleteCompany() {
         Long companyId = getLong("Please enter the company's ID you wish to delete: ");
 
-        Company c = companyService.getCompany(companyId);
-        if (c != null) {
-            computerCompanyService.deleteCompanyWithIdAndAssociatedComputers(companyId);
-        } else {
-            System.out.println("There is no company with the ID: " + companyId + "\n");
-        }
+        final String COMPUTER_TARGET = String.format("/company/id/%d", companyId);
+        final String COMPANY_TARGET = String.format("/id/%d", companyId);
+        client.target(BASE_REST_URL)
+                .path(COMPUTER_REST_URL)
+                .path(COMPUTER_TARGET)
+                .request()
+                .delete();
+
+        client.target(BASE_REST_URL)
+                .path(COMPANY_REST_URL)
+                .path(COMPANY_TARGET)
+                .request()
+                .delete();
     }
 
     private Long getLong(final String message) {
@@ -286,5 +380,10 @@ public class CLI {
         id = sc.nextLong();
         sc.nextLine();
         return id;
+    }
+
+    private static Long lastPageNumber(Long numberOfItem, Long limit) {
+        Long lastPageNumber = numberOfItem / limit;
+        return (numberOfItem % 10 == 0) && (numberOfItem != 0L) ? lastPageNumber - 1L : lastPageNumber;
     }
 }

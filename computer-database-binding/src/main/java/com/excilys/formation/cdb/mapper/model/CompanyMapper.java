@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class CompanyMapper {
@@ -17,7 +18,17 @@ public class CompanyMapper {
     }
 
     public static CompanyDTO toDTO(Company company) {
+        if (company == null) {
+            return null;
+        }
         return new CompanyDTO(company.getId(), company.getName());
+    }
+
+    public static Company toCompany(CompanyDTO companyDTO) {
+        if (companyDTO == null) {
+            return null;
+        }
+        return new Company(companyDTO.getId(), companyDTO.getName());
     }
 
     public static Company mapFromComputer(ResultSet rs) throws SQLException {
@@ -33,5 +44,21 @@ public class CompanyMapper {
                 .map(CompanyMapper::toDTO)
                 .forEach(companyDTOList::add);
         return companyDTOList;
+    }
+
+    public static List<CompanyDTO> toCompanyDtoList(List<Company> companyList) {
+        if (companyList == null) {
+            return new ArrayList<>();
+        }
+
+        int nonNullObjects = Long.valueOf(companyList.stream().filter(Objects::nonNull).count()).intValue();
+        List<CompanyDTO> CompanyDTOList = new ArrayList<>(nonNullObjects);
+        companyList
+                .stream()
+                .filter(Objects::nonNull)
+                .map(CompanyMapper::toDTO)
+                .forEach(CompanyDTOList::add);
+
+        return CompanyDTOList;
     }
 }

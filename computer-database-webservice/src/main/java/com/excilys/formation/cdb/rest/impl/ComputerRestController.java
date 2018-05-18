@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(Paths.REST_COMPUTER)
@@ -109,10 +110,10 @@ public class ComputerRestController implements ComputerRest {
 
     @Override
     @GetMapping("/index/{index}/limit/{limit}")
-    public ResponseEntity<List<ComputerDTO>> getComputers(@PathVariable long index, @PathVariable Long limit) {
+    public ResponseEntity<List<ComputerDTO>> getComputerList(@PathVariable long index, @PathVariable Long limit) {
         List<Computer> computerList = null;
         try {
-            computerList = computerService.getComputers(index, limit);
+            computerList = computerService.getComputerList(index, limit);
         } catch (ServiceException e) {
             LOG.error("{}", e);
         }
@@ -120,11 +121,11 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @GetMapping("/index/{index}/limit/{limit}/field/{computerField}/asc/{ascending}")
-    public ResponseEntity<List<ComputerDTO>> getComputersOrderedBy(@PathVariable long index, @PathVariable Long limit, @PathVariable DatabaseField computerField, @PathVariable boolean ascending) {
+    @GetMapping("/index/{index}/limit/{limit}/field/{computerField}")
+    public ResponseEntity<List<ComputerDTO>> getComputerListOrderedBy(@PathVariable long index, @PathVariable Long limit, @PathVariable DatabaseField computerField, @PathVariable boolean ascending) {
         List<Computer> computerList = null;
         try {
-            computerList = computerService.getComputersOrderedBy(index, limit, computerField, ascending);
+            computerList = computerService.getComputerListOrderedBy(index, limit, computerField, ascending);
         } catch (ServiceException e) {
             LOG.error("{}", e);
         }
@@ -132,12 +133,24 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @PutMapping("/update")
+    @GetMapping("/company-id/{companyId}")
+    public ResponseEntity<List<ComputerDTO>> getComputerListWithCompanyId(@PathVariable long companyId) {
+        List<Computer> computerList = null;
+        try {
+            computerList = computerService.getComputerListWithCompanyId(companyId);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+        }
+        return ResponseEntityMapper.toListResponseEntity(ComputerMapper.toComputerDtoList(computerList));
+    }
+
+    @Override
+    @PutMapping
     public ResponseEntity<List<Error>> updateComputer(@RequestBody ComputerDTO computerDTO) {
         List<Error> errorList = ComputerValidator.validate(computerDTO);
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if (errorList != null) {
+        if (errorList == null) {
             try {
                 Company company = null;
                 if (computerDTO.getCompanyId() != null) {
@@ -149,18 +162,24 @@ public class ComputerRestController implements ComputerRest {
                 LOG.error("{}", e);
                 httpStatus = HttpStatus.NOT_MODIFIED;
             }
+        } else {
+            errorList.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(System.out::println);
         }
 
         return new ResponseEntity<>(errorList, httpStatus);
     }
 
     @Override
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Long> persistComputer(@RequestBody ComputerDTO computerDTO) {
+        LOG.debug("persistComputer");
+        LOG.debug("computerDTO: {}", computerDTO);
         Long id = null;
         List<Error> errorList = ComputerValidator.validate(computerDTO);
 
-        if (errorList != null) {
+        if (errorList == null) {
             try {
                 Company company = null;
                 if (computerDTO.getCompanyId() != null) {
@@ -171,13 +190,17 @@ public class ComputerRestController implements ComputerRest {
             } catch (ServiceException | ValidationException e) {
                 LOG.error("{}", e);
             }
+        } else {
+            errorList.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(System.out::println);
         }
 
         return ResponseEntityMapper.toResponseEntity(id);
     }
 
     @Override
-    @DeleteMapping("/delete/id/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Boolean> deleteComputer(@PathVariable Long id) {
         try {
             computerService.deleteComputer(id);
@@ -189,7 +212,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/delete/list")
+    @DeleteMapping("/list")
     public ResponseEntity<Boolean> deleteComputers(@RequestBody List<Long> idList) {
         try {
             computerService.deleteComputers(idList);
@@ -201,7 +224,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/delete/company/id/{companyId}")
+    @DeleteMapping("/company/id/{companyId}")
     public ResponseEntity<Boolean> deleteComputersWithCompanyId(@PathVariable Long companyId) {
         try {
             computerService.deleteComputersWithCompanyId(companyId);
