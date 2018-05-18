@@ -110,10 +110,10 @@ public class ComputerRestController implements ComputerRest {
 
     @Override
     @GetMapping("/index/{index}/limit/{limit}")
-    public ResponseEntity<List<ComputerDTO>> getComputers(@PathVariable long index, @PathVariable Long limit) {
+    public ResponseEntity<List<ComputerDTO>> getComputerList(@PathVariable long index, @PathVariable Long limit) {
         List<Computer> computerList = null;
         try {
-            computerList = computerService.getComputers(index, limit);
+            computerList = computerService.getComputerList(index, limit);
         } catch (ServiceException e) {
             LOG.error("{}", e);
         }
@@ -121,11 +121,23 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @GetMapping("/index/{index}/limit/{limit}/field/{computerField}/asc/{ascending}")
-    public ResponseEntity<List<ComputerDTO>> getComputersOrderedBy(@PathVariable long index, @PathVariable Long limit, @PathVariable DatabaseField computerField, @PathVariable boolean ascending) {
+    @GetMapping("/index/{index}/limit/{limit}/field/{computerField}")
+    public ResponseEntity<List<ComputerDTO>> getComputerListOrderedBy(@PathVariable long index, @PathVariable Long limit, @PathVariable DatabaseField computerField, @PathVariable boolean ascending) {
         List<Computer> computerList = null;
         try {
-            computerList = computerService.getComputersOrderedBy(index, limit, computerField, ascending);
+            computerList = computerService.getComputerListOrderedBy(index, limit, computerField, ascending);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+        }
+        return ResponseEntityMapper.toListResponseEntity(ComputerMapper.toComputerDtoList(computerList));
+    }
+
+    @Override
+    @GetMapping("/company-id/{companyId}")
+    public ResponseEntity<List<ComputerDTO>> getComputerListWithCompanyId(@PathVariable long companyId) {
+        List<Computer> computerList = null;
+        try {
+            computerList = computerService.getComputerListWithCompanyId(companyId);
         } catch (ServiceException e) {
             LOG.error("{}", e);
         }

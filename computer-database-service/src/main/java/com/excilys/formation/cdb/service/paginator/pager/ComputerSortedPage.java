@@ -26,7 +26,7 @@ public class ComputerSortedPage extends ComputerPage {
     @Override
     protected void refresh(long offset) throws ServiceException {
         this.list = computerService
-                .getComputersOrderedBy(offset, limit.getValue(), DatabaseField.toDatabaseField(orderBy), this.ascending);
+                .getComputerListOrderedBy(offset, limit.getValue(), DatabaseField.toDatabaseField(orderBy), this.ascending);
     }
 
     public ComputerField getOrderBy() {

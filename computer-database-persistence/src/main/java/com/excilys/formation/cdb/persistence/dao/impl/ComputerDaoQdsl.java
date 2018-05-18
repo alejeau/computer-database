@@ -1,5 +1,6 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
+import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.QCompany;
 import com.excilys.formation.cdb.model.QComputer;
@@ -140,6 +141,27 @@ public class ComputerDaoQdsl implements ComputerDAO {
     }
 
     @Override
+    public List<Computer> getComputerListWithCompanyId(Long companyId) {
+        LOG.debug("getComputerListWithCompanyId {}");
+        Session session = sessionFactory.openSession();
+        HibernateQuery<Computer> query = new HibernateQuery<>(session);
+        query = query.select(qComputer)
+                .from(qComputer)
+                .leftJoin(qComputer.company, qCompany)
+                .where(qCompany.id.eq(companyId));
+        query = orderBy(query, DatabaseField.COMPUTER_NAME, true);
+
+        if (query == null) {
+            throw new IllegalStateException("The HibernateQuery must not be null!");
+        }
+
+        List<Computer> computerList = query.fetch();
+        session.close();
+        LOG.debug("Returning list of size {}", computerList.size());
+        return computerList;
+    }
+
+    @Override
     public void updateComputer(Computer c) {
         LOG.debug("updateComputer {}");
         try (Session session = sessionFactory.openSession()) {
@@ -183,8 +205,8 @@ public class ComputerDaoQdsl implements ComputerDAO {
     }
 
     @Override
-    public void deleteComputersWhitCompanyId(Long companyId) {
-        LOG.debug("deleteComputersWhitCompanyId {}");
+    public void deleteComputersWithCompanyId(Long companyId) {
+        LOG.debug("deleteComputersWithCompanyId {}");
         Session session = sessionFactory.openSession();
         new HibernateDeleteClause(session, qComputer)
                 .where(qComputer.company.id.eq(companyId))

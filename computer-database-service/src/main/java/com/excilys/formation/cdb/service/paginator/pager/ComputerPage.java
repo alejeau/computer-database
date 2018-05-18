@@ -26,7 +26,7 @@ public class ComputerPage extends Page<Computer> {
 
     @Override
     protected void refresh(long offset) throws ServiceException {
-        this.list = computerService.getComputers(offset, limit.getValue());
+        this.list = computerService.getComputerList(offset, limit.getValue());
     }
 
     public void setComputerService(ComputerService computerService) {

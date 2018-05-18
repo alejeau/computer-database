@@ -22,6 +22,8 @@ public interface ComputerDAO {
 
     List<Computer> getComputerListOrderedBy(long index, Long limit, DatabaseField computerField, boolean ascending) throws DAOException;
 
+    List<Computer> getComputerListWithCompanyId(Long id) throws DAOException;
+
     void updateComputer(Computer c) throws DAOException;
 
     Long persistComputer(Computer c) throws DAOException;
@@ -30,5 +32,5 @@ public interface ComputerDAO {
 
     void deleteComputers(List<Long> idList) throws DAOException;
 
-    void deleteComputersWhitCompanyId(Long companyId) throws DAOException;
+    void deleteComputersWithCompanyId(Long companyId) throws DAOException;
 }
