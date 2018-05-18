@@ -73,7 +73,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ComputerDTO> getComputer(@PathVariable Long id) {
         Computer computer = null;
         try {
@@ -133,7 +133,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @GetMapping("/company-id/{companyId}")
+    @GetMapping("/company/{companyId}")
     public ResponseEntity<List<ComputerDTO>> getComputerListWithCompanyId(@PathVariable long companyId) {
         List<Computer> computerList = null;
         try {
@@ -157,7 +157,11 @@ public class ComputerRestController implements ComputerRest {
                     company = companyService.getCompany(computerDTO.getCompanyId());
                 }
                 Computer computer = ComputerMapper.toComputer(computerDTO, company);
-                computerService.updateComputer(computer);
+                if (computer.getId() != null) {
+                    computerService.updateComputer(computer);
+                } else {
+                    computerService.persistComputer(computer);
+                }
             } catch (ServiceException | ValidationException e) {
                 LOG.error("{}", e);
                 httpStatus = HttpStatus.NOT_MODIFIED;
@@ -200,7 +204,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/id/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteComputer(@PathVariable Long id) {
         try {
             computerService.deleteComputer(id);
@@ -224,7 +228,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/company/id/{companyId}")
+    @DeleteMapping("/company/{companyId}")
     public ResponseEntity<Boolean> deleteComputersWithCompanyId(@PathVariable Long companyId) {
         try {
             computerService.deleteComputersWithCompanyId(companyId);

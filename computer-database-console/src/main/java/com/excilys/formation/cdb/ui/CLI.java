@@ -5,6 +5,7 @@ import com.excilys.formation.cdb.dto.ModelDTO;
 import com.excilys.formation.cdb.dto.model.CompanyDTO;
 import com.excilys.formation.cdb.dto.model.ComputerDTO;
 import com.excilys.formation.cdb.dto.paginator.PageDTO;
+import com.excilys.formation.cdb.model.constants.Paths;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 
@@ -19,9 +20,6 @@ import java.util.Scanner;
 
 @Controller
 public class CLI {
-    private static final String BASE_REST_URL = "http://localhost:8080/computer-database-webservice";
-    private static final String COMPUTER_REST_URL = "/computer";
-    private static final String COMPANY_REST_URL = "/company";
 
     private static final long FIRST_PAGE = 0L;
     private static final long NUMBER_OF_ELEMENTS_PER_PAGE = 10L;
@@ -74,8 +72,8 @@ public class CLI {
     private void executeChoice(CliActions choice) {
         switch (choice) {
             case VIEW_COMPUTER_LIST:
-                Long numberOfComputer = client.target(BASE_REST_URL)
-                        .path(COMPUTER_REST_URL)
+                Long numberOfComputer = client.target(Paths.BASE_REST_URL)
+                        .path(Paths.REST_COMPUTER)
                         .path("/total")
                         .request(MediaType.APPLICATION_JSON)
                         .get(Long.class);
@@ -88,8 +86,8 @@ public class CLI {
                 }, null);
                 break;
             case VIEW_COMPANY_LIST:
-                Long numberOfCompany = client.target(BASE_REST_URL)
-                        .path(COMPANY_REST_URL)
+                Long numberOfCompany = client.target(Paths.BASE_REST_URL)
+                        .path(Paths.REST_COMPANY)
                         .path("/total")
                         .request(MediaType.APPLICATION_JSON)
                         .get(Long.class);
@@ -164,18 +162,15 @@ public class CLI {
             String search
     ) {
         String target;
-        System.out.println(itemClass);
         if (itemClass.equals(ComputerDTO.class)) {
-            target = COMPUTER_REST_URL;
+            target = Paths.REST_COMPUTER;
         } else {
-            target = COMPANY_REST_URL;
+            target = Paths.REST_COMPANY;
         }
-
-        System.out.println("Target: " + target);
 
         Response response;
         if (search != null) {
-            response = client.target(BASE_REST_URL)
+            response = client.target(Paths.BASE_REST_URL)
                     .path(target)
                     .path("/name/" + search)
                     .path("/index/" + page.getCurrentPageNumber() * page.getObjectsPerPage())
@@ -184,7 +179,7 @@ public class CLI {
                     .get(Response.class);
 
         } else {
-            response = client.target(BASE_REST_URL)
+            response = client.target(Paths.BASE_REST_URL)
                     .path(target)
                     .path("/index/" + page.getCurrentPageNumber() * page.getObjectsPerPage())
                     .path("/limit/" + page.getObjectsPerPage())
@@ -203,9 +198,9 @@ public class CLI {
         ComputerDTO computerDTO;
         Long id = getLong("Please enter the computer's ID: ");
 
-        final String TARGET = String.format("/id/%d", id);
-        computerDTO = client.target(BASE_REST_URL)
-                .path(COMPUTER_REST_URL)
+        final String TARGET = String.format("/%d", id);
+        computerDTO = client.target(Paths.BASE_REST_URL)
+                .path(Paths.REST_COMPUTER)
                 .path(TARGET)
                 .request(MediaType.APPLICATION_JSON)
                 .get(ComputerDTO.class);
@@ -225,8 +220,8 @@ public class CLI {
 
         final String TARGET = String.format("/name/%s/total", name);
 
-        Long numberOfComputer = client.target(BASE_REST_URL)
-                .path(COMPUTER_REST_URL)
+        Long numberOfComputer = client.target(Paths.BASE_REST_URL)
+                .path(Paths.REST_COMPUTER)
                 .path(TARGET)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Long.class);
@@ -264,16 +259,16 @@ public class CLI {
         computerDTO.setCompanyId(companyDTO != null ? companyDTO.getId() : null);
 
         if (computerDTO.getId() == ComputerDTO.NO_ID) {
-            Long id = client.target(BASE_REST_URL)
-                    .path(COMPUTER_REST_URL)
+            Long id = client.target(Paths.BASE_REST_URL)
+                    .path(Paths.REST_COMPUTER)
                     .request()
                     .post(Entity.entity(computerDTO, MediaType.APPLICATION_JSON))
                     .readEntity(Long.class);
 
             System.out.println("The computer has the ID: " + id);
         } else {
-            client.target(BASE_REST_URL)
-                    .path(COMPUTER_REST_URL)
+            client.target(Paths.BASE_REST_URL)
+                    .path(Paths.REST_COMPUTER)
                     .request()
                     .put(Entity.entity(computerDTO, MediaType.APPLICATION_JSON));
         }
@@ -284,9 +279,9 @@ public class CLI {
         Long id = getLong("Which computer would you like to update (ID)?");
 
 
-        final String TARGET = String.format("/id/%d", id);
-        ComputerDTO computerDTO = client.target(BASE_REST_URL)
-                .path(COMPUTER_REST_URL)
+        final String TARGET = String.format("/%d", id);
+        ComputerDTO computerDTO = client.target(Paths.BASE_REST_URL)
+                .path(Paths.REST_COMPUTER)
                 .path(TARGET)
                 .request(MediaType.APPLICATION_JSON)
                 .get(ComputerDTO.class);
@@ -315,7 +310,7 @@ public class CLI {
     }
 
     private CompanyDTO getCompanyId(boolean optional) {
-        CompanyDTO companyDTO = null;
+        CompanyDTO companyDTO;
 
         do {
             System.out.println();
@@ -324,10 +319,10 @@ public class CLI {
                 return null;
             }
 
-            final String TARGET = String.format("/id/%d", companyId);
-            companyDTO = client.target(BASE_REST_URL)
-                    .path(COMPANY_REST_URL)
-                    .path(TARGET)
+            String target = String.format("/%d", companyId);
+            companyDTO = client.target(Paths.BASE_REST_URL)
+                    .path(Paths.REST_COMPANY)
+                    .path(target)
                     .request(MediaType.APPLICATION_JSON)
                     .get(CompanyDTO.class);
         } while (companyDTO == null);
@@ -338,16 +333,16 @@ public class CLI {
     private void deleteComputer() {
         Long id = getLong("Please enter the computer's ID you wish to delete: ");
 
-        final String TARGET = String.format("/id/%d", id);
-        ComputerDTO computerDTO = client.target(BASE_REST_URL)
-                .path(COMPUTER_REST_URL)
+        final String TARGET = String.format("/%d", id);
+        ComputerDTO computerDTO = client.target(Paths.BASE_REST_URL)
+                .path(Paths.REST_COMPUTER)
                 .path(TARGET)
                 .request(MediaType.APPLICATION_JSON)
                 .get(ComputerDTO.class);
 
         if (computerDTO != null) {
-            client.target(BASE_REST_URL)
-                    .path(COMPUTER_REST_URL)
+            client.target(Paths.BASE_REST_URL)
+                    .path(Paths.REST_COMPUTER)
                     .path(TARGET)
                     .request()
                     .delete();
@@ -359,16 +354,16 @@ public class CLI {
     private void deleteCompany() {
         Long companyId = getLong("Please enter the company's ID you wish to delete: ");
 
-        final String COMPUTER_TARGET = String.format("/company/id/%d", companyId);
-        final String COMPANY_TARGET = String.format("/id/%d", companyId);
-        client.target(BASE_REST_URL)
-                .path(COMPUTER_REST_URL)
+        final String COMPUTER_TARGET = String.format("/company/%d", companyId);
+        final String COMPANY_TARGET = String.format("/%d", companyId);
+        client.target(Paths.BASE_REST_URL)
+                .path(Paths.REST_COMPUTER)
                 .path(COMPUTER_TARGET)
                 .request()
                 .delete();
 
-        client.target(BASE_REST_URL)
-                .path(COMPANY_REST_URL)
+        client.target(Paths.BASE_REST_URL)
+                .path(Paths.REST_COMPANY)
                 .path(COMPANY_TARGET)
                 .request()
                 .delete();
