@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(Paths.REST_COMPUTER)
 public class ComputerRestController implements ComputerRest {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerRestController.class);
@@ -73,7 +75,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ComputerDTO> getComputer(@PathVariable Long id) {
         Computer computer = null;
         try {
@@ -133,7 +135,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @GetMapping("/company-id/{companyId}")
+    @GetMapping("/company/{companyId}")
     public ResponseEntity<List<ComputerDTO>> getComputerListWithCompanyId(@PathVariable long companyId) {
         List<Computer> computerList = null;
         try {
@@ -157,7 +159,11 @@ public class ComputerRestController implements ComputerRest {
                     company = companyService.getCompany(computerDTO.getCompanyId());
                 }
                 Computer computer = ComputerMapper.toComputer(computerDTO, company);
-                computerService.updateComputer(computer);
+                if (computer.getId() != null) {
+                    computerService.updateComputer(computer);
+                } else {
+                    computerService.persistComputer(computer);
+                }
             } catch (ServiceException | ValidationException e) {
                 LOG.error("{}", e);
                 httpStatus = HttpStatus.NOT_MODIFIED;
@@ -200,7 +206,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/id/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteComputer(@PathVariable Long id) {
         try {
             computerService.deleteComputer(id);
@@ -224,7 +230,7 @@ public class ComputerRestController implements ComputerRest {
     }
 
     @Override
-    @DeleteMapping("/company/id/{companyId}")
+    @DeleteMapping("/company/{companyId}")
     public ResponseEntity<Boolean> deleteComputersWithCompanyId(@PathVariable Long companyId) {
         try {
             computerService.deleteComputersWithCompanyId(companyId);

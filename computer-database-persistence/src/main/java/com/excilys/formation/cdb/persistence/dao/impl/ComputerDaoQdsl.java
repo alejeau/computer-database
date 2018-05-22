@@ -1,6 +1,5 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
-import com.excilys.formation.cdb.exceptions.DAOException;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.QCompany;
 import com.excilys.formation.cdb.model.QComputer;

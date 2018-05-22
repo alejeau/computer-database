@@ -111,6 +111,9 @@
         <jax.version>2.2.5</jax.version>
         <jackson.version>2.9.5</jackson.version>
         <jersey.version>2.27</jersey.version>
+
+        <!-- SWAGGER -->
+        <swagger.version>2.7.0</swagger.version>
     </properties>
 
     <build>
@@ -491,6 +494,18 @@
                 <groupId>org.glassfish.jersey.media</groupId>
                 <artifactId>jersey-media-json-jackson</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+
+            <!-- SWAGGER -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

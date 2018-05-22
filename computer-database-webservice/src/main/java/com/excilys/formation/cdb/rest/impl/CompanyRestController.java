@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(Paths.REST_COMPANY)
 public class CompanyRestController implements CompanyRest {
     private static final Logger LOG = LoggerFactory.getLogger(CompanyRestController.class);
@@ -50,7 +52,7 @@ public class CompanyRestController implements CompanyRest {
     }
 
     @Override
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CompanyDTO> getCompanyWithId(@PathVariable Long id) {
         LOG.debug(" {}");
         Company company = null;
@@ -64,7 +66,7 @@ public class CompanyRestController implements CompanyRest {
     }
 
     @Override
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<CompanyDTO>> getCompanies() {
         LOG.debug(" {}");
         List<Company> companyList = null;
@@ -122,7 +124,11 @@ public class CompanyRestController implements CompanyRest {
 
         if (company != null) {
             try {
-                companyService.updateCompany(company);
+                if (company.getId() != null) {
+                    companyService.updateCompany(company);
+                } else {
+                    companyService.persistCompany(company);
+                }
                 success = Boolean.TRUE;
             } catch (ServiceException e) {
                 LOG.error("{}", e);
@@ -135,7 +141,7 @@ public class CompanyRestController implements CompanyRest {
     }
 
     @Override
-    @DeleteMapping("/id/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteCompany(@PathVariable Long id) {
         try {
             companyService.deleteCompany(id);
