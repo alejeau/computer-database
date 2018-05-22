@@ -65,6 +65,6 @@ public class CompanyDTO implements ModelDTO {
 
     @Override
     public String toString() {
-        return String.format("ID: %d, name: %s", this.id, this.name);
+        return String.format("ID: %d, name: %s, url: %s", this.id, this.name, this.pictureUrl);
     }
 }

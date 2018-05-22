@@ -138,6 +138,7 @@ public class CompanyDaoQdsl implements CompanyDAO {
                     .where(qCompany.id.eq(company.getId()))
                     .set(qCompany.id, company.getId())
                     .set(qCompany.name, company.getName())
+                    .set(qCompany.pictureUrl, company.getPictureUrl())
                     .execute();
             session.flush();
         }
