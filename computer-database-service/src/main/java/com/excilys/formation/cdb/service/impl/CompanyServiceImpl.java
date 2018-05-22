@@ -37,6 +37,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Long getNumberOfCompaniesWithName(String name) throws ServiceException {
+        try {
+            return companyDAO.getNumberOfCompaniesWithName(name);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't retrieve the number of companies with name \"" + name + "\"!", e);
+        }
+    }
+
+    @Override
     public Company getCompany(Long id) throws ServiceException {
         try {
             return companyDAO.getCompany(id);
@@ -47,7 +57,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getCompanies() throws ServiceException {
+    public List<Company> getCompanyList() throws ServiceException {
         try {
             return companyDAO.getCompanyList();
         } catch (DAOException e) {
@@ -57,12 +67,22 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getCompanies(Long index, Long limit) throws ServiceException {
+    public List<Company> getCompanyList(Long index, Long limit) throws ServiceException {
         try {
             return companyDAO.getCompanyList(index, limit);
         } catch (DAOException e) {
             LOG.error("{}", e);
             throw new ServiceException("Couldn't get list of companies from " + index + " to " + limit + "!", e);
+        }
+    }
+
+    @Override
+    public List<Company> getCompaniesWithName(String name, Long index, Long limit) throws ServiceException {
+        try {
+            return companyDAO.getCompaniesWithName(name, index, limit);
+        } catch (DAOException e) {
+            LOG.error("{}", e);
+            throw new ServiceException("Couldn't get list of companies with name " + name + " from " + index + " to " + limit + "!", e);
         }
     }
 

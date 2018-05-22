@@ -52,6 +52,20 @@ public class CompanyRestController implements CompanyRest {
     }
 
     @Override
+    @GetMapping("/total/name/{name}")
+    public ResponseEntity<Long> getNumberOfCompaniesWithName(@PathVariable String name) {
+        LOG.debug(" {}");
+        Long numberOfCompanies = null;
+        try {
+            numberOfCompanies = companyService.getNumberOfCompaniesWithName(name);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+        }
+
+        return ResponseEntityMapper.toResponseEntity(numberOfCompanies);
+    }
+
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDTO> getCompanyWithId(@PathVariable Long id) {
         LOG.debug(" {}");
@@ -67,11 +81,11 @@ public class CompanyRestController implements CompanyRest {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<CompanyDTO>> getCompanies() {
+    public ResponseEntity<List<CompanyDTO>> getCompanyList() {
         LOG.debug(" {}");
         List<Company> companyList = null;
         try {
-            companyList = companyService.getCompanies();
+            companyList = companyService.getCompanyList();
         } catch (ServiceException e) {
             LOG.error("{}", e);
         }
@@ -85,7 +99,21 @@ public class CompanyRestController implements CompanyRest {
         LOG.debug(" {}");
         List<Company> companyList = null;
         try {
-            companyList = companyService.getCompanies(index, limit);
+            companyList = companyService.getCompanyList(index, limit);
+        } catch (ServiceException e) {
+            LOG.error("{}", e);
+        }
+
+        return ResponseEntityMapper.toListResponseEntity(CompanyMapper.toCompanyDtoList(companyList));
+    }
+
+    @Override
+    @GetMapping("/name/{name}/index/{index}/limit/{limit}")
+    public ResponseEntity<List<CompanyDTO>> getCompaniesWithName(@PathVariable String name, @PathVariable Long index, @PathVariable Long limit) {
+        LOG.debug(" {}");
+        List<Company> companyList = null;
+        try {
+            companyList = companyService.getCompaniesWithName(name, index, limit);
         } catch (ServiceException e) {
             LOG.error("{}", e);
         }

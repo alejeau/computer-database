@@ -1,6 +1,7 @@
 package com.excilys.formation.cdb.persistence.dao.impl;
 
 import com.excilys.formation.cdb.model.Company;
+import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.model.QCompany;
 import com.excilys.formation.cdb.persistence.dao.CompanyDAO;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
@@ -94,6 +95,25 @@ public class CompanyDaoQdsl implements CompanyDAO {
                 .limit(limit)
                 .orderBy(qCompany.name.asc())
                 .fetch();
+        session.close();
+        LOG.debug("Returning list of size {}", companyList.size());
+        return companyList;
+    }
+
+    @Override
+    public List<Company> getCompaniesWithName(String name, Long index, Long limit) {
+        LOG.debug("getComputersWithNameOrderedBy {}");
+        Session session = sessionFactory.openSession();
+        HibernateQuery<Computer> query = new HibernateQuery<>(session);
+
+        List<Company> companyList = query.select(qCompany)
+                .from(qCompany)
+                .where(qCompany.name.contains(name))
+                .offset(index)
+                .limit(limit)
+                .orderBy(qCompany.name.asc())
+                .fetch();
+
         session.close();
         LOG.debug("Returning list of size {}", companyList.size());
         return companyList;

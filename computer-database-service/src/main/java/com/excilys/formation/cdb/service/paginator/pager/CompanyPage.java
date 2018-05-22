@@ -26,7 +26,7 @@ public class CompanyPage extends Page<Company> {
 
     @Override
     protected void refresh(long offset) throws ServiceException {
-        this.list = companyService.getCompanies(offset, this.limit.getValue());
+        this.list = companyService.getCompanyList(offset, this.limit.getValue());
     }
 
     public void setCompanyService(CompanyService companyService) {

@@ -23,6 +23,9 @@ public class Company implements Model {
     @Column(name = DbFields.COMPANY_NAME)
     private String name;
 
+    @Column(name = DbFields.COMPANY_PICTURE_URL)
+    private String pictureUrl;
+
     public Company() {
 
     }
@@ -30,6 +33,13 @@ public class Company implements Model {
     public Company(Long id, String name) {
         this.id = id;
         this.name = name;
+        this.pictureUrl = null;
+    }
+
+    public Company(Long id, String name, String pictureUrl) {
+        this.id = id;
+        this.name = name;
+        this.pictureUrl = pictureUrl;
     }
 
     public Long getId() {
@@ -46,6 +56,14 @@ public class Company implements Model {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     @Override
@@ -79,6 +97,7 @@ public class Company implements Model {
     public static class Builder {
         private Long nestedId = null;
         private String nestedName = null;
+        private String nestedPictureUrl = null;
 
         public Builder() {
         }
@@ -93,8 +112,13 @@ public class Company implements Model {
             return this;
         }
 
+        public Company.Builder pictureUrl(final String pictureUrl) {
+            this.nestedPictureUrl = pictureUrl;
+            return this;
+        }
+
         public Company build() {
-            return new Company(nestedId, nestedName);
+            return new Company(nestedId, nestedName, nestedPictureUrl);
         }
     }
 }

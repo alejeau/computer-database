@@ -17,6 +17,8 @@ public interface CompanyDAO {
 
     List<Company> getCompanyList(Long index, Long limit) throws DAOException;
 
+    List<Company> getCompaniesWithName(String name, Long index, Long limit) throws DAOException;
+
     Long persistCompany(Company company) throws DAOException;
 
     void updateCompany(Company company) throws DAOException;
