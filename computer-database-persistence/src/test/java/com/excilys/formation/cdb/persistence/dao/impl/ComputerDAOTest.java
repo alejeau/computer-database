@@ -68,12 +68,12 @@ public class ComputerDAOTest {
     private static final List<Computer> COMPUTER_LIST_INVERTED = Arrays.asList(COMPUTER_3, COMPUTER_2, COMPUTER_1);
 
     @Before
-    public void setUp() throws SQLException, IOException, ConnectionException {
+    public void setUp() throws SQLException, IOException {
         hsqlDatabase.initDatabase();
     }
 
     @After
-    public void cleanUp() throws SQLException, ConnectionException {
+    public void cleanUp() throws SQLException {
         hsqlDatabase.destroy();
     }
 

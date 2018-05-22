@@ -16,13 +16,22 @@ public class CompanyDTO implements ModelDTO {
     @NotEmpty
     private String name;
 
+    private String pictureUrl;
+
     public CompanyDTO() {
 
     }
 
-    public CompanyDTO(Long id, String name) {
+    public CompanyDTO(@NotNull @Min(1L) Long id, @NotNull @NotEmpty String name) {
         this.id = id;
         this.name = name;
+        this.pictureUrl = null;
+    }
+
+    public CompanyDTO(@NotNull @Min(1L) Long id, @NotNull @NotEmpty String name, String pictureUrl) {
+        this.id = id;
+        this.name = name;
+        this.pictureUrl = pictureUrl;
     }
 
     public Long getId() {
@@ -41,6 +50,14 @@ public class CompanyDTO implements ModelDTO {
         this.name = name;
     }
 
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
     @Override
     public String shortToString() {
         return this.toString();
@@ -48,6 +65,6 @@ public class CompanyDTO implements ModelDTO {
 
     @Override
     public String toString() {
-        return String.format("ID: %d, name: %s", this.id, this.name);
+        return String.format("ID: %d, name: %s, url: %s", this.id, this.name, this.pictureUrl);
     }
 }

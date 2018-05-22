@@ -9,11 +9,15 @@ public interface CompanyService {
 
     Long getNumberOfCompanies() throws ServiceException;
 
+    Long getNumberOfCompaniesWithName(String name) throws ServiceException;
+
     Company getCompany(Long id) throws ServiceException;
 
-    List<Company> getCompanies() throws ServiceException;
+    List<Company> getCompanyList() throws ServiceException;
 
-    List<Company> getCompanies(Long index, Long limit) throws ServiceException;
+    List<Company> getCompanyList(Long index, Long limit) throws ServiceException;
+
+    List<Company> getCompaniesWithName(String name, Long index, Long limit) throws ServiceException;
 
     Long persistCompany(Company company) throws ServiceException;
 

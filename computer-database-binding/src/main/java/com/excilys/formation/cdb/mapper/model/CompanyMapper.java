@@ -21,14 +21,14 @@ public class CompanyMapper {
         if (company == null) {
             return null;
         }
-        return new CompanyDTO(company.getId(), company.getName());
+        return new CompanyDTO(company.getId(), company.getName(), company.getPictureUrl());
     }
 
     public static Company toCompany(CompanyDTO companyDTO) {
         if (companyDTO == null) {
             return null;
         }
-        return new Company(companyDTO.getId(), companyDTO.getName());
+        return new Company(companyDTO.getId(), companyDTO.getName(), companyDTO.getPictureUrl());
     }
 
     public static Company mapFromComputer(ResultSet rs) throws SQLException {

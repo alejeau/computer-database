@@ -14,6 +14,7 @@ public class DbFields {
     public static final String COMPANY = "company";
     public static final String COMPANY_ID = "company_id";
     public static final String COMPANY_NAME = "company_name";
+    public static final String COMPANY_PICTURE_URL = "company_picture_url";
 
     private DbFields() {
     }

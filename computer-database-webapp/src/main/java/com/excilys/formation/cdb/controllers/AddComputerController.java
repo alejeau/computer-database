@@ -110,7 +110,7 @@ public class AddComputerController {
         modelAndView.addObject(ControllerParameters.CURRENT_PATH, Paths.ABSOLUTE_PATH_ADD_COMPUTER);
 
         modelAndView.addObject(ControllerParameters.DISPLAY_SUCCESS_MESSAGE, displaySuccessMessage);
-        List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanies());
+        List<CompanyDTO> companyList = CompanyMapper.mapList(companyService.getCompanyList());
         modelAndView.addObject(ControllerParameters.COMPANY_LIST, companyList);
 
         Map<String, String> hashMap = ErrorMapper.toHashMap(errorList);
