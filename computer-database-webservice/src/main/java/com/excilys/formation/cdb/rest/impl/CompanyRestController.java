@@ -7,6 +7,8 @@ import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.constants.Paths;
 import com.excilys.formation.cdb.rest.CompanyRest;
 import com.excilys.formation.cdb.service.CompanyService;
+import com.excilys.formation.cdb.service.ComputerCompanyService;
+import com.excilys.formation.cdb.service.ComputerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,16 @@ public class CompanyRestController implements CompanyRest {
     private static final Logger LOG = LoggerFactory.getLogger(CompanyRestController.class);
 
     private CompanyService companyService;
+    private ComputerCompanyService computerCompanyService;
 
     @Autowired
     public CompanyRestController(CompanyService companyService) {
         this.companyService = companyService;
+    }
+
+    @Autowired
+    public void setComputerCompanyService(ComputerCompanyService computerCompanyService) {
+        this.computerCompanyService = computerCompanyService;
     }
 
     @Override
@@ -172,7 +180,7 @@ public class CompanyRestController implements CompanyRest {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteCompany(@PathVariable Long id) {
         try {
-            companyService.deleteCompany(id);
+            computerCompanyService.deleteCompanyWithIdAndAssociatedComputers(id);
         } catch (ServiceException e) {
             LOG.error("{}", e);
             return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_MODIFIED);
