@@ -5,21 +5,35 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.excilys.formation.cdb.model.UserInfo;
+import com.excilys.formation.cdb.persistence.dao.impl.UserDaoQdsl;
 import com.excilys.formation.cdb.user.User;
 
 @Service
 public class SimpleAuthenticationService {
 
-	// BD ??
+	private UserDaoQdsl userDAO;
+	
+	@Autowired
+	public SimpleAuthenticationService (UserDaoQdsl userDAO) {
+		this.userDAO = userDAO;
+		
+	}
+	
 	Map<String, User> users = new HashMap<>();
 
 	public Optional<String> login(String username, String password) {
-		final String token = UUID.randomUUID().toString();
-		final User user = new User(token, username, password); 
-		users.put(token, user);
-		return Optional.of(token);
+		UserInfo userInfo = userDAO.getUserByUsername(username);
+		if (password.equals(userInfo.getPassword())) {
+			String token = UUID.randomUUID().toString();
+			User user = new User(token, username, password); 
+			users.put(token, user);
+			return Optional.of(token);	
+		}
+		return Optional.empty();
 	}
 
 	public Optional<User> findByToken(String token) {
