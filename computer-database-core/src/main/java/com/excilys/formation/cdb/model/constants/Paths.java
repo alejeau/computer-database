@@ -16,6 +16,7 @@ public class Paths {
     public static final String REST = "/rest";
     public static final String REST_COMPUTER = "/computers";
     public static final String REST_COMPANY = "/companies";
+    public static final String REST_LOGIN = "/login";
 
     private Paths() {
     }

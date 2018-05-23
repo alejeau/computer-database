@@ -18,7 +18,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         "com.excilys.formation.cdb.service.validators",
         "com.excilys.formation.cdb.service.paginator.pager",
         "com.excilys.formation.cdb.mapper.request",
-        "com.excilys.formation.cdb.rest"
+        "com.excilys.formation.cdb.rest",
+        "com.excilys.formation.cdb.rest.impl"
+
 })
 public class WebMvcRestConfig implements WebMvcConfigurer {
 

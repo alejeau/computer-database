@@ -58,7 +58,7 @@ public class HibernatePersistenceConfigWebService {
         dataSource.setPassword(environment.getProperty("jdbc.password"));
         return dataSource;
     }
-
+    
     @Bean
     @Autowired
     public PlatformTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
