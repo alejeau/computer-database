@@ -6,6 +6,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.cdb.model.UserInfo;
@@ -29,7 +33,7 @@ public class SimpleAuthenticationService {
 		UserInfo userInfo = userDAO.getUserByUsername(username);
 		if (password.equals(userInfo.getPassword())) {
 			String token = UUID.randomUUID().toString();
-			User user = new User(token, username, password); 
+			User user = new User(token, username, password, new SimpleGrantedAuthority("ROLE_"+userInfo.getRole())); 
 			users.put(token, user);
 			return Optional.of(token);	
 		}

@@ -10,6 +10,7 @@ public class Views {
     public static final String ERROR_500 = "500";
 
     private Views() {
+    
     }
 
 }

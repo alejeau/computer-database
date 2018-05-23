@@ -1,26 +1,31 @@
 package com.excilys.formation.cdb.config;
 
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static com.excilys.formation.cdb.model.constants.SecurityParameters.ROLE_ADMIN;
+import static com.excilys.formation.cdb.model.constants.SecurityParameters.ROLE_USER;
 
 @Configuration
 @EnableWebSecurity
@@ -28,13 +33,16 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
-			new AntPathRequestMatcher("/login*")
+			new AntPathRequestMatcher("/login")
 			);
 	private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
 
 
 	@Autowired
 	TokenAuthenticationProvider provider;
+	@Autowired
+	SimpleAuthenticationService simpleAuthenticationService;
+	
 
 
 	@Override
@@ -58,8 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.authenticationProvider(provider)
 		.addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class)
 		.authorizeRequests()
-		.anyRequest()
-		.authenticated()
+		.antMatchers(HttpMethod.POST).hasAnyRole(ROLE_USER, ROLE_ADMIN)
+		.antMatchers(HttpMethod.GET).hasAnyRole(ROLE_USER, ROLE_ADMIN)
+		.antMatchers(HttpMethod.DELETE).hasRole(ROLE_ADMIN)
+		.antMatchers(HttpMethod.PATCH).hasRole(ROLE_ADMIN)
+		.antMatchers(HttpMethod.PUT).hasRole(ROLE_ADMIN)
 		.and()
 		.csrf().disable()
 		.formLogin().disable()
@@ -82,11 +93,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		return successHandler;
 	}
 
-
 	@Bean
 	AuthenticationEntryPoint forbiddenEntryPoint() {
 		return new HttpStatusEntryPoint(org.springframework.http.HttpStatus.UNAUTHORIZED);
 	}
+	
+
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder(11);
+	}
+
 
 
 }
