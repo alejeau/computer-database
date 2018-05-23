@@ -11,7 +11,7 @@ import com.excilys.formation.cdb.model.constants.DbFields;
 
 @Entity
 @Table(name = DbFields.USER)
-public class User {
+public class UserInfo {
 	
     @Column(name = DbFields.USERNAME)
     @Id
