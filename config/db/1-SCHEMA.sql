@@ -8,7 +8,7 @@ drop table if exists company;
 create table company (
   company_id                        bigint not null auto_increment,
   company_name                      varchar(255),
-  company_picture					          varchar(255),
+  company_picture_url               varchar(255),
   company_description					      varchar(255),
   constraint pk_company primary key (company_id))
 ;
