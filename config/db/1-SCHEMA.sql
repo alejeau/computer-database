@@ -4,12 +4,12 @@ use `computer-database-db`;
 
 drop table if exists computer;
 drop table if exists company;
-drop table if exists user;
 
 create table company (
   company_id                        bigint not null auto_increment,
   company_name                      varchar(255),
-  company_picture					varchar(255),
+  company_picture					          varchar(255),
+  company_description					      varchar(255),
   constraint pk_company primary key (company_id))
 ;
 

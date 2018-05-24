@@ -17,6 +17,7 @@ public class CompanyDTO implements ModelDTO {
     private String name;
 
     private String pictureUrl;
+    private String description;
 
     public CompanyDTO() {
 
@@ -28,10 +29,11 @@ public class CompanyDTO implements ModelDTO {
         this.pictureUrl = null;
     }
 
-    public CompanyDTO(@NotNull @Min(1L) Long id, @NotNull @NotEmpty String name, String pictureUrl) {
+    public CompanyDTO(@NotNull @Min(1L) Long id, @NotNull @NotEmpty String name, String pictureUrl, String description) {
         this.id = id;
         this.name = name;
         this.pictureUrl = pictureUrl;
+        this.description = description;
     }
 
     public Long getId() {
@@ -58,6 +60,14 @@ public class CompanyDTO implements ModelDTO {
         this.pictureUrl = pictureUrl;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String shortToString() {
         return this.toString();
@@ -65,6 +75,6 @@ public class CompanyDTO implements ModelDTO {
 
     @Override
     public String toString() {
-        return String.format("ID: %d, name: %s, url: %s", this.id, this.name, this.pictureUrl);
+        return String.format("ID: %d\nname: %s\nurl: %s\ndesciption: %s", this.id, this.name, this.pictureUrl, this.description);
     }
 }
