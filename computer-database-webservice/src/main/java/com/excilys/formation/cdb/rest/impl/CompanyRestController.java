@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(Paths.REST_COMPANY)
 public class CompanyRestController implements CompanyRest {
     private static final Logger LOG = LoggerFactory.getLogger(CompanyRestController.class);

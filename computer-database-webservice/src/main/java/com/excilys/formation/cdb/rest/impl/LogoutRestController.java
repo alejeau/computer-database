@@ -18,25 +18,20 @@ import com.excilys.formation.cdb.model.UserInfo;
 import com.excilys.formation.cdb.model.constants.Paths;
 
 @RestController
-@RequestMapping(Paths.REST_LOGIN)
-public class LoginRestController {
+@RequestMapping(Paths.REST_LOGOUT)
+public class LogoutRestController {
 
 	private SimpleAuthenticationService authentication;
 
 	@Autowired
-	public LoginRestController(SimpleAuthenticationService authService) {
+	public LogoutRestController(SimpleAuthenticationService authService) {
 		this.authentication = authService;
 	} 
 
-	@PostMapping
-	public String login(HttpServletRequest request, HttpServletResponse response, @RequestBody UserInfo user) {
-		Optional<String> authResultOpt =  authentication.login(user.getUsername(), user.getPassword());
-		if (!authResultOpt.isPresent()) {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			return null;
-		}
-		return authResultOpt.get();
-	}
-	 
 
+	@PostMapping
+	public void logout(HttpServlet request, @RequestBody String token) {
+		authentication.logout(token);
+
+	}
 }

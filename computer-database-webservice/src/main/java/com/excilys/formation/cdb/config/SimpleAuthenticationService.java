@@ -44,7 +44,7 @@ public class SimpleAuthenticationService {
 		return Optional.ofNullable(users.get(token));
 	}
 
-	public void logout(User user) {
-		users.remove(user.getId());
+	public void logout(String token) {
+		users.remove(token);
 	}
 }

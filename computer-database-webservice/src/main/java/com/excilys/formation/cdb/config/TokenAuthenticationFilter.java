@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import static com.excilys.formation.cdb.model.constants.SecurityParameters.AUTHORIZATION;
 
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+	
+	
 	TokenAuthenticationFilter(RequestMatcher requiresAuth) {
 		super(requiresAuth);
 	}

@@ -23,6 +23,8 @@ public class UserInfo {
     
     @Column(name = DbFields.ROLE)
 	private String role;
+    
+    private String token;
 	
 	public String getUsername() {
 		return username;
@@ -39,8 +41,13 @@ public class UserInfo {
 	public String getRole() {
 		return role;
 	}
+	
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

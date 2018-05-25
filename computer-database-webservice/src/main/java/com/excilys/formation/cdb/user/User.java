@@ -11,11 +11,11 @@ public class User implements UserDetails{
 
 	private String username;
 	private String password;
-	private String id;
+	private String token;
 	private SimpleGrantedAuthority authority;
 	
 	public User (String token, String username, String password, SimpleGrantedAuthority authority) {
-		this.id = token;
+		this.token = token;
 		this.username = username;
 		this.password = password;
 		this.authority = authority;
@@ -37,7 +37,7 @@ public class User implements UserDetails{
 	}
 	
 	public String getId() {
-		return this.id;
+		return this.token;
 	}
 
 	@Override

@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
 	TokenAuthenticationProvider provider;
+	
 	@Autowired
 	SimpleAuthenticationService simpleAuthenticationService;
 	
@@ -56,7 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {   http
+	protected void configure(HttpSecurity http) throws Exception {   
+		http.cors()
+		.and()
 		.sessionManagement()
 		.sessionCreationPolicy(STATELESS)
 		.and()
