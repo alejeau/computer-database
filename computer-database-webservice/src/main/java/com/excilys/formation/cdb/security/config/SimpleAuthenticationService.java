@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.config;
+package com.excilys.formation.cdb.security.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.formation.cdb.model.UserInfo;
 import com.excilys.formation.cdb.persistence.dao.impl.UserDaoQdsl;
-import com.excilys.formation.cdb.user.User;
 
 @Service
 public class SimpleAuthenticationService {

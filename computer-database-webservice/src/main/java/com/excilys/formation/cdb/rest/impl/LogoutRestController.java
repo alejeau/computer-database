@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.excilys.formation.cdb.config.SimpleAuthenticationService;
+
 import com.excilys.formation.cdb.model.UserInfo;
 import com.excilys.formation.cdb.model.constants.Paths;
+import com.excilys.formation.cdb.security.config.SimpleAuthenticationService;
 
 @RestController
 @RequestMapping(Paths.REST_LOGOUT)

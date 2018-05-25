@@ -19,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
 		"com.excilys.formation.cdb.config",
+		"com.excilys.formation.cdb.security.config",
 		"com.excilys.formation.cdb.persistence",
 		"com.excilys.formation.cdb.persistence.dao.impl",
 		"com.excilys.formation.cdb.service.impl",

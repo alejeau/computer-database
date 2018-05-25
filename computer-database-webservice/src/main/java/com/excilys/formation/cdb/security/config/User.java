@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.user;
+package com.excilys.formation.cdb.security.config;
 
 import java.util.Arrays;
 import java.util.Collection;

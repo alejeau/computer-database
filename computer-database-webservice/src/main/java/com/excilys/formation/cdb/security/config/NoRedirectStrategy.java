@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.config;
+package com.excilys.formation.cdb.security.config;
 
 import java.io.IOException;
 
