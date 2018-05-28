@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(Paths.REST_COMPUTER)
 public class ComputerRestController implements ComputerRest {
     private static final Logger LOG = LoggerFactory.getLogger(ComputerRestController.class);

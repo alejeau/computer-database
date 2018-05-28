@@ -1,534 +1,535 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.excilys.formation.cdb</groupId>
-	<artifactId>computer-database</artifactId>
-	<version>4.7.2-SNAPSHOT</version>
+    <groupId>com.excilys.formation.cdb</groupId>
+    <artifactId>computer-database</artifactId>
+    <version>4.7.2-SNAPSHOT</version>
 
-	<packaging>pom</packaging>
-	<modules>
-		<module>computer-database-core</module>
-		<module>computer-database-persistence</module>
-		<module>computer-database-binding</module>
-		<module>computer-database-service</module>
-		<module>computer-database-console</module>
-		<module>computer-database-webapp</module>
-		<module>computer-database-webservice</module>
-	</modules>
+    <packaging>pom</packaging>
+    <modules>
+        <module>computer-database-core</module>
+        <module>computer-database-persistence</module>
+        <module>computer-database-binding</module>
+        <module>computer-database-service</module>
+        <module>computer-database-console</module>
+        <module>computer-database-webapp</module>
+        <module>computer-database-webservice</module>
+    </modules>
 
-	<name>computer-database</name>
-	<url>https://github.com/alejeau/computer-database</url>
+    <name>computer-database</name>
+    <url>https://github.com/alejeau/computer-database</url>
 
-	<properties>
-		<!-- sets the projects encoding to UTF-8 -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <properties>
+        <!-- sets the projects encoding to UTF-8 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- Tomcat path -->
-		<tomcat.home>/home/${user.name}/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
+        <!-- Tomcat path -->
+        <tomcat.home>/home/${user.name}/softs/apache-tomcat-8.0.50/apache-tomcat-8.0.50/</tomcat.home>
 
-		<failOnMissingWebXml>false</failOnMissingWebXml>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
 
-		<computer-database-core.version>0.0.3-SNAPSHOT</computer-database-core.version>
-		<computer-database-persistence.version>0.0.2-SNAPSHOT</computer-database-persistence.version>
-		<computer-database-service.version>0.0.3-SNAPSHOT</computer-database-service.version>
-		<computer-database-binding.version>0.0.4-SNAPSHOT</computer-database-binding.version>
-		<computer-database-console.version>0.0.1-SNAPSHOT</computer-database-console.version>
-		<computer-database-webapp.version>0.0.2-SNAPSHOT</computer-database-webapp.version>
-		<computer-database-webservice.version>0.0.3-SNAPSHOT</computer-database-webservice.version>
+        <computer-database-core.version>0.0.3-SNAPSHOT</computer-database-core.version>
+        <computer-database-persistence.version>0.0.2-SNAPSHOT</computer-database-persistence.version>
+        <computer-database-service.version>0.0.3-SNAPSHOT</computer-database-service.version>
+        <computer-database-binding.version>0.0.4-SNAPSHOT</computer-database-binding.version>
+        <computer-database-console.version>0.0.1-SNAPSHOT</computer-database-console.version>
+        <computer-database-webapp.version>0.0.2-SNAPSHOT</computer-database-webapp.version>
+        <computer-database-webservice.version>0.0.3-SNAPSHOT</computer-database-webservice.version>
 
-		<!-- Java Version -->
-		<java.version>1.8</java.version>
+        <!-- Java Version -->
+        <java.version>1.8</java.version>
 
-		<!-- Maven plugins -->
-		<maven-compiler.version>3.1</maven-compiler.version>
-		<maven-war.version>2.4</maven-war.version>
-		<maven-apt.version>1.1.3</maven-apt.version>
-		<maven-plugins.version>3.0.2</maven-plugins.version>
+        <!-- Maven plugins -->
+        <maven-compiler.version>3.1</maven-compiler.version>
+        <maven-war.version>2.4</maven-war.version>
+        <maven-apt.version>1.1.3</maven-apt.version>
+        <maven-plugins.version>3.0.2</maven-plugins.version>
 
-		<!-- General versions -->
-		<mojo.version>1.2.1</mojo.version>
-		<tomcat-plugin.version>2.2</tomcat-plugin.version>
-		<cargo.version>1.6.7</cargo.version>
+        <!-- General versions -->
+        <mojo.version>1.2.1</mojo.version>
+        <tomcat-plugin.version>2.2</tomcat-plugin.version>
+        <cargo.version>1.6.7</cargo.version>
 
-		<common-lang.version>3.7</common-lang.version>
+        <common-lang.version>3.7</common-lang.version>
 
-		<!-- checkstyle -->
-		<checkstyle.version>3.0.0</checkstyle.version>
+        <!-- checkstyle -->
+        <checkstyle.version>3.0.0</checkstyle.version>
 
-		<!-- test -->
-		<junit.version>4.12</junit.version>
-		<hsqldb.version>2.4.0</hsqldb.version>
-		<sqltool.version>2.4.0</sqltool.version>
+        <!-- test -->
+        <junit.version>4.12</junit.version>
+        <hsqldb.version>2.4.0</hsqldb.version>
+        <sqltool.version>2.4.0</sqltool.version>
 
-		<!-- compile -->
-		<!-- logs -->
-		<log4j.version>1.2.17</log4j.version>
-		<slf4j.version>1.7.25</slf4j.version>
-		<logback.version>1.2.3</logback.version>
+        <!-- compile -->
+        <!-- logs -->
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <logback.version>1.2.3</logback.version>
 
-		<!-- JEE -->
-		<!-- provided -->
-		<javax.version>8.0</javax.version>
-		<jasper.version>9.0.6</jasper.version>
+        <!-- JEE -->
+        <!-- provided -->
+        <javax.version>8.0</javax.version>
+        <jasper.version>9.0.6</jasper.version>
 
-		<!-- runtime -->
-		<!-- MySQL -->
-		<mysql.version>5.1.38</mysql.version>
-		<myqsl-jdbc.version>8.0.8-dmr</myqsl-jdbc.version>
+        <!-- runtime -->
+        <!-- MySQL -->
+        <mysql.version>5.1.38</mysql.version>
+        <myqsl-jdbc.version>8.0.8-dmr</myqsl-jdbc.version>
 
-		<!-- JEE -->
-		<jstl.version>1.2</jstl.version>
-		<javax-validation.version>2.0.0.Final</javax-validation.version>
+        <!-- JEE -->
+        <jstl.version>1.2</jstl.version>
+        <javax-validation.version>2.0.0.Final</javax-validation.version>
 
-		<!-- Spring -->
-		<spring.version>5.0.5.RELEASE</spring.version>
+        <!-- Spring -->
+        <spring.version>5.0.5.RELEASE</spring.version>
 
-		<!-- ORM -->
-		<hibernate.version>5.1.13.Final</hibernate.version>
-		<hibernate-jpa.version>1.0.2.Final</hibernate-jpa.version>
-		<hibernate-hql.version>1.5.0.Final</hibernate-hql.version>
-		<hibernate-validator.version>6.0.9.Final</hibernate-validator.version>
-		<javassist.version>3.18.2-GA</javassist.version>
-		<querydsl.version>4.2.1</querydsl.version>
-		<joda-time.version>2.9.9</joda-time.version>
+        <!-- ORM -->
+        <hibernate.version>5.1.13.Final</hibernate.version>
+        <hibernate-jpa.version>1.0.2.Final</hibernate-jpa.version>
+        <hibernate-hql.version>1.5.0.Final</hibernate-hql.version>
+        <hibernate-validator.version>6.0.9.Final</hibernate-validator.version>
+        <javassist.version>3.18.2-GA</javassist.version>
+        <querydsl.version>4.2.1</querydsl.version>
+        <joda-time.version>2.9.9</joda-time.version>
 
-		<!-- Connection Pool -->
-		<tomcat-dbcp.version>7.0.55</tomcat-dbcp.version>
+        <!-- Connection Pool -->
+        <tomcat-dbcp.version>7.0.55</tomcat-dbcp.version>
 
-		<!-- Required because no longer imported by default in Java 9 -->
-		<!-- Java 6 = JAX-B Version 2.0 -->
-		<!-- Java 7 = JAX-B Version 2.2.3 -->
-		<!-- Java 8 = JAX-B Version 2.2.8 -->
-		<!-- Java 9 = JAX-B Version 2.2.11 -->
-		<jaxb.version>2.2.11</jaxb.version>
+        <!-- Required because no longer imported by default in Java 9 -->
+        <!-- Java 6 = JAX-B Version 2.0 -->
+        <!-- Java 7 = JAX-B Version 2.2.3 -->
+        <!-- Java 8 = JAX-B Version 2.2.8 -->
+        <!-- Java 9 = JAX-B Version 2.2.11 -->
+        <jaxb.version>2.2.11</jaxb.version>
 
-		<!-- REST -->
-		<jackson.version>2.9.5</jackson.version>
-		<!-- JAX-WS RT -->
-		<jax.version>2.2.5</jax.version>
-		<jackson.version>2.9.5</jackson.version>
-		<jersey.version>2.27</jersey.version>
+        <!-- REST -->
+        <jackson.version>2.9.5</jackson.version>
+        <!-- JAX-WS RT -->
+        <jax.version>2.2.5</jax.version>
+        <jackson.version>2.9.5</jackson.version>
+        <jersey.version>2.27</jersey.version>
 
-		<!-- SWAGGER -->
-		<swagger.version>2.7.0</swagger.version>
-	</properties>
+        <!-- SWAGGER -->
+        <swagger.version>2.7.0</swagger.version>
+    </properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler.version}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
 
-			<!-- Maven War Plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${maven-war.version}</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
+            <!-- Maven War Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
 
-			<!-- Enables launching the CLI via command line using Maven -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>${mojo.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>com.excilys.formation.cdb.ui.CLI</mainClass>
-				</configuration>
-			</plugin>
+            <!-- Enables launching the CLI via command line using Maven -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${mojo.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.excilys.formation.cdb.ui.CLI</mainClass>
+                </configuration>
+            </plugin>
 
-			<!-- Tomcat deployment plugin -->
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>${tomcat-plugin.version}</version>
-				<configuration>
-					<url>http://localhost:8080/manager/text</url>
-					<server>TomcatServer</server>
-					<webapps>
-						<webapp>
-							<groupId>com.excilys.formation.cdb.webapp</groupId>
-							<artifactId>computer-database-webapp</artifactId>
-							<path>/computer-database</path>
-							<asWebapp>true</asWebapp>
-							<type>war</type>
-						</webapp>
-						<webapp>
-							<groupId>com.excilys.formation.cdb.webservice</groupId>
-							<artifactId>computer-database-webservice</artifactId>
-							<type>war</type>
-						</webapp>
-					</webapps>
-					<!-- <username>admin</username> <password>password</password> -->
-				</configuration>
-			</plugin>
+            <!-- Tomcat deployment plugin -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>${tomcat-plugin.version}</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>TomcatServer</server>
+                    <webapps>
+                        <webapp>
+                            <groupId>com.excilys.formation.cdb.webapp</groupId>
+                            <artifactId>computer-database-webapp</artifactId>
+                            <path>/computer-database</path>
+                            <asWebapp>true</asWebapp>
+                            <type>war</type>
+                        </webapp>
+                        <webapp>
+                            <groupId>com.excilys.formation.cdb.webservice</groupId>
+                            <artifactId>computer-database-webservice</artifactId>
+                            <type>war</type>
+                        </webapp>
+                    </webapps>
+                    <username>admin</username>
+                    <password>password</password>
+                </configuration>
+            </plugin>
 
-			<!-- Cargo deployment plugin -->
-			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>${cargo.version}</version>
-				<configuration>
-					<container>
-						<containerId>tomcat7x</containerId>
-						<type>installed</type>
-						<home>${tomcat.home}</home>
-					</container>
-					<configuration>
-						<type>existing</type>
-						<home>${tomcat.home}</home>
-					</configuration>
-				</configuration>
-			</plugin>
+            <!-- Cargo deployment plugin -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>${cargo.version}</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat7x</containerId>
+                        <type>installed</type>
+                        <home>${tomcat.home}</home>
+                    </container>
+                    <configuration>
+                        <type>existing</type>
+                        <home>${tomcat.home}</home>
+                    </configuration>
+                </configuration>
+            </plugin>
 
-			<!-- Plugin for QueryDSL APT -->
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>apt-maven-plugin</artifactId>
-				<version>${maven-apt.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-							<!--<processor>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</processor> -->
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${checkstyle.version}</version>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<suppressionsLocation>suppressions.xml</suppressionsLocation>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
+            <!-- Plugin for QueryDSL APT -->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>${maven-apt.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                            <!--<processor>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</processor> -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <suppressionsLocation>suppressions.xml</suppressionsLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
-	<dependencies>
-		<!-- tests -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
+        <!-- tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
 
-		<!-- QueryDSL -->
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<!-- annotation processing tool -->
-			<artifactId>querydsl-apt</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-		</dependency>
-	</dependencies>
-
-
-	<dependencyManagement>
-		<dependencies>
-			<!-- Computer Database -->
-			<dependency>
-				<groupId>com.excilys.formation.cdb.core</groupId>
-				<artifactId>computer-database-core</artifactId>
-				<version>${computer-database-core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.excilys.formation.cdb.persistence</groupId>
-				<artifactId>computer-database-persistence</artifactId>
-				<version>${computer-database-persistence.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.excilys.formation.cdb.service</groupId>
-				<artifactId>computer-database-service</artifactId>
-				<version>${computer-database-service.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.excilys.formation.cdb.binding</groupId>
-				<artifactId>computer-database-binding</artifactId>
-				<version>${computer-database-binding.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.excilys.formation.cdb.console</groupId>
-				<artifactId>computer-database-console</artifactId>
-				<version>${computer-database-console.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.excilys.formation.cdb.webapp</groupId>
-				<artifactId>computer-database-webapp</artifactId>
-				<version>${computer-database-webapp.version}</version>
-			</dependency>
-
-			<!--Spring BOM -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-framework-bom</artifactId>
-				<version>${spring.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<!-- Checkstyle -->
-			<dependency>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${checkstyle.version}</version>
-			</dependency>
-
-			<!-- StringUtils -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${common-lang.version}</version>
-			</dependency>
-
-			<!-- tests -->
-			<dependency>
-				<groupId>org.hsqldb</groupId>
-				<artifactId>hsqldb</artifactId>
-				<version>${hsqldb.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hsqldb</groupId>
-				<artifactId>sqltool</artifactId>
-				<version>${sqltool.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<!-- MySQL Connector -->
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${myqsl-jdbc.version}</version>
-			</dependency>
-
-			<!-- JEE -->
-			<dependency>
-				<groupId>jstl</groupId>
-				<artifactId>jstl</artifactId>
-				<version>${jstl.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-api</artifactId>
-				<version>${javax.version}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<!-- Validation -->
-			<dependency>
-				<groupId>javax.validation</groupId>
-				<artifactId>validation-api</artifactId>
-				<version>${javax-validation.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate.validator</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernate-validator.version}</version>
-			</dependency>
-
-			<!-- ORM -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<!-- Necessary to correctly convert LocalDate -->
-				<artifactId>hibernate-java8</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-testing</artifactId>
-				<version>${hibernate.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<!-- These modules are no longer imported by default in Java 9 -->
-			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>${jaxb.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-core</artifactId>
-				<version>${jaxb.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-impl</artifactId>
-				<version>${jaxb.version}</version>
-			</dependency>
+        <!-- QueryDSL -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <!-- annotation processing tool -->
+            <artifactId>querydsl-apt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+        </dependency>
+    </dependencies>
 
 
-			<!-- To enable Hibernate proxy model -->
-			<dependency>
-				<groupId>org.javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>${javassist.version}</version>
-			</dependency>
-			<!-- Connection Pool -->
-			<dependency>
-				<groupId>org.apache.tomcat</groupId>
-				<artifactId>tomcat-dbcp</artifactId>
-				<version>${tomcat-dbcp.version}</version>
-			</dependency>
-			<!-- QueryDSL -->
-			<dependency>
-				<groupId>com.querydsl</groupId>
-				<!-- annotation processing tool -->
-				<artifactId>querydsl-apt</artifactId>
-				<version>${querydsl.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.querydsl</groupId>
-				<artifactId>querydsl-jpa</artifactId>
-				<version>${querydsl.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.querydsl</groupId>
-				<artifactId>querydsl-sql-spring</artifactId>
-				<version>${querydsl.version}</version>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Computer Database -->
+            <dependency>
+                <groupId>com.excilys.formation.cdb.core</groupId>
+                <artifactId>computer-database-core</artifactId>
+                <version>${computer-database-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb.persistence</groupId>
+                <artifactId>computer-database-persistence</artifactId>
+                <version>${computer-database-persistence.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb.service</groupId>
+                <artifactId>computer-database-service</artifactId>
+                <version>${computer-database-service.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb.binding</groupId>
+                <artifactId>computer-database-binding</artifactId>
+                <version>${computer-database-binding.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb.console</groupId>
+                <artifactId>computer-database-console</artifactId>
+                <version>${computer-database-console.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.excilys.formation.cdb.webapp</groupId>
+                <artifactId>computer-database-webapp</artifactId>
+                <version>${computer-database-webapp.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>joda-time</groupId>
-				<artifactId>joda-time</artifactId>
-				<version>${joda-time.version}</version>
-			</dependency>
+            <!--Spring BOM -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-			<!-- REST -->
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
+            <!-- Checkstyle -->
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.version}</version>
+            </dependency>
 
-			<!-- JAX-WS RT -->
-			<dependency>
-				<groupId>com.sun.xml.ws</groupId>
-				<artifactId>jaxws-rt</artifactId>
-				<version>${jax.version}</version>
-			</dependency>
+            <!-- StringUtils -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${common-lang.version}</version>
+            </dependency>
 
-			<!-- Glassfish -->
-			<dependency>
-				<groupId>org.glassfish.jersey.core</groupId>
-				<artifactId>jersey-client</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jersey.inject</groupId>
-				<artifactId>jersey-hk2</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jersey.media</groupId>
-				<artifactId>jersey-media-json-jackson</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
+            <!-- tests -->
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>sqltool</artifactId>
+                <version>${sqltool.version}</version>
+                <scope>test</scope>
+            </dependency>
 
-			<!-- SWAGGER -->
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger-ui</artifactId>
-				<version>${swagger.version}</version>
-			</dependency>
+            <!-- MySQL Connector -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${myqsl-jdbc.version}</version>
+            </dependency>
 
-			<!-- SPRING SECURITY -->
+            <!-- JEE -->
+            <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${javax.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-config</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+            <!-- Validation -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${javax-validation.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+
+            <!-- ORM -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <!-- Necessary to correctly convert LocalDate -->
+                <artifactId>hibernate-java8</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-testing</artifactId>
+                <version>${hibernate.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- These modules are no longer imported by default in Java 9 -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
 
 
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-core</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+            <!-- To enable Hibernate proxy model -->
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
+            </dependency>
+            <!-- Connection Pool -->
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-dbcp</artifactId>
+                <version>${tomcat-dbcp.version}</version>
+            </dependency>
+            <!-- QueryDSL -->
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <!-- annotation processing tool -->
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-jpa</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-sql-spring</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-web</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
 
-		</dependencies>
-	</dependencyManagement>
+            <!-- REST -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- JAX-WS RT -->
+            <dependency>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-rt</artifactId>
+                <version>${jax.version}</version>
+            </dependency>
+
+            <!-- Glassfish -->
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+
+            <!-- SWAGGER -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <!-- SPRING SECURITY -->
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 </project>

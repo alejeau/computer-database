@@ -19,6 +19,7 @@ import com.excilys.formation.cdb.model.constants.Paths;
 import com.excilys.formation.cdb.security.config.SimpleAuthenticationService;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(Paths.REST_LOGIN)
 public class LoginRestController {
 
