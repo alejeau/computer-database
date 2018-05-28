@@ -173,6 +173,7 @@ public class ComputerRestController implements ComputerRest {
                     .filter(Objects::nonNull)
                     .map(Error::toString)
                     .forEach(LOG::error);
+            httpStatus = HttpStatus.NOT_MODIFIED;
         }
 
         return new ResponseEntity<>(errorList, httpStatus);
