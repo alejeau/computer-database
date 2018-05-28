@@ -171,7 +171,8 @@ public class ComputerRestController implements ComputerRest {
         } else {
             errorList.stream()
                     .filter(Objects::nonNull)
-                    .forEach(System.out::println);
+                    .map(Error::toString)
+                    .forEach(LOG::error);
         }
 
         return new ResponseEntity<>(errorList, httpStatus);
@@ -199,7 +200,8 @@ public class ComputerRestController implements ComputerRest {
         } else {
             errorList.stream()
                     .filter(Objects::nonNull)
-                    .forEach(System.out::println);
+                    .map(Error::toString)
+                    .forEach(LOG::error);
         }
 
         return ResponseEntityMapper.toResponseEntity(id);
