@@ -1,32 +1,35 @@
 package com.excilys.formation.cdb.rest.impl;
 
-import com.excilys.formation.cdb.model.UserInfo;
-import com.excilys.formation.cdb.model.constants.Paths;
-import com.excilys.formation.cdb.security.config.SimpleAuthenticationService;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
+import com.excilys.formation.cdb.model.UserInfo;
+import com.excilys.formation.cdb.model.constants.Paths;
+import com.excilys.formation.cdb.security.config.SimpleAuthenticationService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(Paths.REST_LOGIN)
-public class LoginRestController {
+public class AuthRestController {
+	
 
     private SimpleAuthenticationService authentication;
 
     @Autowired
-    public LoginRestController(SimpleAuthenticationService authService) {
+    public AuthRestController(SimpleAuthenticationService authService) {
         this.authentication = authService;
     }
 
-    @PostMapping
+    @CrossOrigin(origins = "*")
+    @PostMapping(Paths.REST_LOGIN)
     public String login(HttpServletResponse response, @RequestBody UserInfo user) {
         Optional<String> authResultOpt = authentication.login(user.getUsername(), user.getPassword());
         if (!authResultOpt.isPresent()) {
@@ -35,6 +38,12 @@ public class LoginRestController {
         }
         return authResultOpt.get();
     }
+    
 
+    @CrossOrigin(origins = "*")
+    @PostMapping(Paths.REST_LOGOUT)
+    public void logout(HttpServlet request, @RequestBody String token) {
+        authentication.logout(token);
+    }
 
 }
