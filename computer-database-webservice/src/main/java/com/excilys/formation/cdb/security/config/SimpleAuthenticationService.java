@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,7 +34,7 @@ public class SimpleAuthenticationService {
 		UserInfo userInfo = userDAO.getUserByUsername(username);
 		if (password.equals(userInfo.getPassword())) {
 			String token = UUID.randomUUID().toString();
-			User user = new User(token, username, password, new SimpleGrantedAuthority("ROLE_"+userInfo.getRole())); 
+			User user = new User(token, username, password, userInfo.getRole()); 
 			users.put(token, user);
 			return Optional.of(token);	
 		}
@@ -41,6 +43,14 @@ public class SimpleAuthenticationService {
 
 	public Optional<User> findByToken(String token) {
 		return Optional.ofNullable(users.get(token));
+	}
+	
+	public String getRole(String token) {
+			User user = users.get(token);
+		if (user == null) {
+			return null;
+		}
+		return user.getRole();
 	}
 
 	public void logout(String token) {

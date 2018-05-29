@@ -12,18 +12,24 @@ public class User implements UserDetails{
 	private String username;
 	private String password;
 	private String token;
+	private String role;
 	private SimpleGrantedAuthority authority;
 	
-	public User (String token, String username, String password, SimpleGrantedAuthority authority) {
+	public User (String token, String username, String password,  String role) {
 		this.token = token;
 		this.username = username;
 		this.password = password;
-		this.authority = authority;
+		this.role = role;
+		this.authority = new SimpleGrantedAuthority("ROLE_" + role);
 	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Arrays.asList(this.authority);
+	}
+	
+	public String getRole() {
+		return this.role;
 	}
 
 	@Override
