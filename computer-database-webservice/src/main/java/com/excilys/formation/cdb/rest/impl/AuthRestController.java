@@ -63,7 +63,6 @@ public class AuthRestController {
 	public ResponseEntity<String> addUser(@PathVariable String username, @PathVariable String password, HttpServletResponse response) throws UsernameTakenException {
 		if (authentication.isPresent(username)) {
 			throw new UsernameTakenException();
-			//return new ResponseEntity<>("This username is already taken", HttpStatus.NOT_MODIFIED);
 		}
 		authentication.createUser(username, password);
 		 return new ResponseEntity<>("New user successfully created", HttpStatus.OK);
