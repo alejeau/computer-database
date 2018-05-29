@@ -19,6 +19,7 @@ public class Paths {
     public static final String REST_LOGIN = "/login";
     public static final String REST_LOGOUT = "/logout";
     public static final String REST_ROLE = "/role";
+    public static final String REST_REGISTER =  "/register";
 
 
     private Paths() {

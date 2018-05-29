@@ -13,9 +13,11 @@ import com.excilys.formation.cdb.model.constants.DbFields;
 @Table(name = DbFields.USER)
 public class UserInfo {
 	
-    @Column(name = DbFields.USERNAME)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(name = DbFields.USERNAME)
     private String username;
 
     @Column(name = DbFields.PASSWORD)

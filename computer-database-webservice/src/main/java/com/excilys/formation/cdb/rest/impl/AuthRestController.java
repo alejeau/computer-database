@@ -52,7 +52,17 @@ public class AuthRestController {
 	@GetMapping(Paths.REST_ROLE+"/{token}")
 	public String getRole(@PathVariable String token) {
 		return authentication.getRole(token);
-
+	}
+	
+	@CrossOrigin(origins = "*")
+	@GetMapping(Paths.REST_REGISTER+"/{username}/{password}")
+	public String addUser(@PathVariable String username, @PathVariable String password) {
+		if (authentication.isPresent(username)) {
+			return "This username is already taken";
+		}
+		authentication.createUser(username, password);
+		return "New user successfully created";
+			
 	}
 
 }
