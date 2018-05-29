@@ -7,16 +7,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.formation.cdb.model.UserInfo;
 import com.excilys.formation.cdb.model.constants.Paths;
 import com.excilys.formation.cdb.security.config.SimpleAuthenticationService;
+import com.excilys.formation.cdb.security.config.UsernameTakenException;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -56,12 +59,14 @@ public class AuthRestController {
 	
 	@CrossOrigin(origins = "*")
 	@GetMapping(Paths.REST_REGISTER+"/{username}/{password}")
-	public String addUser(@PathVariable String username, @PathVariable String password) {
+	@ResponseBody
+	public ResponseEntity<String> addUser(@PathVariable String username, @PathVariable String password, HttpServletResponse response) throws UsernameTakenException {
 		if (authentication.isPresent(username)) {
-			return "This username is already taken";
+			throw new UsernameTakenException();
+			//return new ResponseEntity<>("This username is already taken", HttpStatus.NOT_MODIFIED);
 		}
 		authentication.createUser(username, password);
-		return "New user successfully created";
+		 return new ResponseEntity<>("New user successfully created", HttpStatus.OK);
 			
 	}
 
