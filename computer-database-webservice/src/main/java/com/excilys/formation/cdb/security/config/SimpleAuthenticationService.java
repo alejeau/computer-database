@@ -21,13 +21,13 @@ import com.excilys.formation.cdb.persistence.dao.impl.UserDaoQdsl;
 public class SimpleAuthenticationService {
 
 	private UserDaoQdsl userDAO;
-	
+
 	@Autowired
 	public SimpleAuthenticationService (UserDaoQdsl userDAO) {
 		this.userDAO = userDAO;
-		
+
 	}
-	
+
 	Map<String, User> users = new HashMap<>();
 
 	public Optional<String> login(String username, String password) {
@@ -44,13 +44,22 @@ public class SimpleAuthenticationService {
 	public Optional<User> findByToken(String token) {
 		return Optional.ofNullable(users.get(token));
 	}
-	
+
 	public String getRole(String token) {
-			User user = users.get(token);
+		User user = users.get(token);
 		if (user == null) {
 			return null;
 		}
 		return user.getRole();
+	}
+	
+	public boolean isPresent(String username) {
+		UserInfo userInfo = userDAO.getUserByUsername(username);
+		return userInfo != null;
+	}
+	
+	public void createUser(String username, String password) {
+		userDAO.persistUser(username, password);
 	}
 
 	public void logout(String token) {
